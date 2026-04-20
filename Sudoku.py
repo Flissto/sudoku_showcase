@@ -1,8 +1,10 @@
-## Autor: Janick Joost
-## Version: 6.0
-## Das Programm plottet ein zufällig generiertes Sudoku-Spielfeld. Es sind mehrere Schwierigkeitsgrade verfügbar.
-## Bei höheren Schwierigkeitsgraden ist eine zweite mögliche Lösung des Puzzles ist allerdings nicht auszuschließen.
-## Jedoch gibt es immer mindestens eine Lösung
+#!/usr/bin/env python3
+# -*- coding: utf8 -*-
+#
+
+### Das Programm plottet ein zufällig generiertes Sudoku-Spielfeld. Es sind mehrere Schwierigkeitsgrade verfügbar.
+# Bei höheren Schwierigkeitsgraden ist eine zweite mögliche Lösung des Puzzles ist allerdings nicht auszuschließen.
+# Jedoch gibt es immer mindestens eine Lösung
 
 from tkinter import *
 import tkinter as tk
@@ -21,6 +23,50 @@ diff = [25,40,48,51,55] # digits
 diffNames = ['Nearly Full', 'Easy', 'Medium', 'Hard', 'Unfair']
 myfont = ("Britannic","13","bold")
 N = 9
+
+
+class App(UI):
+	"""
+	The App will be startet on cli-command.
+	An App inherits from an UI-object.
+	An App can start several Games, which holds the Sudoku-object.
+	"""
+	
+	def __init__(self):
+
+		# settings
+		self._darkMode = False # TODO make property
+		self._highlightCells = True
+		self._highlightDigits = True
+
+		self.Game = App.Game()
+
+	
+
+class Game:
+	"""
+	A Game creates a sudoku-object, wich will be solved
+	This class holds the game logic of an sudoku
+	"""
+
+	# Standard Difficulties
+	difficulty = {'Nearly Full': 25, 'Easy': 40, 'Medium': 48, 'Hard': 51, 'Extreme': 55}
+	defaultDifficulty = 'Easy'
+
+	def __init__(self):
+		"""
+		When the App starts or user creates a new Game
+		"""
+		self.mistakes = 0
+		self.clock = time.time()
+
+		self.createNewGame()
+
+
+	def createNewGame(self, selectedDifficulty: str):
+		self.Solution = SudokuModel()
+	
+
 
 
 class Sudoku():
