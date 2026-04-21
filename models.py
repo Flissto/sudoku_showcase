@@ -35,10 +35,18 @@ class Field:
 			return repr(self.value)
 		return repr([x for x in self._notes])
 
-	def inspect(self):
-		print("Field Inspect:")
+	def printDict(self):
 		for key, value in self.__dict__.items():
 			print(str(key) + ": " + str(value))
+	
+	def inspect(self):
+		print("Inspect:")
+		print("x:", self.x)
+		print("y:", self.y)
+		print("value:", self.value)
+		print("fixed:", self.fixed)
+		print("isEmpty:", self.isEmpty)
+		print("Notes:", list(self.notes))
 
 	@classmethod
 	def clone(cls, other) -> "Field":
