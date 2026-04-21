@@ -14,8 +14,8 @@ class App:
 	So, app connects everything.
 	"""
 	
-	def __init__(self):
-		self.ui = UI(self)
+	def __init__(self, useUi: bool = True):
+		self.ui = UI(self) if useUi else None
 		self.game = Game()
 
 	def run(self):
@@ -25,7 +25,18 @@ class App:
 		self.game.startNewGame(difficulty)
 
 	def handleMove(self, row: int, col: int, value: int) -> None:
-		self.game.makeMove(row=row, col=col, value=value)
+		""" depending on the current modes, this does the action"""
+
+		if self.game.inEraseMode:
+			if self.game.inNoteMode:
+				self.game.removeNote(row=row, col=col, value=value)
+			else:
+				self.game.erase(row=row, col=col)
+		else:
+			if self.game.inNoteMode:
+				self.game.addNote(row=row, col=col, value=value)
+			else:
+				self.game.setValue(row=row, col=col, value=value)
 	
 
 class Game:
@@ -46,13 +57,48 @@ class Game:
 		""" When the App starts or user creates a new Game
 		Mistakes will be set to zero, time to zero, and grids will be cleared
 		"""
-		self.mistakes = 0
+		# properties
+		self._mistakes = 0
+		self._selectedDigit = random.randint(1,N)
+		self._eraseMode = False
+		self._noteMode = False
+
 		self.startTime = time.time()
 
 		self.solution = None
 		self.initialGrid = None
 		self.currentGrid = None
 
+	#########################################################################################
+	### Properties
+	#########################################################################################
+
+	@property
+	def mistakes(self):
+		return self._mistakes
+
+	@property
+	def selectedDigit(self) -> int:
+		return self._selectedDigit
+
+	@selectedDigit.setter
+	def selectedDigit(self, digit: int) -> None:
+		if digit >= 1 and digit <= N:
+			raise ValueError(f"digit has to be a number in between 1 and {N}.")
+		
+		self._selectedDigit = digit
+
+	@property
+	def inEraseMode(self) -> bool:
+		return self._eraseMode
+
+	@property
+	def inNoteMode(self) -> bool:
+		return self._noteMode
+
+	#########################################################################################
+	### Mechanics
+	#########################################################################################
 
 	def startNewGame(self, difficulty: str) -> None:
 
@@ -74,12 +120,12 @@ class Game:
 		# create current Grid, the inital cells are already locked
 		self.currentGrid = Puzzle.clone(self.initialGrid)
 
-	def makeMove(self, row: int, col: int, value: int) -> bool:
+	def setValue(self, row: int, col: int, value: int) -> bool:
 		if not self.currentGrid.setValue(row=row, col=col, value=value):
 			self.increaseMistakes()
 
 	def erase(self, row: int, col: int) -> None:
-		pass
+		self.currentGrid.clearValue(row=row, col=col)
 
 	def addNote(self, row: int, col: int, value: int) -> None:
 		pass
@@ -87,18 +133,29 @@ class Game:
 	def removeNote(self, row: int, col: int, value: int) -> None:
 		pass
 
-	def selectDigit(self, value: int) -> None:
-		pass
 	
-	def toggleEraseMode(self):
-		pass
-	
-	def getElapsedTime(self) -> int:
-		pass
+	def toggleEraseMode(self) -> None:
+		""" toggle for setting erase-Mode property"""
+		if self._eraseMode:
+			self._eraseMode = False
+		else:
+			self._eraseMode = True
+
+
+	def toggleNoteMode(self) -> None:
+		""" toggle for setting Note-Mode property"""
+		if self._noteMode:
+			self._noteMode = False
+		else:
+			self._noteMode = True
 
 	#########################################################################################
 	### Gamification
 	#########################################################################################
+
+	def getElapsedTime(self) -> int:
+		pass
+
 
 	def isGameOver(self) -> bool:
 		""" Wether the game is over due to mistakes """
@@ -111,5 +168,5 @@ class Game:
 		return self.currentGrid.isFinished
 
 	def increaseMistakes(self):
-		self.mistakes += 1
+		self._mistakes += 1
 		print("You made a mistake!")

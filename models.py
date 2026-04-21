@@ -340,7 +340,8 @@ class Puzzle:
 		return False
 
 	def clearValue(self, row: int, col: int):
-		self.grid[row][col].clear()
+		if not self.grid[row][col].fixed:
+			self.grid[row][col].clear()
 
 	#########################################################################################
 	### Row-, Column-, Block-Functions
