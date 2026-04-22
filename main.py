@@ -20,11 +20,6 @@ def help() -> None:
 	print("\tsolve")
 
 
-def printCurrentGrid() -> None:
-	""" prints the current Grid"""
-	print(app.game.currentGrid)
-	
-
 def main():
 	""" executed on cli without UI
 	TODO argparse
@@ -39,7 +34,7 @@ def main():
 	print(f"Start Sudoku ({difficulty}) ...")
 
 	app.startNewGame(difficulty)
-	printCurrentGrid()
+	print(app.game.currentGrid)
 
 	while True:
 		cmd = input(">> ").strip().lower().split()
@@ -66,7 +61,7 @@ def main():
 			app.startNewGame(diff)
 
 		elif cmd[0] == "print":
-			printCurrentGrid()
+			print(app.game.currentGrid)
 
 		elif cmd[0] == "set":
 			if len(cmd) < 4:
@@ -74,8 +69,8 @@ def main():
 				continue
 			# set row col value
 			app.handleMove(int(cmd[1]), int(cmd[2]), int(cmd[3]))
-			print("set " + str(v) + " to (" + str(r) + "," + str(c) + ")")
-			printCurrentGrid()
+			print("set " + str(cmd[3]) + " to (" + str(cmd[1]) + "," + str(cmd[2]) + ")")
+			print(app.game.currentGrid)
 
 		elif cmd[0] == "solve":
 			solver = Solver(app.game.currentGrid)

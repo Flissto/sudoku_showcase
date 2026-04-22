@@ -6,6 +6,12 @@ import time
 from models import *
 from ui import *
 
+
+def toggle(x: bool) -> bool:
+	if x: return False
+	return True
+
+
 class App:
 	"""
 	The App will be startet on cli-command.
@@ -18,31 +24,85 @@ class App:
 		self.ui = UI(self) if useUi else None
 		self.game = Game()
 
-	def run(self):
-		pass
+		self._darkmode = False
+		self._highlightCells = False
+		self._highlightDigits = True
 
-	def startNewGame(self, difficulty: str) -> None:
-		self.game.startNewGame(difficulty)
+	#########################################################################################
+	### Properties
+	#########################################################################################
 
-	def handleMove(self, row: int, col: int, value: int) -> None:
-		""" depending on the current modes, this does the action"""
+	@property
+	def darkmode(self) -> bool:
+		return self._darkmode
 
-		if self.game.inEraseMode:
-			if self.game.inNoteMode:
-				self.game.removeNote(row=row, col=col, value=value)
-			else:
-				self.game.erase(row=row, col=col)
-		else:
-			if self.game.inNoteMode:
-				self.game.addNote(row=row, col=col, value=value)
-			else:
-				self.game.setValue(row=row, col=col, value=value)
+	@property
+	def highlighCells(self) -> bool:
+		return self._highlightCells
 	
+	@property
+	def highlightDigits(self) -> bool:
+		return self._highlightDigits
+
+
+	#########################################################################################
+	### Game Functions
+	#########################################################################################
+
+	def run(self) -> None:
+		""" Starts to run the application"""
+		if self.ui:
+			self.ui.setup()
+
+		self.startNewGame("")
+		
+
+	def startNewGame(self, difficulty: str = "") -> None:
+		""" Starts a new Game """
+		self.game.startNewGame(difficulty)
+		if self.ui:
+			self.ui.onNewGame()
+
+
+	def handleMove(self, row: int, col: int, value: int = -1) -> None:
+		""" lets the game handle the move
+		Additionally checks if game over or won """
+		self.game.makeMove(row=row, col=col, value=value)
+
+		if self.game.isGameOver():
+			print("GAME OVER!")
+			if self.ui:
+				self.ui.showGameOver()
+
+		elif self.game.isWon():
+			print("You won!")
+			if self.ui:
+				self.ui.showGameWin()
+
+
+	#########################################################################################
+	### UI Functions
+	#########################################################################################
+
+
+	def toggleDarkMode(self) -> None:
+		self._darkmode = toggle(self._darkmode)
+
+	def toggleHighlightCells(self) -> None:
+		self._highlightCells = toggle(self._highlightCells)
+
+	def toggleHighlightDigits(self) -> None:
+		self._highlightDigits = toggle(self._highlightDigits)
+
+
+#########################################################################################
+### Game
+#########################################################################################
 
 class Game:
 	"""
 	A Game creates a sudoku-object, wich will be solved
-	This class holds the game logic of an sudoku (Solution, initial, ...)
+	This class holds the game logic of an sudoku (_solution, initial, ...)
 	and knows about the current state of the game
 	"""
 
@@ -58,15 +118,16 @@ class Game:
 		Mistakes will be set to zero, time to zero, and grids will be cleared
 		"""
 		# properties
+		self._difficulty = self.DEFAULT_DIFFICULTY
 		self._mistakes = 0
 		self._selectedDigit = random.randint(1,N)
 		self._eraseMode = False
 		self._noteMode = False
 
-		self.startTime = time.time()
+		self._startTime = time.time()
 
-		self.solution = None
-		self.initialGrid = None
+		self._solution = None
+		self._initial = None
 		self.currentGrid = None
 
 	#########################################################################################
@@ -74,7 +135,11 @@ class Game:
 	#########################################################################################
 
 	@property
-	def mistakes(self):
+	def difficulty(self) -> str:
+		return self._diff
+
+	@property
+	def mistakes(self) -> int:
 		return self._mistakes
 
 	@property
@@ -85,7 +150,7 @@ class Game:
 	def selectedDigit(self, digit: int) -> None:
 		if digit >= 1 and digit <= N:
 			raise ValueError(f"digit has to be a number in between 1 and {N}.")
-		
+
 		self._selectedDigit = digit
 
 	@property
@@ -100,40 +165,54 @@ class Game:
 	### Mechanics
 	#########################################################################################
 
-	def startNewGame(self, difficulty: str) -> None:
+	def _setDifficulty(self, name: str = "") -> int:
+		""" Validates and sets difficulty. Returns the amount of fields to delete"""
+		if name == "":
+			name = self.DEFAULT_DIFFICULTY
 
-		if not difficulty in self.DIFFICULTY.keys():
-			raise Exception("Unknown difficulty: " + str(difficulty))
+		if not name in self.DIFFICULTY.keys():
+			raise Exception("Unknown difficulty: " + str(name))
 
-		self.mistakes = 0
-		self.startTime = time.time()
+		self._difficulty = name
+		return self.DIFFICULTY[name]
 
-		#self.solution = Puzzle.generateSolution() # All Fields set, with a valid Sudoku
+	def startNewGame(self, difficulty: str = "") -> None:
+		""" Entry Point to start a new Game with described Difficulty"""
 
-		#self.initialGrid = Puzzle.clone(self.solution)
-		#self.initialGrid.removeDigits(self.DIFFICULTY[difficulty]) # remove an amount of digits
-		self.solution, self.initialGrid = Puzzle.createPuzzle(self.DIFFICULTY[difficulty])
+		self._mistakes = 0
+		self._startTime = time.time()
+		numDigitsToDelete = self._setDifficulty(difficulty)
+
+		self._solution, self._initial = Puzzle.createPuzzle(numDigitsToDelete)
 		
-		self.initialGrid.lockValues() # lock the initial state
-		self.solution.lockValues() # set all Fields in the solution to fixed
+		self._initial.lockValues() # lock the initial state
+		self._solution.lockValues() # set all Fields in the _solution to fixed
 
 		# create current Grid, the inital cells are already locked
-		self.currentGrid = Puzzle.clone(self.initialGrid)
+		self.currentGrid = Puzzle.clone(self._initial)
 
-	def setValue(self, row: int, col: int, value: int) -> bool:
-		if not self.currentGrid.setValue(row=row, col=col, value=value):
-			self.increaseMistakes()
 
-	def erase(self, row: int, col: int) -> None:
-		self.currentGrid.clearValue(row=row, col=col)
+	def makeMove(self, row: int, col: int, value: int = -1) -> None:
+		""" decides based on modes what to do """
+		if self.inEraseMode:
+			if self.inNoteMode:
+				self._removeNote(row=row, col=col, value=value)
+			else:
+				self.currentGrid.clearValue(row=row, col=col)
+		else:
+			if self.inNoteMode:
+				self.currentGrid.addNote(row=row, col=col, value=value)
+			elif value != -1:
+				try:
+					if not self.currentGrid.setValue(row=row, col=col, value=value):
+						self._increaseMistakes()
+						return False
+				except: # when set to a fixed Field,
+					pass
+		
+		return True
 
-	def addNote(self, row: int, col: int, value: int) -> None:
-		pass
 
-	def removeNote(self, row: int, col: int, value: int) -> None:
-		pass
-
-	
 	def toggleEraseMode(self) -> None:
 		""" toggle for setting erase-Mode property"""
 		if self._eraseMode:
@@ -154,8 +233,8 @@ class Game:
 	#########################################################################################
 
 	def getElapsedTime(self) -> int:
-		pass
-
+		""" returns the elapsed time in seconds """
+		return int(time.time() - self._startTime)
 
 	def isGameOver(self) -> bool:
 		""" Wether the game is over due to mistakes """
@@ -167,6 +246,15 @@ class Game:
 		""" The game can be won or its not"""
 		return self.currentGrid.isFinished
 
-	def increaseMistakes(self):
+	def hasEnded(self) -> bool:
+		""" if game has ended"""
+		return self.isWon() or self.isGameOver()
+
+	def _increaseMistakes(self):
 		self._mistakes += 1
 		print("You made a mistake!")
+
+
+if __name__ == "__main__":
+	app = App()
+	app.run()
