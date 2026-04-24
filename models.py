@@ -146,19 +146,26 @@ class Puzzle:
 	"""
 
 	def __init__(self):
-		self._grid = [[Field(i,j) for j in range(N)] for i in range(N)]		# empty puzzle
+
+		self._grid = [[Field(i,j) for j in range(N)] for i in range(N)]
+		""" (private) internal Field storage
+		Do not edit this directly!
+		@see getField() """
+
 
 	def __str__(self):
 		""" usage of str(Field) """
 		self._print(_str=True)
 		return ""
 
+
 	def __repr__(self):
 		""" usage of repr(Field) """
 		self._print(_str=False)
 
+
 	def _print(self, _str: bool) -> None:
-		""" Helper-Function to print puzzle
+		""" (private) Helper-Function to print puzzle
 		@warning hardcoded 3"""
 
 		def horizontalLine():
@@ -184,13 +191,14 @@ class Puzzle:
 	### Core Functions
 	#########################################################################################
 
-
 	def getField(self, row: int, col: int) -> Field:
-		""" Returns the Field from coordinates"""
+		""" Returns the Field from coordinates """
 		return self._grid[row][col]
 
-	def _getFlatGrid(self) -> list[Field]:
-		""" Returns the flat grid (flat copy)"""
+
+	def getFlatGrid(self) -> list[Field]:
+		""" Returns the flat grid (flat copy)
+		Use this function when iterating over full grid"""
 		return [elem for row in self._grid for elem in row]
 
 	
@@ -198,9 +206,11 @@ class Puzzle:
 		""" returns the row of the puzzle"""
 		return self._grid[row]
 
+
 	def getColumn(self, col: int) -> list[Field]:
-		""" return a column of the puzzle"""
+		""" returns a column of the puzzle"""
 		return [self._grid[i][col] for i in range(len(self._grid))]
+
 
 	def getBlock(self, row: int, col: int) -> list[Field]:
 		""" returns the block of the puzzle
@@ -217,14 +227,16 @@ class Puzzle:
 
 	@property
 	def isFinished(self) -> bool:
-		for elem in self._getFlatGrid():
+		""" (readOnly) indicates if Puzzle is solved """
+		for elem in self.getFlatGrid():
 			if elem.isEmpty:
 				return False
 		return True
 
+
 	@property
 	def isValid(self) -> bool:
-		""" If one Field with no possible Note exist, the puzzle is invalid
+		""" (readOnly) If one Field with no possible Note exist, the puzzle is invalid.
 		@warning notes will be overwritten
 		@todo make more efficiently """
 		self.autoNotes()
@@ -239,19 +251,28 @@ class Puzzle:
 	#########################################################################################
 
 	def getValue(self, row: int, col: int) -> int:
+		""" Returns the value of Field.
+		The value is the digit in the cell of a puzzle."""
 		return self.getField(row, col).value
 
-	def setValue(self, row: int, col: int, value: int) -> bool:
-		""" Checks and sets the value """
-		self.getField(row, col).value = value
 
-		if self.isValidCell(row, col, value):
+	def setValue(self, row: int, col: int, value: int) -> bool:
+		""" Checks and Sets the value.
+		The value is the digit in the cell of a puzzle."""
+		tempVal = self.getValue(row, col) # store previous value temporarily 
+		self.getField(row, col).value = value # set value
+
+		if self.isValidCell(row, col, value): # validates
 			return True
+		self.getField(row, col).value = tempVal # invalid value, undo action
 		return False
 
+
 	def clearValue(self, row: int, col: int) -> None:
-		""" Clears a non-empty, non-fixed Field"""
+		""" Clears a non-empty, non-fixed Field.
+		Only way to unset a value from a Field"""
 		self.getField(row, col).clear()
+
 
 	#########################################################################################
 	### Note-Functions
@@ -260,6 +281,7 @@ class Puzzle:
 	def addNote(self, row: int, col: int, value: int) -> None:
 		""" Adds a Note to an empty, non-fixed Field"""
 		self.getField(row, col).addNote(value)
+
 
 	def removeNote(self, row: int, col: int, value: int) -> None:
 		""" Removes a Note if exists """
@@ -273,9 +295,9 @@ class Puzzle:
 
 
 	def autoNotes(self) -> None:
-		""" creates Notes automatically
+		""" Creates Notes for emtpy Fields automatically.
+		Foundation to solve puzzle with advanced strategies.
 		@warning Old Notes will be overwritten"""
-
 		for elem in self.getEmptyFields():
 			i = elem.x
 			j = elem.y
@@ -285,6 +307,7 @@ class Puzzle:
 			for n in range(1, N + 1):
 				if self.isValidCell(i, j, n):
 					self.addNote(row = i, col = j, value = n)
+
 
 	def deleteAllNotes(self) -> None:
 		""" clears all the notes for empty Fields.
@@ -297,21 +320,23 @@ class Puzzle:
 	#########################################################################################
 
 	def usedInRow(self, *, row: int, value: int) -> bool:
-		""" checks if value is set in row """
+		""" checks if value exists in row """
 		for elem in self.getRow(row=row):
 			if elem.value == value:
 				return True
 		return False
 
+
 	def usedInColumn(self, *, col: int, value: int) -> bool:
-		""" checks if value is set in column """
+		""" checks if value exists in column """
 		for elem in self.getColumn(col=col):
 			if elem.value == value:
 				return True
 		return False
 
+
 	def usedInBlock(self, *, row: int, col: int, value: int) -> bool:
-		""" checks if value is set in block """
+		""" checks if value exists in block """
 		for elem in self.getBlock(row=row, col=col):
 			if elem.value == value:
 				return True
@@ -332,35 +357,36 @@ class Puzzle:
 
 		return True
 
+
 	#########################################################################################
-	### Other 
+	### Get Speciilized Fields and other 
 	#########################################################################################
 
 	def getEmptyFields(self, sortByNotesLength: bool = False) -> list[Field]:
 		""" returns a list of empty Fields (obj)
 		@note sorted by length of notes """
 		if sortByNotesLength:
-			return sorted([elem for elem in self._getFlatGrid() if elem.isEmpty], key=lambda f: len(f.notes))
+			return sorted([elem for elem in self.getFlatGrid() if elem.isEmpty], key=lambda f: len(f.notes))
 		else:
-			return [elem for elem in self._getFlatGrid() if elem.isEmpty]
-
+			return [elem for elem in self.getFlatGrid() if elem.isEmpty]
+			
 	def getNonEmptyFields(self) -> list[Fields]:
-		""" Returns all the non-empty Fields """
-		return [elem for elem in self._getFlatGrid() if not elem.isEmpty]
+		""" Returns all the non-empty Fields"""
+		return [elem for elem in self.getFlatGrid() if not elem.isEmpty]
 
 
 	def getFixedFields(self) -> list[Fields]:
 		""" Returns all the fixed Fields """
-		return [elem for elem in self._getFlatGrid() if elem.fixed]
+		return [elem for elem in self.getFlatGrid() if elem.fixed]
 
 	def getNonFixedFields(self) -> list[Fields]:
 		""" Returns all the fixed Fields """
-		return [elem for elem in self._getFlatGrid() if not elem.fixed]
+		return [elem for elem in self.getFlatGrid() if not elem.fixed]
 
 
 	def lockValues(self) -> None:
-		""" Set all Non-Empty Fields to Fixed, so they cannot be edited.
-		CAUTION: cannot be undone """
+		""" Set all Non-Empty Fields to fixed, so they cannot be edited.
+		@warning cannot be undone"""
 		for elem in self.getNonEmptyFields():
 			elem.fixed = True
 
@@ -374,15 +400,24 @@ class Puzzle:
 
 
 	#########################################################################################
-	### New Puzzles
+	### New Puzzles - Functions
 	#########################################################################################
 
 	@classmethod
-	def clone(cls, other) -> "Puzzle":
+	def clone(cls, original: "Puzzle" ) -> "Puzzle":
+		""" Creates a new Puzzle with the attributes as the original Puzzle.
+		Function uses Call-By-Value, so the Copy can be edited without changing the Original
+
+		Call this like this: Puzzle.clone(PuzzleToCopy) """
 		new = cls()
-		for i in range(len(other._grid)):
-			for j in range(len(other._grid[i])):
-				new._grid[i][j] = Field.clone(other._grid[i][j]) # clone each field (flat)
+		for field in original.getFlatGrid():
+			new._grid[field.x][field.y] = Field.clone(field) # (flat) copy each field and its attributes
+
+		'''
+		for i in range(len(original._grid)):
+			for j in range(len(original.getRow(i))):
+				new._grid[i][j] = Field.clone(original._grid[i][j]) # clone each field (flat)
+		'''
 		return new
 
 	@classmethod
@@ -502,9 +537,14 @@ class Puzzle:
 
 class Solver:
 
+	""" This class aims to solve a Puzzle
+	Main usage when creating a unique Solution.
+	Calls itself when using backtrack-function (last resort when solving)
+	"""
+
 	def __init__(self, puzzle: Puzzle):
-		self.puzzle = Puzzle.clone(puzzle)
-		self.solutions = []
+		self.puzzle = Puzzle.clone(puzzle) # the puzzle to solve
+		self.solutions = [] # stack of different solutions
 
 	def solve(self) -> bool:
 		""" Tries to solve the Puzzle using chain of constraints and if stuck, brute force
@@ -571,6 +611,7 @@ class Solver:
 				return changed
 		return changed
 
+
 	def _hiddenSinglesRow(self) -> bool:
 		""" checks if note of digit exists only once in row """
 		changed = False
@@ -590,6 +631,7 @@ class Solver:
 					changed = True
 
 		return changed
+
 
 	def _hiddenSinglesColumn(self) -> bool:
 		""" checks if note of digit exists only once in column """
@@ -613,8 +655,9 @@ class Solver:
 
 		return changed
 
+
 	def _hiddenSinglesBlock(self) -> bool:
-		""" checks if note of digit exists only once in block """
+		""" checks if note (of digit) exists only once in block """
 		changed = False
 
 		for i in range(0, N, 3):
@@ -640,10 +683,12 @@ class Solver:
 	#########################################################################################
 	### Pairs
 	#########################################################################################
+
 	def _nakedPairs(self) -> bool:
 		""" if two cells hold the same two digits (row, col, block),
 		remove the digits in other cells (row, col, block) """
 		return False
+
 
 	def _hiddenPairs(self) -> bool:
 		""" if two digits occur exclusively together (row, col, block),
@@ -661,7 +706,9 @@ class Solver:
 
 	def _backtrack(self) -> bool:
 		""" Brute Force if stuck
-		@warning usage of recursion, watch memory"""
+		@warning usage of recursion, watch memory
+
+		<i>Cut my life into pieces, this is my last resort ...<i>"""
 		self.puzzle.autoNotes()
 
 		# get field with min notes

@@ -43,8 +43,8 @@ class UI:
 		self.app = app
 		self.root = tk.Tk()
 
-		self.cells = [[None]*N for _ in range(N)]
-		self.digitButtons = []
+		self.cell = [[None]*N for _ in range(N)]
+		self.digitButtons = [ None * N ]
 	
 
 	def setup(self) -> None:
@@ -53,17 +53,17 @@ class UI:
 
 		atexit.register(self.root.mainloop)
 
-		self.createMenu()
-		self.createFrame()
-		self.createGrid()
-		self.createDigitButtons()
+		self._createMenu()
+		self._createFrame()
+		self._createGrid()
+		self._createDigitButtons()
 
 
 	#########################################################################################
 	### create Functions
 	#########################################################################################
 
-	def createMenu(self) -> None:
+	def _createMenu(self) -> None:
 		menubar = tk.Menu(self.root)
 
 		newGame = tk.Menu(menubar, tearoff=0)
@@ -79,17 +79,58 @@ class UI:
 
 		self.root.config(menu=menubar)
 
-	def createFrame(self) -> None:
-		"""creates the master-Frame"""
+	def _createFrame(self) -> None:
+		"""creates the master-Frame.
+		All objects set on grid will be held in this Frame"""
+		self.frame = tk.Frame()
+		self.frame.grid(row=0, column=0)
+		self.frame.grid_rowconfigure(0, weight=1)
+		self.frame.grid_columnconfigure(0, weight=1)
+
+	def _createGrid(self) -> None:
+		""" Creates and visualizes the grid in a frame"""
+		self.gridFrame = tk.Frame(self.frame)
+		self.gridFrame.grid(row=1, column=0)
+		self.gridFrame.grid_rowconfigure(0, weight=1)
+		self.gridFrame.grid_columnconfigure(0, weight=1)
+
+		if self.app.game.currentGrid:
+			for field in self.app.game.currentGrid.getFlatGrid():
+				self.cells[i][j] = tk.Button(
+					self.gridFrame,
+					text=str(field.value),
+					font=self.DEFAULT_FONT,
+					bd='1',
+					width=self.CELL_WIDTH,
+					height=self.CELL_HEIGHT,
+					command=partial(self.app.handleMove, field.x, field.y)) # TODO value has to be saved in app
+
+			self.cells[i][j].grid(row=field.x, column=field.y, sticky="news")
+
+	def _createDigitButtons(self) -> None:
+		"""Creates the Row of Digits within a Frame"""
+		self.bottomFrame = tk.Frame(self.frame)
+		self.bottomFrame.grid(row=2, column=0)
+		self.bottomFrame.grid_rowconfigure(0, weight=1)
+		self.bottomFrame.grid_columnconfigure(0, weight=1)
+
+		
+
+
+	#########################################################################################
+	### get / set functions
+	#########################################################################################
+
+	def getCell(self, row: int, col: int) -> tk.Button:
 		pass
 
-	def createGrid(self) -> None:
-		""" Creates and visualizes the grid in a frame"""
-		if self.app.game.currentGrid:
-			pass
+	def getRow(self, row: int) -> list[tk.Button]:
+		pass
 
-	def createDigitButtons(self) -> None:
-		"""Creates the Row of Digits within a Frame"""
+	def getColumn(self, col: int) -> list[tk.Button]:
+		pass
+
+	def getBlock(self, row: int, col: int) -> list[tk.Button]:
 		pass
 
 
@@ -104,6 +145,7 @@ class UI:
 
 
 	def updateCell(self, row: int, col: int) -> None:
+		# show value, colorize
 		pass
 
 
