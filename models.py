@@ -12,8 +12,8 @@ N = 9
 class Field:
 	""" Atomic object in a Sudoku Game """
 
-	ALLOWED_VALUES = [i for i in range(N + 1)] # 0 <= x <= 9; 0 means not set
-	NULL = 0
+	ALLOWED_VALUES = [i for i in range(1, N + 1)] # 0 <= x <= 9; 0 means not set
+	NULL = None
 
 	def __init__(self, x: int, y: int, value: int = 0, fixed: bool = False, notes: set | None = None):
 		self._x = x
@@ -259,13 +259,11 @@ class Puzzle:
 	def setValue(self, row: int, col: int, value: int) -> bool:
 		""" Checks and Sets the value.
 		The value is the digit in the cell of a puzzle."""
-		tempVal = self.getValue(row, col) # store previous value temporarily 
-		self.getField(row, col).value = value # set value
-
-		if self.isValidCell(row, col, value): # validates
-			return True
-		self.getField(row, col).value = tempVal # invalid value, undo action
-		return False
+		if not self.isValidCell(row, col, value):
+			return False
+		
+		self.getField(row, col).value = value
+		return True
 
 
 	def clearValue(self, row: int, col: int) -> None:
@@ -288,10 +286,10 @@ class Puzzle:
 		self.getField(row, col).removeNote(value)
 
 
-	def removeNotes(self, *, row: int, col: int) -> None:
+	def removeNotes(self, row: int, col: int, value: int) -> None:
 		""" Remove all the Notes """
 		for elem in self.getEmptyFields():
-			elem.removeNote(value)
+			elem.removeNotes(value)
 
 
 	def autoNotes(self) -> None:
@@ -346,14 +344,17 @@ class Puzzle:
 	def isValidCell(self, row: int, col: int, value: int) -> bool:
 		""" The standard sudoku rules - 
 		If value not in row, column or block, then True """
-		if self.usedInRow(row=row, value=value):
-			return False
+		for f in self.getRow(row=row):
+			if f.y != col and f.value == value:
+				return False
 		
-		if self.usedInColumn(col=col, value=value):
-			return False
+		for f in self.getColumn(col=col):
+			if f.x != row and f.value == value:
+				return False
 
-		if self.usedInBlock(row=row, col=col, value=value):
-			return False
+		for f in self.getBlock(row=row, col=col):
+			if f.x != row and f.y != col and f.value == value:
+				return False
 
 		return True
 
@@ -370,16 +371,16 @@ class Puzzle:
 		else:
 			return [elem for elem in self.getFlatGrid() if elem.isEmpty]
 			
-	def getNonEmptyFields(self) -> list[Fields]:
+	def getNonEmptyFields(self) -> list[Field]:
 		""" Returns all the non-empty Fields"""
 		return [elem for elem in self.getFlatGrid() if not elem.isEmpty]
 
 
-	def getFixedFields(self) -> list[Fields]:
+	def getFixedFields(self) -> list[Field]:
 		""" Returns all the fixed Fields """
 		return [elem for elem in self.getFlatGrid() if elem.fixed]
 
-	def getNonFixedFields(self) -> list[Fields]:
+	def getNonFixedFields(self) -> list[Field]:
 		""" Returns all the fixed Fields """
 		return [elem for elem in self.getFlatGrid() if not elem.fixed]
 
@@ -413,11 +414,6 @@ class Puzzle:
 		for field in original.getFlatGrid():
 			new._grid[field.x][field.y] = Field.clone(field) # (flat) copy each field and its attributes
 
-		'''
-		for i in range(len(original._grid)):
-			for j in range(len(original.getRow(i))):
-				new._grid[i][j] = Field.clone(original._grid[i][j]) # clone each field (flat)
-		'''
 		return new
 
 	@classmethod
@@ -500,6 +496,8 @@ class Puzzle:
 					options.append((i,j)) 
 
 			tries = 1000
+			latestPossiblePos = None
+			latestRemovedDigit = None
 			while deleted < numDigitsToDelete:
 
 				r = random.randint(0,len(options)-1)
@@ -520,7 +518,8 @@ class Puzzle:
 				options.remove((x,y))
 
 				if len(options) == 0:
-					new.setValue(row = latestPossiblePos[0], col = latestPossiblePos[1], value = latestRemovedDigit)
+					if latestPossiblePos is not None:
+						new.setValue(row=latestPossiblePos[0], col=latestPossiblePos[1], value=latestRemovedDigit)
 					deleted -= 1
 					break
 			

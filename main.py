@@ -12,11 +12,14 @@ def help() -> None:
 	Ordered by command asc"""
 
 	print("Commands:")
+	print("\tautonotes")
+	print("\terase r c")
 	print("\texit")
 	print("\tinspect r c")
 	print("\tnew difficulty")
 	print("\tprint")
-	print("\tset r c v")
+	print("\tselect v")
+	print("\tset r c")
 	print("\tsolve")
 
 
@@ -45,7 +48,11 @@ def main():
 			app.game.currentGrid.autoNotes()
 
 		elif cmd[0] == "erase":
-			continue
+			if len(cmd) >= 3:
+				app.toggleEraseMode()
+				app.handleMove(int(cmd[1]), int(cmd[2]))
+				app.toggleEraseMode()
+				print("Erased Field at (" + str(cmd[1]) + "," + str(cmd[2]) + ")")
 
 		elif cmd[0] == "exit":
 			break
@@ -63,13 +70,18 @@ def main():
 		elif cmd[0] == "print":
 			print(app.game.currentGrid)
 
+		elif cmd[0] == "select":
+			if len(cmd) > 2:
+				app.selectedDigit(cmd[1])
+				print("Selected Digit " + str(app.selectedDigit))
+
 		elif cmd[0] == "set":
-			if len(cmd) < 4:
-				print("set takes positional arguments: row, column, value")
+			if len(cmd) < 3:
+				print("set takes positional arguments: row, column")
 				continue
-			# set row col value
-			app.handleMove(int(cmd[1]), int(cmd[2]), int(cmd[3]))
-			print("set " + str(cmd[3]) + " to (" + str(cmd[1]) + "," + str(cmd[2]) + ")")
+			# set row col
+			app.handleMove(int(cmd[1]), int(cmd[2]))
+			print("set " + str(app.selectedDigit) + " to (" + str(cmd[1]) + "," + str(cmd[2]) + ")")
 			print(app.game.currentGrid)
 
 		elif cmd[0] == "solve":
