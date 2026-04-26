@@ -390,15 +390,7 @@ class Puzzle:
 		@warning cannot be undone"""
 		for elem in self.getNonEmptyFields():
 			elem.fixed = True
-
-
-	def getDigitsToSet(self) -> list[int]:
-		""" returns all numbers from 1 to 9 which dont occur 9 times """
-		numbers = [0 for _ in range(N)]
-		for elem in self.getNonEmptyFields():
-			numbers[elem.value - 1] += 1
-		return sorted(numbers)
-
+			
 
 	#########################################################################################
 	### New Puzzles - Functions

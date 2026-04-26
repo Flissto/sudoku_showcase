@@ -15,11 +15,12 @@ class App:
 	"""
 	
 	def __init__(self, useUi: bool = True):
-		self.ui = UI(self) if useUi else None
 		self.game = Game()
+		self.ui = UI(self) if useUi else None
 
 		# Game Modes
-		self._selectedDigit = random.randint(1,N)
+		self._selectedCell = None
+		self._selectedDigit = None
 		self._eraseMode = False
 		self._noteMode = False
 
@@ -33,14 +34,27 @@ class App:
 	#########################################################################################
 
 	@property
-	def selectedDigit(self) -> int:
+	def selectedDigit(self) -> int | None:
 		return self._selectedDigit
 
 	@selectedDigit.setter
-	def selectedDigit(self, digit: int) -> None:
-		if digit not in Field.ALLOWED_VALUES:
-			raise ValueError(f"digit has to be a number in between 1 and {N}.")
+	def selectedDigit(self, digit: int | None) -> None:
+		if not (digit in Field.ALLOWED_VALUES or digit is None):
+			raise ValueError(f"digit has to be a number in between 1 and {N} or None.")
 		self._selectedDigit = digit
+
+	@property
+	def selectedCell(self) -> tuple[int, int] | None:
+		return self._selectedCell
+
+	@selectedCell.setter
+	def selectedCell(self, pos: tuple | None) -> None:
+		if not (
+			pos is None or
+			pos[0] in Field.ALLOWED_VALUES or
+			pos[1] in Field.ALLOWED_VALUES):
+			raise ValueError(f"Selected cell has to be in between 1 and {N} or None")
+		self._selectedCell = pos
 
 	@property
 	def inEraseMode(self) -> bool:
@@ -69,18 +83,22 @@ class App:
 
 	def run(self) -> None:
 		""" Starts to run the application"""
-		if self.ui:
-			self.ui.setup()
-		
-		self.startNewGame("")
+		self.startNewGame(Game.DEFAULT_DIFFICULTY)
 
-		if self.ui:
-			self.ui.root.mainloop()
+		if self.ui: # start the loop
+			self.ui.run()
 
 
 	def startNewGame(self, difficulty: str = "") -> None:
-		""" Starts a new Game """
+		""" Starts a new Game and creates the ui, if needed """
+		self._eraseMode = False
+		self._noteMode = False
 		self.game.startNewGame(difficulty)
+
+		row = random.randint(0, N - 1)
+		col = random.randint(0, N - 1) 
+		self.selectedCell = (row, col)
+		self.selectedDigit = self.game.getField(row,col).value
 		if self.ui:
 			self.ui.onNewGame()
 
@@ -89,9 +107,10 @@ class App:
 		""" lets the game handle the move
 		Additionally checks if game over or won"""
 
-		if not self.selectedDigit:
+		if not self.selectedDigit: # nothing selected, nothing to do
 			return
 
+		# modes
 		if self.inEraseMode and self.inNoteMode:
 			self.game.removeNote(row=row, col=col, value=self.selectedDigit)
 		
@@ -102,8 +121,11 @@ class App:
 			self.game.addNote(row=row, col=col, value=self.selectedDigit)
 		
 		else:
-			if not self.game.setValue(row=row, col=col, value=self.selectedDigit) and self.ui:
-				self.ui.updateMistakes()
+			self.game.setValue(row=row, col=col, value=self.selectedDigit)
+
+		# update UI
+		if self.ui:
+			self.ui.update()
 
 		# Gamification
 		if self.game.isGameOver():
@@ -116,10 +138,6 @@ class App:
 			if self.ui:
 				self.ui.showGameWin()
 
-		# update UI
-		if self.ui:
-			self.ui.update()
-
 
 	#########################################################################################
 	### Modes
@@ -128,20 +146,25 @@ class App:
 	def toggleEraseMode(self) -> None:
 		""" toggle for setting erase-Mode property"""
 		self._eraseMode = not self._eraseMode
+		print("Set erasemode to " + str(self._eraseMode))
 
 	def toggleNoteMode(self) -> None:
 		""" toggle for setting Note-Mode property"""
 		self._noteMode = not self._noteMode
+		print("Set noteMode to " + str(self._noteMode))
 
 
 	def toggleDarkMode(self) -> None:
 		self._darkmode = not self._darkmode
+		print("Set darkmode to " + str(self._darkmode))
 
 	def toggleHighlightCells(self) -> None:
 		self._highlightCells = not self._highlightCells
+		print("Set Highlight Cells to " + str(self._highlightCells))
 
 	def toggleHighlightDigits(self) -> None:
 		self._highlightDigits = not self._highlightDigits
+		print("Set Highlight Digits to " + str(self._highlightDigits))
 
 
 #########################################################################################
@@ -172,9 +195,10 @@ class Game:
 
 		self._startTime = time.time()
 
+		# the puzzles
 		self._solution = None
 		self._initial = None
-		self.currentGrid = None
+		self._currentGrid = None
 
 	#########################################################################################
 	### Properties
@@ -205,7 +229,8 @@ class Game:
 		return self.DIFFICULTY[name]
 
 	def startNewGame(self, difficulty: str = "") -> None:
-		""" Entry Point to start a new Game with described Difficulty"""
+		""" Entry Point to start a new Game with described Difficulty.
+		@ NOTE: Does not create a new Game-Object."""
 
 		self._mistakes = 0
 		self._startTime = time.time()
@@ -217,37 +242,68 @@ class Game:
 		self._solution.lockValues() # set all Fields in the _solution to fixed
 
 		# create current Grid, the inital cells are already locked
-		self.currentGrid = Puzzle.clone(self._initial)
+		self._currentGrid = Puzzle.clone(self._initial)
+
+
+	#########################################################################################
+	### getter
+	#########################################################################################
+
+	def getField(self, row: int, col: int) -> Field | None:
+		""" Returns a Field from the current Game """
+		return self._currentGrid.getField(row, col) if self._currentGrid else None
+
+
+	def getFields(self) -> list[Field]:
+		""" Returns a list of all Fields.
+		If current Grid is not set, an empty list is returned"""
+		return self._currentGrid.getFlatGrid() if self._currentGrid else list()
+
+
+	def getSetDigits(self) -> list[int]:
+		""" Returns all the Digits, which occur 9 times in the Grid"""
+		numbers = {key: 0 for key in range(1, N + 1)}
+		for field in self._currentGrid.getNonEmptyFields():
+			numbers[field.value] += 1
+		
+		return [key for key, value in numbers.items() if value >= N]
+
 
 	#########################################################################################
 	### Make Moves
 	#########################################################################################
 
 	def setValue(self, row: int, col: int, value: int) -> bool:
-		""" Sets a Value. When mistake, then increase Mistake call """
-		field = self.currentGrid.getField(row, col)
+		""" Sets a Value and handles occuring mistakes"""
+		field = self._currentGrid.getField(row, col)
 		if field.fixed:
 			return False
 		
-		if not self.currentGrid.setValue(row=row, col=col, value=value):
+		if not self._currentGrid.setValue(row=row, col=col, value=value):
 			self._increaseMistakes()
 			return False
 		return True
 
 	def clearValue(self, row: int, col: int) -> None:
 		""" clears a value (and Notes) from the grid """
-		self.currentGrid.clearValue(row, col)
+		self._currentGrid.clearValue(row, col)
 
 	def addNote(self, row: int, col: int, value: int) -> None:
 		"""Adds a Note to a Field """
-		self.currentGrid.addNote(row, col, value)
+		self._currentGrid.addNote(row, col, value)
 
 	def removeNote(self, row: int, col: int, value: int) -> None:
 		""" Removes a Note from a Field """
-		self.currentGrid.removeNote(row, col, value)
+		self._currentGrid.removeNote(row, col, value)
+
+	def autoNotes(self) -> None:
+		""" Adds Notes in the puzzle automatically """
+		self._currentGrid.autoNotes()
 
 	def removeAllNotes(self) -> None:
-		self.currentGrid.deleteAllNotes()
+		""" Removes all the notes 
+		Reverses AutoNotes """
+		self._currentGrid.deleteAllNotes()
 
 
 	#########################################################################################
@@ -266,7 +322,7 @@ class Game:
 
 	def isWon(self) -> bool:
 		""" The game can be won or its not"""
-		return self.currentGrid.isFinished
+		return self._currentGrid.isFinished
 
 	def hasEnded(self) -> bool:
 		""" if game has ended"""

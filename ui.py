@@ -16,63 +16,60 @@ class UI:
 	It knows nothing about rules, logic or anything. Its just about visuals."""
 
 	DEFAULT_FONT = ('Britannic', 13, 'bold')
+	GAME_END_FONT = ("Courier New", 13, "bold")
 
 	CELL_HEIGHT = 3
 	CELL_WIDTH = CELL_HEIGHT * 2
-	
-
-	COLOR_WHITE = '#ffffff'
-	COLOR_BLACK = '#000000'
-	COLOR_LIGHT_GREY = '#f4f4f4'
-	
-
-	# highlight cells; highlight digits; light cell; dark cell; active cell; active digit; normal; mistakes/ same colors for the dark mode
-	color = [
-		True,		# highlight cells
-		True,		# highlight digits 
-		'#ffffff',	# light cells
-		'#efefef',	# dark cells
-		'#ddddfa',	# active cell
-		'#4444ff',	# active digit
-		'#000000',	# normal
-		'#df0101',	# mistakes
-		"#2e2e2e",	# ... same colors for dark mode
-		"#151515",
-		"#2e64fe",	# active cell
-		"#a9a9f5",	# active digit
-		"#fafafa",	# normal
-		"#df0101"	# mistakes
-	]
 
 
 	def __init__(self, app: App):
+		""" Requires App to have a game-object"""
 		self.app = app
-		self.root = tk.Tk()
-		self.frame = None
+
+		self._root = tk.Tk() 
+		self._frame = None
 
 		self._cells = [[None]*N for _ in range(N)]
-		self.digitButtons = [None] * N
+		self.digitButtons = [None] * N # TODO make property using winfo_children()
 
-		self._selectedCell = None
-	
+		self._createFrame()
+		self._createMenu()
+
 
 	def setup(self) -> None:
-		""" The Setup """
-		title = f"Sudoku {self.app.game.difficulty}"
-		self.root.title(title)
-
-		self._createMenu()
-		self._createFrame()
+		""" Creates the window and initializes the ui objects"""
+		self._setTitle()
+		
+		# creates the underlaying frames, its objects 
 		self._createTopFrame()
 		self._createGrid()
 		self._createDigitButtons()
+		self._updateSetup()
+
+	def _destroySetup(self) -> None:
+		""" destroys the objects created on setup.
+		Runs even when no setup was done yet. """
+		for frame in self._frame.winfo_children():
+			for widget in frame.winfo_children():
+				widget.destroy()
 
 
-	def _runTimer(self):
+	def _setTitle(self) -> None:
+		""" Sets the Title of the window """
+		title = f"Sudoku {self.app.game.difficulty}"
+		self._root.title(title)
+
+
+	def _runTimer(self) -> None:
 		""" Calls the updateTimer method every second """
 		self.updateTimer()
-		if not (self.app.game.isGameOver() or self.app.game.isWon()):
-			self.root.after(1000, self._runTimer)
+		if not self.app.game.hasEnded():
+			self._root.after(1000, self._runTimer)
+
+
+	def run(self) -> None:
+		""" Call when ui is built"""
+		self._root.mainloop()
 
 
 	#########################################################################################
@@ -81,84 +78,95 @@ class UI:
 
 	def _createMenu(self) -> None:
 		""" Creates the Window Menu with New Game and Settings """
-		menubar = tk.Menu(self.root, font=self.DEFAULT_FONT)
+		self.menubar = tk.Menu(self._root, font=self.DEFAULT_FONT)
 
-		newGame = tk.Menu(menubar, tearoff=0)
+		newGame = tk.Menu(self.menubar, tearoff=0)
 		for diff in self.app.game.DIFFICULTY.keys():
 			newGame.add_command(label=diff, command=partial(self.app.startNewGame, diff))
-		menubar.add_cascade(label="New Game", menu=newGame)
+		self.menubar.add_cascade(label="New Game", menu=newGame)
 
-		settings = tk.Menu(menubar, tearoff=0)
-		settings.add_command(label="Toggle highlight digits", command=self.app.toggleHighlightDigits)
-		settings.add_command(label="Toggle highlight cells", command=self.app.toggleHighlightCells)
-		settings.add_command(label="Toggle Darkmode", command=self.app.toggleDarkMode)
-		menubar.add_cascade(label="Settings", menu=settings)
+		settings = tk.Menu(self.menubar, tearoff=0)
+		settings.add_command(label="Toggle highlight digits", command=self._toggleHighlightDigits)
+		settings.add_command(label="Toggle highlight cells", command=self._toggleHighlightCells)
+		settings.add_command(label="Toggle Darkmode", command=self._toggleDarkMode)
+		self.menubar.add_cascade(label="Settings", menu=settings)
 
-		self.root.config(menu=menubar)
+		self._root.config(menu=self.menubar)
 
 
 	def _createFrame(self) -> None:
 		"""creates the master-Frame.
 		All objects set on grid will be held in this Frame"""
-		self.frame = tk.Frame()
-		self.frame.grid(row=0, column=0)
-		self.frame.grid_rowconfigure(0, weight=1)
-		self.frame.grid_columnconfigure(0, weight=1)
+		self._frame = tk.Frame()
+		self._frame.grid(row=0, column=0)
+		self._frame.grid_rowconfigure(0, weight=1)
+		self._frame.grid_columnconfigure(0, weight=1)
 
 
 	def _createTopFrame(self) -> None:
 		""" Creates the top Row for game modes, mistakes and Timer """
-		self.topFrame = tk.Frame(self.frame)
-		self.topFrame.grid(row=0, column=0, padx=5, pady=5)
+		self.topFrame = tk.Frame(self._frame)
+		self.topFrame.grid(row=0, column=0, padx=5, pady=(20,5), sticky="news")
 		self.topFrame.grid_rowconfigure(0, weight=1)
-		self.topFrame.grid_columnconfigure(0, weight=1)
+		for i in range(3):
+			self.topFrame.grid_columnconfigure(i, weight=1)
 
 		self._mistakes = tk.Label(
 			self.topFrame,
-			fg='#ee2222',
 			font=self.DEFAULT_FONT)
-		self._mistakes.grid(row=0, column=0, padx=100, sticky='nws')
-		self.updateMistakes()
+		self._mistakes.grid(row=0, column=0, padx=10, sticky="w")
+		self._updateMistakes()
 
 		self._erase = tk.Button(
 			self.topFrame,
 			text="Erase",
 			font=self.DEFAULT_FONT,
-			relief="groove",
-			command=self.toggleEraseButton)
-		self._erase.grid(row=0, column=2, sticky='ns')
+			borderwidth=0,
+			command=self._toggleEraseButton)
+		self._erase.grid(row=0, column=1, padx=10, sticky="ew")
 
 		self._timer = tk.Label(
 			self.topFrame,
 			font=self.DEFAULT_FONT)
-		self._timer.grid(row=0, column=3, padx=100, sticky='nes')
+		self._timer.grid(row=0, column=2, padx=10, sticky="e")
 		
 
 	def _createGrid(self) -> None:
-		""" Creates and visualizes the grid in a frame"""
-		self.gridFrame = tk.Frame(self.frame)
-		self.gridFrame.grid(row=1, column=0, padx=5, pady=10)
+		""" Creates and visualizes the puzzle in a frame"""
+		self.gridFrame = tk.Frame(self._frame)
+		self.gridFrame.grid(row=1, column=0, padx=5, pady=10, sticky="news")
 		self.gridFrame.grid_rowconfigure(0, weight=1)
 		self.gridFrame.grid_columnconfigure(0, weight=1)
 
-		if self.app.game.currentGrid:
-			for field in self.app.game.currentGrid.getFlatGrid():
-				btn = tk.Button(
-					self.gridFrame,
-					text=str(field.value),
-					font=self.DEFAULT_FONT,
-					bd='1',
-					width=self.CELL_WIDTH,
-					height=self.CELL_HEIGHT,
-					command=partial(self._onCellClick, field.x, field.y))
-				btn.grid(row=field.x, column=field.y, sticky="news")
-				self._cells[field.x][field.y] = btn
+		for field in self.app.game.getFields():
+			# visualize blocks using padding
+			padx = (
+				2 if field.y % 3 == 0 else 1,
+				2 if field.y % 3 == 2 else 1
+			)
+			pady = (
+				2 if field.x % 3 == 0 else 1,
+				2 if field.x % 3 == 2 else 1
+			)
+
+			btn = tk.Button(
+				self.gridFrame,
+				text=str(field.value),
+				font=self.DEFAULT_FONT,
+				bd=0,
+				highlightthickness=0,
+				width=self.CELL_WIDTH,
+				height=self.CELL_HEIGHT,
+				command=partial(self._onCellClick, field.x, field.y))
+
+			btn.grid(row=field.x, column=field.y, padx=padx, pady=pady, sticky="news")
+			self._cells[field.x][field.y] = btn
 
 
 	def _createDigitButtons(self) -> None:
 		"""Creates the Row of Digits within a Frame"""
-		self.bottomFrame = tk.Frame(self.frame)
-		self.bottomFrame.grid(row=2, column=0, padx=5, pady=5)
+		self.bottomFrame = tk.Frame(self._frame)
+		self.bottomFrame.grid(row=2, column=0, padx=5, pady=5, sticky="news")
 		self.bottomFrame.grid_rowconfigure(0, weight=1)
 		self.bottomFrame.grid_columnconfigure(0, weight=1)
 
@@ -220,35 +228,52 @@ class UI:
 		""" Update the whole UI """
 		for i in range(N):
 			for j in range(N):
-				self.updateCell(i,j)
+				self._updateCell(i,j)
 
-		self.updateDigits()
+		self._updateDigits()
+		self._updateMistakes()
 
 
-	def updateCell(self, row: int, col: int) -> None:
+	def _updateCell(self, row: int, col: int) -> None:
 		""" Updates the cell and colorizes"""
 		# show value, colorize
-		field = self.app.game.currentGrid.getField(row, col)
+		field = self.app.game.getField(row, col)
 		btn = self.getCell(row,col)
 
 		btn.config(text=str(field))
 
-		fg, bg = self.getColor(row, col)
+		fg, bg = self.getCellColor(row, col)
 		btn.config(fg=fg, bg=bg, activeforeground=fg, activebackground=bg)
 
 
-	def updateDigits(self) -> None:
+	def _updateSetup(self) -> None:
+		""" set color to frames and setup obj based on theme """
+		theme = self._getTheme()
+		bg = theme["bg_light"]
+		for frame in self._frame.winfo_children():
+			frame.config(bg=bg)
+
+		self._frame.config(bg=bg)
+		self._root.config(bg=bg)
+		self._mistakes.config(fg=theme["mistake"], bg=bg)
+		self._erase.config(fg=theme["fg"], bg=bg)
+		self._timer.config(fg=theme["fg"], bg=bg)
+
+		self.gridFrame.config(bg=theme["bg_dark"]) # to show the actual grid
+
+
+	def _updateDigits(self) -> None:
 		""" Updates the selected Digit Row """
 		for i, btn in enumerate(self.digitButtons):
-			if i + 1 == self.app.selectedDigit:
-				btn.config(fg='#4444ff', activeforeground='#4444ff')
-			else:
-				btn.config(fg=self.COLOR_BLACK, activeforeground=self.COLOR_BLACK)
 
-		#notfull = self.app.game.currentGrid.getDigitsToSet()
-		#for i, btn in enumerate(self.digitButtons):
-		#	if not i in notfull:
-		#		btn.config(state="disabled")
+			value = i + 1
+			fg, bg = self.getDigitColor(value)
+			state = 'active'
+
+			if value in self.app.game.getSetDigits():
+				state = 'disabled'
+
+			btn.config(fg=fg, activeforeground=fg, bg=bg, activebackground=bg, state=state)
 
 
 	def updateTimer(self) -> None:
@@ -269,122 +294,208 @@ class UI:
 			self._timer.config(text=t)
 
 
-	def updateMistakes(self) -> None:
+	def _updateMistakes(self) -> None:
 		""" Update the Mistakes Label.
 		Will be called on handleMove"""
 		if self._mistakes:
 			text = str(self.app.game.mistakes) + " / " + str(self.app.game.MAX_MISTAKES)
 			self._mistakes.config(text=text)
+		# TODO highlight cell(s) causing mistake
 
 
 	#########################################################################################
-	### Color
+	### Themes, Color
 	#########################################################################################
 
-	def getColor(self, row: int, col: int, isActive: bool = False) -> tuple[str,str]:
-
-		fg = self.COLOR_BLACK
-		bg = self.COLOR_WHITE
-
-		if self.app.darkmode and isActive: 
-			fg = '#a9a9f5'
-		elif self.app.darkmode:
-			fg = self.COLOR_WHITE
-		elif isActive:
-			fg = '#4444ff'
-
-		if self.app.darkmode and isActive:
-			bg = '#2e64fe'
-		elif self.app.darkmode:
-			if ((row // 3) + (col // 3)) % 2 == 0: # even
-				bg = '#151515'
-			else:
-				bg = '#2e2e2e'
-		elif isActive:
-			bg = '#ddddfa'
+	def _getTheme(self) -> dict:
+		""" returns the color theme """
+		if self.app.darkmode:
+			return {
+				"fg": "#ffffff",
+				"bg_light": "#2e2e2e",
+				"bg_dark": "#151515",
+				"highlight": "#5a5a5a",
+				"active": "#2e64aa",
+				"digit": "#a9a9f5",
+				"mistake": "#df0101"
+			}
 		else:
-			if ((row // 3) + (col // 3)) % 2 == 0: # even
-				bg = self.COLOR_LIGHT_GREY
+			return {
+				"fg": "#000000",
+				"bg_light": "#ffffff",
+				"bg_dark": "#e2e2e2",
+				"highlight": "#ccccda",
+				"active": "#a6c8ff",
+				"digit": "#4444ff",
+				"mistake": "#ee2222"
+			}
+	
 
+	def _applySelectionHighlight(self, row: int, col: int, bg: str) -> str:
+		""" Applies the cell selection, if chosen to"""
+		if not (self.app.selectedCell and self.app.highlighCells):
+			return bg
 
 		# Colorize by selection
-		if self._selectedCell:
-			selectedRow, selectedColumn = self._selectedCell
-			selectedField = self.app.game.currentGrid.getField(selectedRow, selectedColumn)
+		theme = self._getTheme()
+		sr, sc = self.app.selectedCell
+		sf = self.app.game.getField(sr, sc)
 
-			# same row or column
-			if row == selectedRow or col == selectedColumn:
-				bg = '#ddddfa' #e6f2ff
-			
-			# same block
-			if (row // 3, col // 3) == (selectedRow // 3, selectedColumn // 3):
-				bg = '#ddddfa'
-			
-			if (row, col) == self._selectedCell: # same cell, overwrite
-				bg = '#a6c8ff'
+		# same row or column
+		if row == sr or col == sc:
+			bg = theme["highlight"]
+		
+		# same block
+		if (row // 3, col // 3) == (sr // 3, sc // 3):
+			bg = theme["highlight"]
+		
+		if (row, col) == self.app.selectedCell: # same cell, overwrite
+			bg = theme["active"]
 
-			#if self.app.highlightDigits:
-			#	if selectedField.value and field.value == selectedField.value:
-			#		fg = '#ffd966'
+		return bg
 
+
+	def _applyDigitHighlight(self, row: int, col: int, bg: str) -> str:
+		""" Applies the digit selection, if chosen to"""
+		if not (self.app.selectedDigit and self.app.highlightDigits):
+			return bg
+
+		field = self.app.game.getField(row, col)
+		if field.value == self.app.selectedDigit:
+			return self._getTheme().get("active")
+		return bg
+
+
+	def getCellColor(self, row: int, col: int) -> tuple[str,str]:
+		""" returns the color based on position and modes """
+		theme = self._getTheme()
+		field = self.app.game.getField(row, col)
+
+		fg = theme["fg"] if field and field.fixed else theme["digit"]
+		bg = theme["bg_light"]
+
+		bg = self._applySelectionHighlight(row, col, bg)
+		bg = self._applyDigitHighlight(row, col, bg)
 		return fg, bg
+
+
+	def getDigitColor(self, value: int) -> tuple[str, str]:
+		""" returns the color based on selected digit and modes """
+		theme = self._getTheme()
+		fg = theme["fg"]
+		bg = theme["bg_light"]
+
+		if value == self.app.selectedDigit:
+			bg = theme["active"]
+		return fg, bg
+
 
 	#########################################################################################
 	### Game End
 	#########################################################################################
 
 	def _onGameEnd(self) -> None:
-		# disable every Button
-		# end Timer
+		""" on ended game every button will be disabled """
 		for cell in self.iterCells():
 			cell.config(state="disabled")
 
+		for btn in self.digitButtons:
+			btn.config(state="disabled")
+		
+		self._erase.config(state="disabled")
+
+
 	def showGameOver(self) -> None:
+		""" shows the Game-Over-Screen """
 		self._onGameEnd()
-		# show Game Over 
+
+		color = self._getTheme().get("mistake")
+		self._setGameEndLabel("Game Over!!!", color)
+
 
 	def showGameWin(self) -> None:
+		""" Shows the Win-screen """
 		self._onGameEnd()
-		# show WIN
+
+		color = self._getTheme().get("digit")
+		self._setGameEndLabel("Congratulation!!!", color)
+
+
+	def _setGameEndLabel(self, text: str, color: str) -> None:
+		""" Creates a Label with """
+		winLabel = tk.Label(
+			self.gridFrame,
+			text=text,
+			bg=color,
+			font=self.GAME_END_FONT
+			)
+		winLabel.grid(row=int(N/2), column=int(N/3), columnspan=int(N/3), sticky="news")
 
 	#########################################################################################
 	### Toggle funcxtions
 	#########################################################################################
 
-	def toggleDarkmode(self) -> None:
+	def _toggleDarkMode(self) -> None:
+		""" internal forwarding to toggle darkmode"""
 		self.app.toggleDarkMode()
+		self.update()
+		self._updateSetup()
 
-	def toggleHighlightCells(self) -> None:
+	def _toggleHighlightCells(self) -> None:
+		""" internal forwarding to toggle highlight cells """
 		self.app.toggleHighlightCells()
+		self.update()
 
-	def toggleHighlightDigits(self) -> None:
+	def _toggleHighlightDigits(self) -> None:
+		""" internal forwarding to toggle highlight digits """
 		self.app.toggleHighlightDigits()
+		self.update()
 
-	def toggleEraseButton(self) -> None:
+	def _toggleEraseButton(self) -> None:
+		""" internal forwarding to toggle erase mode """
 		self.app.toggleEraseMode()
+		color = self._getTheme().get("active") if self.app.inEraseMode else self._getTheme().get("bg_light")
+		self._erase.config(bg=color, activebackground=color, borderwidth=0)
+		self.update()
 
-	def toggleNoteButton(self) -> None:
+	def _toggleNoteButton(self) -> None:
+		""" internal forwarding to toggle note mode """
 		self.app.toggleNoteMode()
+		self.update()
 
 	#########################################################################################
 	### Event functions
 	#########################################################################################
 
 	def _onCellClick(self, row: int, col: int) -> None:
-		self._selectedCell = (row, col)
+		""" When a cell is clicked """
+		self.app.selectedCell = (row, col)
 		self.app.handleMove(row, col)
+
+		# if N times set
+		if self.app.selectedDigit in self.app.game.getSetDigits():
+			self.app.selectedDigit = None # unset selected Digit
+			self.app.selectedCell = None
 		self.update()
-	
+
+
 	def _onDigitClick(self, value: int) -> None:
-		self.app.selectedDigit = value
+		""" When a new digit is selected """
+		self.app.selectedDigit = None if value == self.app.selectedDigit else value
+		self.app.selectedCell = None
 		self.update()
+
 	
 	def onNewGame(self) -> None:
-		for widget in self.gridFrame.winfo_children():
-			widget.destroy()
+		""" To call when a new game is started.
+		Uses the states provided by the app-object """
+		# recreate the setup
+		self._destroySetup()
+		self.setup() 
 
-		self._createGrid()
-		self.update()
-		self._runTimer()
+		self.update() # update everything
+		self._runTimer() # loops until game.hasEnded()
 
-	# TODO keyboard inputs
+
+	def onKeyboardInput(self) -> None:
+		pass
