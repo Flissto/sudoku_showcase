@@ -72,3 +72,8 @@ python3 cli.py
 # note that this requires tkinter installed
 python3 app.py
 ```
+
+## License
+
+This project is licensed under the MIT License.
+See the [LICENSE](LICENSE) file for details
