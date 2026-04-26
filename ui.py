@@ -2,7 +2,7 @@
 # -*- coding: utf8 -*-
 #
 
-from models import N
+from models import N, BLOCK_SIZE
 import tkinter as tk
 from functools import partial
 
@@ -138,12 +138,12 @@ class UI:
 		for field in self.app.game.getFields():
 			# visualize blocks using padding
 			padx = (
-				2 if field.y % 3 == 0 else 1,
-				2 if field.y % 3 == 2 else 1
+				2 if field.y % BLOCK_SIZE == 0 else 1,
+				2 if field.y % BLOCK_SIZE == 2 else 1
 			)
 			pady = (
-				2 if field.x % 3 == 0 else 1,
-				2 if field.x % 3 == 2 else 1
+				2 if field.x % BLOCK_SIZE == 0 else 1,
+				2 if field.x % BLOCK_SIZE == 2 else 1
 			)
 
 			btn = tk.Button(
@@ -201,11 +201,11 @@ class UI:
 	def getBlock(self, row: int, col: int) -> list[tk.Button]:
 		""" Returns all Cells of a Block"""
 		block = []
-		startRow = row - row % 3
-		startCol = col - col % 3
+		startRow = row - row % BLOCK_SIZE
+		startCol = col - col % BLOCK_SIZE
 
-		for i in range(3):
-			for j in range(3):
+		for i in range(BLOCK_SIZE):
+			for j in range(BLOCK_SIZE):
 				block.append(self._cells[startRow + i][startCol + j])
 
 		return block
@@ -343,7 +343,7 @@ class UI:
 			bg = theme["highlight"]
 		
 		# same block
-		if (row // 3, col // 3) == (sr // 3, sc // 3):
+		if (row // BLOCK_SIZE, col // BLOCK_SIZE) == (sr // BLOCK_SIZE, sc // BLOCK_SIZE):
 			bg = theme["highlight"]
 		
 		if (row, col) == self.app.selectedCell: # same cell, overwrite
@@ -438,14 +438,14 @@ class UI:
 
 
 	def _setGameEndLabel(self, text: str, color: str) -> None:
-		""" Creates a Label with """
+		""" Creates a Label with text """
 		winLabel = tk.Label(
 			self.gridFrame,
 			text=text,
 			bg=color,
 			font=self.GAME_END_FONT
 			)
-		winLabel.grid(row=int(N/2), column=int(N/3), columnspan=int(N/3), sticky="news")
+		winLabel.grid(row=int(N/2), column=int(N / BLOCK_SIZE), columnspan=int(N / BLOCK_SIZE), sticky="news")
 
 	#########################################################################################
 	### Toggle funcxtions

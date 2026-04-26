@@ -6,6 +6,7 @@ import random
 
 ## module defines the model of an sudoku-object
 N = 9
+BLOCK_SIZE = int(N / 3)
 
 class Field:
 	""" Atomic object in a Sudoku Game """
@@ -50,6 +51,11 @@ class Field:
 	@classmethod
 	def clone(cls, other) -> "Field":
 		return cls(other.x, other.y, value=other.value, fixed=other.fixed, notes=other.notes)
+
+	@classmethod
+	def getRandomValue(cls) -> int:
+		""" Returns random valid value """
+		return random.randint(1, N)
 
 	#########################################################################################
 	### Properties
@@ -163,21 +169,20 @@ class Puzzle:
 
 
 	def _print(self, _str: bool) -> None:
-		""" (private) Helper-Function to print puzzle
-		@warning hardcoded 3"""
+		""" (private) Helper-Function to print puzzle """
 
 		def horizontalLine():
-			print((("+" + ((N - 2) * "-")) * 3) + "+")
+			print((("+" + ((N - 2) * "-")) * BLOCK_SIZE) + "+")
 
 		for i in range(len(self._grid)):
 			row = ""
-			if i % 3 == 0: horizontalLine()
+			if i % BLOCK_SIZE == 0: horizontalLine()
 			for j in range(len(self._grid)):
-				if j % 3 == 0: row += "| " # print vertical line
+				if j % BLOCK_SIZE == 0: row += "| " # print vertical line
 
 				# str() or repr()
-				if _str: row += str(self.getField(i,j)) + " "
-				else: row += self.getField(i,j) + " "
+				if _str: row += str(self.getField(i, j)) + " "
+				else: row += self.getField(i, j) + " "
 
 			print(row + "|") # print row and last vertical line
 		
@@ -211,12 +216,11 @@ class Puzzle:
 
 
 	def getBlock(self, row: int, col: int) -> list[Field]:
-		""" returns the block of the puzzle
-		@warning hardcoded 3 """
+		""" returns the block of the puzzle """
 		block = []
-		for i in range(3):
-			for j in range(3):
-				block.append(self._grid[row - row % 3 + i][col - col % 3 + j])
+		for i in range(BLOCK_SIZE):
+			for j in range(BLOCK_SIZE):
+				block.append(self._grid[row - row % BLOCK_SIZE + i][col - col % BLOCK_SIZE + j])
 		return block
 
 	#########################################################################################
@@ -409,46 +413,44 @@ class Puzzle:
 	def generateSolution(cls) -> "Puzzle":
 		""" Creates an empty Puzzle and generates a Solution
 		Fills the diagonal Blocks from top left to bottom right with random Digits (independent to each other).
-		Tries to fill the remaining blocks using recursion.
-		@warning hardcoded 3 """
+		Tries to fill the remaining blocks using recursion. """
 
 		print("start generating solution")
 		new = cls()
 
 		def fillBlock(row, col) -> None:
-			""" Fills an empty Block
-			@warning hardcoded 3 """
-			for i in range(0,3):
-				for j in range(0,3):
-					num = random.randint(1, N)
+			""" Fills an empty Block """
+			for i in range(0, BLOCK_SIZE):
+				for j in range(0, BLOCK_SIZE):
+					num = Field.getRandomValue()
 					while new.usedInBlock(row=row, col=col, value=num):
-						num = random.randint(1, N)
+						num = Field.getRandomValue()
 					new.setValue(row + i, col + j, num)
 
 		def fillRemaining(row: int, col: int) -> bool:
 			""" Fills the remaining non-diagonal Blocks
 			@warning hardcoded 3 """
-			if col >= N and row < (N-1): # if row is filled
+			if col >= N and row < (N - 1): # if row is filled
 				row += 1 # go into the next row
 				col = 0 
 			if row >= N and col >= N:
 				return True
 
-			if row < 3: # first 3 rows
-				if col < 3:
-					col = 3 # skip first block then 
-			elif row < 6: # third to fifth row
-				if col == 3:
-					col += 3 # skip the middle block
+			if row < BLOCK_SIZE: # first 3 rows
+				if col < BLOCK_SIZE:
+					col = BLOCK_SIZE # skip first block then 
+			elif row < 2 * BLOCK_SIZE: # third to fifth row
+				if col == BLOCK_SIZE:
+					col += BLOCK_SIZE # skip the middle block
 			else:
-				if col == 6:
+				if col == 2 * BLOCK_SIZE: # sixth to ninth column
 					row += 1
 					col = 0
 					if row >= N: # if puzzle is full
 						return True
 
 			# fill every row with the remaining digits (straight) using recursion
-			for num in range(1, N + 1): 
+			for num in Field.ALLOWED_VALUES: 
 				if new.isValidCell(row, col, num):
 					new.setValue(row, col, num)
 					 # call the function itself with next column as parameter (recursion)
@@ -460,10 +462,10 @@ class Puzzle:
 
 			return False
 		
-		for i in range(3): # fill the blocks diagonal (top left to bottom right)
-			fillBlock(i * 3, i * 3)
+		for i in range(BLOCK_SIZE): # fill the blocks diagonal (top left to bottom right)
+			fillBlock(i * BLOCK_SIZE, i * BLOCK_SIZE)
 		
-		if not fillRemaining(0, 3): # call the recursive func
+		if not fillRemaining(0, BLOCK_SIZE): # call the recursive func
 			raise Exception("Failed to generate Sudoku")
 
 		print("created Solution")
@@ -649,8 +651,8 @@ class Solver:
 		""" checks if note (of digit) exists only once in block """
 		changed = False
 
-		for i in range(0, N, 3):
-			for j in range(0, N, 3):
+		for i in range(0, N, BLOCK_SIZE):
+			for j in range(0, N, BLOCK_SIZE):
 
 				block = self.puzzle.getBlock(i, j)
 
