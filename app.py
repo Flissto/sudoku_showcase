@@ -12,6 +12,7 @@ class App:
 	The App is the Controller of this.
 	Has a Game-object (Gamelogic) and if not CLI, an UI-Object (View).
 	Contains all Attributs which are not Logic-related (like Gamemodes).
+	Controls Game-Flow.
 	"""
 	
 	def __init__(self, useUi: bool = True):
@@ -35,6 +36,8 @@ class App:
 
 	@property
 	def selectedDigit(self) -> int | None:
+		""" Returns a digit [1 .. 9] if selected
+		@return int | None """
 		return self._selectedDigit
 
 	@selectedDigit.setter
@@ -290,7 +293,15 @@ class Game:
 	#########################################################################################
 
 	def setValue(self, row: int, col: int, value: int) -> bool:
-		""" Sets a Value and handles occuring mistakes"""
+		""" Sets a Value and handles violated rules.
+		Returns False if rule is violated, else True.
+		NOTE: A valid move is not necessarily a correct solution move!!
+		
+		@param row: int	- the row of the field
+		@param col: int	- the column of the field
+		@param value: int	- the value to set
+		@return bool - if rules violated or not
+		"""
 		field = self._currentGrid.getField(row, col)
 		if field.fixed:
 			return True # it is no Error
@@ -301,25 +312,38 @@ class Game:
 		return True
 
 	def clearValue(self, row: int, col: int) -> None:
-		""" clears a value (and Notes) from the grid """
+		""" Clears a value (and Notes) from the grid
+		
+		@param row: int	- the row of the field
+		@param col: int	- the column of the field
+		@return None """
 		self._currentGrid.clearValue(row, col)
+
 
 	def addNote(self, row: int, col: int, value: int) -> None:
 		"""Adds a Note to a Field """
 		self._currentGrid.addNote(row, col, value)
 
-	def removeNote(self, row: int, col: int, value: int) -> None:
-		""" Removes a Note from a Field """
-		self._currentGrid.removeNote(row, col, value)
+
+	def clearNotes(self, row: int, col: int) -> None:
+		""" Removes a Note from a Field
+		@param row: int	- the row of the field
+		@param col: int	- the column of the field
+		@return None """
+		self._currentGrid.clearNotes(row, col)
+
 
 	def autoNotes(self) -> None:
-		""" Adds Notes in the puzzle automatically """
+		""" Adds Notes in the puzzle automatically
+		@return None """
 		self._currentGrid.autoNotes()
 
-	def removeAllNotes(self) -> None:
-		""" Removes all the notes 
-		Reverses AutoNotes """
-		self._currentGrid.deleteAllNotes()
+
+	def clearAllNotes(self) -> None:
+		""" Removes all the notes. 
+		This reverses self.autoNotes()
+		@return None """
+		self._currentGrid.clearAllNotes()
 
 
 	#########################################################################################
@@ -327,7 +351,7 @@ class Game:
 	#########################################################################################
 
 	def getElapsedTime(self) -> int:
-		""" returns the elapsed time in seconds """
+		""" Returns the elapsed time in seconds """
 		return int(time.time() - self._startTime)
 
 	def isGameOver(self) -> bool:
