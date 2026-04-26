@@ -27,6 +27,7 @@ class UI:
 
 		self._cells = [[None]*N for _ in range(N)]
 		self.digitButtons = [None] * N # TODO make property using winfo_children()
+		self._errorCells = set()
 
 		self._createFrame()
 		self._createMenu()
@@ -266,7 +267,7 @@ class UI:
 			fg, bg = self.getDigitColor(value)
 			state = 'active'
 
-			if value in self.app.game.getSetDigits():
+			if value in self.app.game.getSetDigits() or self.app.game.hasEnded():
 				state = 'disabled'
 
 			btn.config(fg=fg, activeforeground=fg, bg=bg, activebackground=bg, state=state)
@@ -367,11 +368,16 @@ class UI:
 		theme = self._getTheme()
 		field = self.app.game.getField(row, col)
 
+		# theme based coloring
 		fg = theme["fg"] if field and field.fixed else theme["digit"]
 		bg = theme["bg_light"]
 
+		# highlighting based on settings
 		bg = self._applySelectionHighlight(row, col, bg)
 		bg = self._applyDigitHighlight(row, col, bg)
+
+		if (row, col) in self._errorCells: # if currently highlighted due to mistake
+			bg = theme['mistake']
 		return fg, bg
 
 
@@ -384,6 +390,18 @@ class UI:
 		if value == self.app.selectedDigit:
 			bg = theme["active"]
 		return fg, bg
+
+
+	def highlightMistake(self, row: int, col: int) -> None:
+		""" adds cell to highlight as reason for mistake"""
+
+		def clearHighlightMistake(row: int, col: int) -> None:
+			""" Called after period of time to cancel the red highlight"""
+			self._errorCells.discard((row, col))
+			self.update()
+
+		self._errorCells.add((row, col))
+		self._root.after(1000, lambda: clearHighlightMistake(row, col))
 
 
 	#########################################################################################
@@ -399,6 +417,8 @@ class UI:
 			btn.config(state="disabled")
 		
 		self._erase.config(state="disabled")
+		self.app.selectedCell = None
+		self.app.selectedDigit = None
 
 
 	def showGameOver(self) -> None:
@@ -472,6 +492,7 @@ class UI:
 		if self.app.selectedDigit in self.app.game.getSetDigits():
 			self.app.selectedDigit = None # unset selected Digit
 			self.app.selectedCell = None
+
 		self.update()
 
 

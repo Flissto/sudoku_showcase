@@ -51,8 +51,8 @@ class App:
 	def selectedCell(self, pos: tuple | None) -> None:
 		if not (
 			pos is None or
-			pos[0] in Field.ALLOWED_VALUES or
-			pos[1] in Field.ALLOWED_VALUES):
+			pos[0] in [i for i in range(N)] or
+			pos[1] in [i for i in range(N)]):
 			raise ValueError(f"Selected cell has to be in between 1 and {N} or None")
 		self._selectedCell = pos
 
@@ -121,11 +121,9 @@ class App:
 			self.game.addNote(row=row, col=col, value=self.selectedDigit)
 		
 		else:
-			self.game.setValue(row=row, col=col, value=self.selectedDigit)
-
-		# update UI
-		if self.ui:
-			self.ui.update()
+			if not self.game.setValue(row=row, col=col, value=self.selectedDigit) and self.ui:
+				for field in self.game.getFieldsCausingMistake(row, col, self.selectedDigit):
+					self.ui.highlightMistake(field.x, field.y)
 
 		# Gamification
 		if self.game.isGameOver():
@@ -267,6 +265,24 @@ class Game:
 			numbers[field.value] += 1
 		
 		return [key for key, value in numbers.items() if value >= N]
+
+
+	def getFieldsCausingMistake(self, row: int, col: int, value: int) -> list:
+		""" Returns the Fields causing the mistake """
+		fields = []
+		for elem in self._currentGrid.getRow(row=row):
+			if elem.value == value:
+				fields.append(elem)
+		
+		for elem in self._currentGrid.getColumn(col=col):
+			if elem.value == value:
+				fields.append(elem)
+
+		for elem in self._currentGrid.getBlock(row=row, col=col):
+			if elem.value == value:
+				fields.append(elem)
+
+		return fields
 
 
 	#########################################################################################
