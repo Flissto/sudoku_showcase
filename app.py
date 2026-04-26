@@ -293,7 +293,7 @@ class Game:
 		""" Sets a Value and handles occuring mistakes"""
 		field = self._currentGrid.getField(row, col)
 		if field.fixed:
-			return False
+			return True # it is no Error
 		
 		if not self._currentGrid.setValue(row=row, col=col, value=value):
 			self._increaseMistakes()
