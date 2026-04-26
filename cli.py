@@ -4,7 +4,6 @@
 
 from app import App
 import sys
-import argparse
 
 
 def help() -> None:

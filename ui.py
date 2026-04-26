@@ -4,12 +4,8 @@
 
 from models import N
 import tkinter as tk
-try:
-	from app import App
-except:
-	pass
 from functools import partial
-import atexit
+
 
 class UI:
 	""" The UI-class represents the View in the Model-View-Controller
@@ -22,7 +18,7 @@ class UI:
 	CELL_WIDTH = CELL_HEIGHT * 2
 
 
-	def __init__(self, app: App):
+	def __init__(self, app: "App"):
 		""" Requires App to have a game-object"""
 		self.app = app
 
