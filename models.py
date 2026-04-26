@@ -5,8 +5,6 @@
 import random
 
 ## module defines the model of an sudoku-object
-
-# The range TODO all "@warning hardcoded 3" 
 N = 9
 
 class Field:
@@ -237,8 +235,7 @@ class Puzzle:
 	@property
 	def isValid(self) -> bool:
 		""" (readOnly) If one Field with no possible Note exist, the puzzle is invalid.
-		@warning notes will be overwritten
-		@todo make more efficiently """
+		@warning notes will be overwritten"""
 		self.autoNotes()
 		for elem in self.getEmptyFields():
 			if len(elem.notes) == 0:
@@ -390,7 +387,7 @@ class Puzzle:
 		@warning cannot be undone"""
 		for elem in self.getNonEmptyFields():
 			elem.fixed = True
-			
+
 
 	#########################################################################################
 	### New Puzzles - Functions
@@ -539,7 +536,7 @@ class Solver:
 
 	def solve(self) -> bool:
 		""" Tries to solve the Puzzle using chain of constraints and if stuck, brute force
-		@todo TODO Single Solution """
+		TODO Single Solution """
 		if not self._propagate():
 			return False
 
