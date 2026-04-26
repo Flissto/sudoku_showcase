@@ -535,8 +535,9 @@ class Solver:
 		self.solutions = [] # stack of different solutions
 
 	def solve(self) -> bool:
-		""" Tries to solve the Puzzle using chain of constraints and if stuck, brute force
-		TODO Single Solution """
+		""" Tries to solve the Puzzle using chain of constraints and if stuck, brute force """
+		self.solutions = []
+
 		if not self._propagate():
 			return False
 
@@ -544,8 +545,8 @@ class Solver:
 			return True
 
 		# point of no return
-		return self._backtrack()
-
+		self._backtrack(countSolutions = True)
+		return len(self.solutions) == 1
 
 	def _propagate(self) -> bool:
 		""" Try sudoku strategies"""
@@ -692,11 +693,18 @@ class Solver:
 		return False
 
 
-	def _backtrack(self) -> bool:
+	def _backtrack(self, countSolutions: bool = True) -> bool:
 		""" Brute Force if stuck
 		@warning usage of recursion, watch memory
 
 		<i>Cut my life into pieces, this is my last resort ...<i>"""
+		if countSolutions and len(self.solutions) > 1:
+			return False # more than one solution is invalid
+
+		if self.puzzle.isFinished:
+			self.solutions.append(Puzzle.clone(self.puzzle))
+			return True # we have a solution
+
 		self.puzzle.autoNotes()
 
 		# get field with min notes
@@ -711,10 +719,17 @@ class Solver:
 			if snapshot.setValue(field.x, field.y, value):
 				solver = Solver(snapshot)
 
-				if solver.solve():
-					self.puzzle = solver.puzzle
-					return True
-		return False
+				if not solver._propagate(): # try constraints first 
+					continue # invalid puzzle, try next note
+
+				solver._backtrack(countSolutions)
+				self.solutions.extend(solver.solutions)
+
+				if countSolutions and len(self.solutions) > 1: # did solver get another solution?
+					return False # more than one solution is invalid
+
+		# only invalid puzzles found
+		return False 
 
 
 
