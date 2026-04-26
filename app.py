@@ -107,7 +107,7 @@ class App:
 		""" lets the game handle the move
 		Additionally checks if game over or won"""
 
-		if not self.selectedDigit: # nothing selected, nothing to do
+		if not self.selectedDigit and not self.inEraseMode: # nothing selected, nothing to do
 			return
 
 		# modes
