@@ -69,7 +69,7 @@ class App:
 		return self._darkmode
 
 	@property
-	def highlighCells(self) -> bool:
+	def highlightCells(self) -> bool:
 		return self._highlightCells
 	
 	@property

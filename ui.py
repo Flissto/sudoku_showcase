@@ -330,7 +330,7 @@ class UI:
 
 	def _applySelectionHighlight(self, row: int, col: int, bg: str) -> str:
 		""" Applies the cell selection, if chosen to"""
-		if not (self.app.selectedCell and self.app.highlighCells):
+		if not (self.app.selectedCell and self.app.highlightCells):
 			return bg
 
 		# Colorize by selection

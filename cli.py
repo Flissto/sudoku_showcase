@@ -36,7 +36,7 @@ def main():
 	print(f"Start Sudoku ({difficulty}) ...")
 
 	app.startNewGame(difficulty)
-	print(app.game.currentGrid)
+	print(app.game._currentGrid)
 
 	while True:
 		cmd = input(">> ").strip().lower().split()
@@ -44,7 +44,7 @@ def main():
 			continue
 
 		elif cmd[0] == "autonotes":
-			app.game.currentGrid.autoNotes()
+			app.game._currentGrid.autoNotes()
 
 		elif cmd[0] == "erase":
 			if len(cmd) >= 3:
@@ -60,18 +60,18 @@ def main():
 			if len(cmd) < 3:
 				print("set takes positional arguments: row, column")
 				continue
-			print(app.game.currentGrid.grid[int(cmd[1])][int(cmd[2])].inspect())
+			print(app.game._currentGrid.grid[int(cmd[1])][int(cmd[2])].inspect())
 
 		elif cmd[0] == "new":
 			diff = cmd[1] if len(cmd) > 1 else difficulty
 			app.startNewGame(diff)
 
 		elif cmd[0] == "print":
-			print(app.game.currentGrid)
+			print(app.game._currentGrid)
 
 		elif cmd[0] == "select":
 			if len(cmd) > 2:
-				app.selectedDigit(cmd[1])
+				app.selectedDigit = int(cmd[1])
 				print("Selected Digit " + str(app.selectedDigit))
 
 		elif cmd[0] == "set":
@@ -81,10 +81,10 @@ def main():
 			# set row col
 			app.handleMove(int(cmd[1]), int(cmd[2]))
 			print("set " + str(app.selectedDigit) + " to (" + str(cmd[1]) + "," + str(cmd[2]) + ")")
-			print(app.game.currentGrid)
+			print(app.game._currentGrid)
 
 		elif cmd[0] == "solve":
-			solver = Solver(app.game.currentGrid)
+			solver = Solver(app.game._currentGrid)
 			solver.solve()
 			print(solver.puzzle)
 
