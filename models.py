@@ -8,11 +8,21 @@ import random
 N = 9
 BLOCK_SIZE = int(N / 3)
 
-class Field:
-	""" Atomic object in a Sudoku Game """
+ALLOWED_INDEX = [i for i in range(N)]
 
+class Field:
+	""" Atomic object in a Sudoku Game
+	It defines the properties and allowed actions to a field.
+	The position of a Field will be set on init.
+	The representation of a Field is its value.
+	"""
+
+	# the allowed values for a Field
 	ALLOWED_VALUES = [i for i in range(1, N + 1)] # 0 <= x <= 9; 0 means not set
+	
+	# Default for Field.value
 	NULL = None
+	DEFAULT_AS_STRING = " "
 
 	def __init__(self, x: int, y: int, value: int = 0, fixed: bool = False, notes: set | None = None):
 		self._x = x
@@ -22,12 +32,13 @@ class Field:
 		self._fixed: bool = fixed
 		self._notes: set[int] = set(notes) if notes else set()
 
+
 	def __str__(self):
 		""" The represent when using str(Fieldobj)
 		Recommended usage on console"""
 		if not self.isEmpty:
 			return str(self.value)
-		return " "
+		return self.DEFAULT_AS_STRING
 
 	def __repr__(self):
 		""" The represent when not using str(Fieldobj) """
@@ -76,14 +87,14 @@ class Field:
 	#########################################################################################
 	@property
 	def x(self) -> int:
-		""" The x-coordinate of a Field. Also known as row.
+		""" (readonly property) The x-coordinate of a Field. Also known as row.
 		NOTE: The value is set on initialization.
 		@return int"""
 		return self._x
 
 	@property
 	def row(self) -> int:
-		""" The row where the Field is located in the puzzle. Also known as x.
+		""" (readonly property) The row where the Field is located in the puzzle. Also known as x.
 		NOTE: The value is set on initialization.
 		@return int"""
 		return self._x
@@ -91,13 +102,13 @@ class Field:
 
 	@property
 	def y(self) -> int:
-		""" The y-coordinate of a Field. Also known as column
+		""" (readonly property) The y-coordinate of a Field. Also known as column
 		@return int """
 		return self._y
 
 	@property
 	def col(self) -> int:
-		""" The column where the Field is located in the puzzle. Also known as y.
+		""" (readonly property) The column where the Field is located in the puzzle. Also known as y.
 		NOTE: The value is set on initialization.
 		@return int """
 		return self._y
@@ -105,14 +116,14 @@ class Field:
 
 	@property
 	def position(self) -> tuple[int,int]:
-		""" Position as a tuple of ints.
+		""" (readonly property) Position as a tuple of ints.
 		NOTE: The values are set on initialization.
 		@retun tuple[int, int]"""
 		return (self._x, self._y)
 
 	@property
 	def pos(self) -> tuple[int, int]:
-		""" abbreviation for property position
+		""" (readonly property) abbreviation for property position
 		NOTE: The values are set on initialization.
 		@return tuple[int,int]"""
 		return self.position
@@ -120,7 +131,7 @@ class Field:
 
 	@property
 	def value(self) -> int | None:
-		""" The value the Field contains
+		""" (property) The value the Field contains
 		NOTE: Default is None
 		@return int | None"""
 		return self._value
@@ -145,13 +156,13 @@ class Field:
 
 	@property
 	def fixed(self) -> bool:
-		""" Wether a Field is editable or not.
+		""" (property) Wether a Field is editable or not.
 		@return bool"""
 		return self._fixed
 
 	@fixed.setter
 	def fixed(self, value: bool) -> None:
-		""" Locks the Field.
+		""" Sets the property fixed to True, in other words: Locks the Field
 		NOTE: There is no way to unlock a Field
 		NOTE: Has to be Not-Empty to do so.
 		@param value: bool	- has to be True. False will be ignored
@@ -162,14 +173,14 @@ class Field:
 
 	@property
 	def isEmpty(self) -> bool:
-		""" Wether a Field has a value or not (value is None)
+		""" (readonly property) Wether a Field has a value or not (value is None)
 		@return bool """
 		return not bool(self._value)
 
 
 	@property
 	def notes(self) -> set:
-		""" Returns a set of notes for the Field.
+		""" (readonly property) Returns a set of notes for the Field.
 		To change the current set of notes:
 			- @see Field.addNote()
 			- @see Field.removeNote()
@@ -182,7 +193,7 @@ class Field:
 	#########################################################################################
 
 	def addNote(self, x: int) -> bool:
-		""" Adds a note if field is empty and value is allowed
+		""" Adds a note, if field is empty and value is allowed
 		@param x: int	- the value of the note
 		@return bool	- if successfull """
 		if not x in self._notes and x in self.ALLOWED_VALUES and self.isEmpty:
@@ -220,7 +231,10 @@ class Field:
 class Puzzle:
 	"""
 	The Sudoku-object itself
-	It holds no Game Logic, beside the common Sudoku rules
+	It holds no Game Logic, beside the common Sudoku rules and sudoku generation.
+	The puzzle holds a 2d-list of Field-Objects in storage.
+	The public functions give access to a certain level to edit the puzzle.
+
 	"""
 
 	def __init__(self):
@@ -232,12 +246,14 @@ class Puzzle:
 
 
 	def __str__(self):
-		""" usage of str(Field) """
+		""" The str(Puzzle)
+		@see _print(_str=True), so internal """
 		self._print(_str=True)
 		return "" # has to return str
 
 	def __repr__(self):
-		""" usage of repr(Field) """
+		""" The repr(Puzzle)
+		Internal usage of repr(Field)"""
 		self._print(_str=False)
 
 
@@ -269,19 +285,33 @@ class Puzzle:
 	#########################################################################################
 	### Core Functions
 	#########################################################################################
+	# functions grant access to the grid with param validation
+	# use these core-function below the get the fields
+	#
 
 	def getField(self, row: int, col: int) -> Field:
 		""" Returns the Field from coordinates
 
 		@param row: int	- the row of the field
 		@param col: int	- the column of the field
+		@exception IndexError	- if (row,col) is not in grid
 		@return Field """
+		if row < 0:
+			raise IndexError(f" 'row' cannot be negative: {row}")
+		elif row >= N:
+			raise IndexError(f" 'row' is greater than {N-1} and not in grid: {row}")
+		
+		if col < 0:
+			raise IndexError(f" 'col' cannot be negative: {col}")
+		elif col >= N:
+			raise IndexError(f" 'col' is greater than {N-1} and not in grid: {col}")
+
 		return self._grid[row][col]
 
 
 	def getFlatGrid(self) -> list[Field]:
 		""" Returns the flat grid (flat copy)
-		NOTE: Use this function when iterating over full grid
+		NOTE: Use this function, when iterating over full grid
 		@return list[Field] """
 		return [elem for row in self._grid for elem in row]
 
@@ -291,7 +321,13 @@ class Puzzle:
 		NOTE: kwargs required!
 
 		@param row: int	- the row in question
+		@exception IndexError	- if row is not in grid
 		@return list[Field] """
+		if row < 0:
+			raise IndexError(f" 'row' cannot be negative: {row}")
+		elif row >= N:
+			raise IndexError(f" 'row' is greater than {N-1} and not in grid: {row}")
+			 
 		return self._grid[row]
 
 
@@ -300,7 +336,13 @@ class Puzzle:
 		NOTE: kwargs required!
 
 		@param col: int	- the column in question
+		@exception IndexError	- if col is not in grid
 		@return list[Field] """
+		if col < 0:
+			raise IndexError(f" 'col' cannot be negative: {col}")
+		elif col >= N:
+			raise IndexError(f" 'col' is greater than {N-1} and not in grid: {col}")
+
 		return [self._grid[i][col] for i in range(len(self._grid))]
 
 
@@ -309,13 +351,16 @@ class Puzzle:
 		NOTE: kwargs required!
 
 		@param row: int	- the row 
-		@param col: int	- the column 
+		@param col: int	- the column
+		@exception IndexError	- if (row,col) is not in grid
 		@return list[Field]
 		"""
 		block = []
 		for i in range(BLOCK_SIZE):
 			for j in range(BLOCK_SIZE):
-				block.append(self._grid[row - row % BLOCK_SIZE + i][col - col % BLOCK_SIZE + j])
+				x = row - row % BLOCK_SIZE + i
+				y = col - col % BLOCK_SIZE + j
+				block.append(self.getField(x, y))
 		return block
 
 	#########################################################################################
@@ -324,7 +369,7 @@ class Puzzle:
 
 	@property
 	def isFinished(self) -> bool:
-		""" (readOnly) indicates if Puzzle is solved
+		""" (readonly property) indicates if Puzzle is solved
 		@return bool """
 		for elem in self.getFlatGrid():
 			if elem.isEmpty:
@@ -334,7 +379,7 @@ class Puzzle:
 
 	@property
 	def isValid(self) -> bool:
-		""" (readOnly) If one Field with no possible Note exist, the puzzle is invalid.
+		""" (readonly property) If one Field with no possible Note exist, the puzzle is invalid.
 		NOTE: notes will be overwritten
 		TODO: do this better (maybe clone or smth, but dont edit notes)
 		@return bool"""
@@ -514,7 +559,7 @@ class Puzzle:
 
 
 	#########################################################################################
-	### Get Speciilized Fields and other 
+	### Get specific Fields and other 
 	#########################################################################################
 
 	def getEmptyFields(self, sortByNotesLength: bool = False) -> list[Field]:
@@ -525,26 +570,28 @@ class Puzzle:
 			return sorted([elem for elem in self.getFlatGrid() if elem.isEmpty], key=lambda f: len(f.notes))
 		else:
 			return [elem for elem in self.getFlatGrid() if elem.isEmpty]
-			
+
+
 	def getNonEmptyFields(self) -> list[Field]:
-		""" Returns all the non-empty Fields.
+		""" Returns all the non-empty Fields in a single list.
 		@return list[Field]	- if not Field.isEmpty"""
 		return [elem for elem in self.getFlatGrid() if not elem.isEmpty]
 
 
 	def getFixedFields(self) -> list[Field]:
-		""" Returns all the fixed Fields.
+		""" Returns all the fixed Fields  in a single list.
 		@return list[Field]	- if Field.fixed """
 		return [elem for elem in self.getFlatGrid() if elem.fixed]
 
+
 	def getNonFixedFields(self) -> list[Field]:
-		""" Returns all the fixed Fields.
+		""" Returns all the fixed Fields in a single list.
 		@return list[Field]	- if not Field.fixed """
 		return [elem for elem in self.getFlatGrid() if not elem.fixed]
 
 
-	def lockValues(self) -> None:
-		""" Set all Non-Empty Fields to fixed, so they cannot be edited.
+	def _lockValues(self) -> None:
+		""" (private) Set all Non-Empty Fields to fixed, so they cannot be edited.
 		Usefull, if a solvable puzzle is found, so the initial grid cannot be edited.
 		NOTE: This action cannot be undone
 		@return None """
@@ -572,7 +619,7 @@ class Puzzle:
 		return new
 
 	@classmethod
-	def generateSolution(cls) -> "Puzzle":
+	def generateSolution(cls, verbose: bool = True) -> "Puzzle":
 		""" Creates an empty Puzzle and generates a Solution
 		Fills the diagonal Blocks from top left to bottom right with random Digits (independent to each other).
 		Tries to fill the remaining blocks using recursion.
@@ -580,7 +627,8 @@ class Puzzle:
 		@classmethod
 		@return Puzzle	- where all Fields have a valid value"""
 
-		print("start generating solution")
+		if verbose:
+			print("start generating solution")
 		new = cls()
 
 		def fillBlock(row: int, col: int) -> None:
@@ -640,18 +688,20 @@ class Puzzle:
 		if not fillRemaining(0, BLOCK_SIZE): # call the recursive func
 			raise Exception("Failed to generate Sudoku")
 
-		print("created Solution")
+		if verbose:
+			print("created Solution")
 		return new
 	
 	
 	@classmethod
-	def createPuzzle(cls, numDigitsToDelete: int) -> tuple["Puzzle", "Puzzle"]:
+	def createPuzzle(cls, numDigitsToDelete: int, verbose: bool = True) -> tuple["Puzzle", "Puzzle"]:
 		""" Entry Point to create a Solution and a Puzzle.
 		Generates a valid solution and then deletes digits, but aiming for unique solution.
-		
+		The Non-Empty Fields for both puzzles are going to be locked.
+
 		@param numDigitsToDelete: int	- the amount of digits to delete from the puzzle
 		@return tuple[Puzzle, Puzzle]	- Solution (fully set) and the initial puzzle """
-		solution = cls.generateSolution()
+		solution = cls.generateSolution(verbose=verbose)
 		new = Puzzle.clone(solution)
 
 		deleted = 0
@@ -694,7 +744,13 @@ class Puzzle:
 				deleted -= 1
 				break
 		
-		print(f"Deleted {deleted} digits")
+		if verbose:
+			print(f"Deleted {deleted} digits")
+
+		# lock the NonEmptyFields in solution and initial grid
+		solution._lockValues()
+		new._lockValues()
+
 		return solution, new
 
 
@@ -730,7 +786,7 @@ class Solver:
 
 
 	def _propagate(self) -> bool:
-		""" Try sudoku strategies on a constraint based algorithm
+		""" (private) Try sudoku strategies on a constraint based algorithm
 		NOTE: return True doesnt necessarily means a solution, but valid puzzle.
 		TODO change return to True, if finished and let the solver check if puzzle is valid
 
@@ -774,7 +830,7 @@ class Solver:
 	#########################################################################################
 
 	def _nakedSingles(self) -> bool:
-		""" Checks, if single notes exists (no other notes in Field).
+		""" (private) Checks, if single notes exists (no other notes in Field).
 		NOTE: No early exit, change all
 		@return bool	- if puzzle changed"""
 		changed = False
@@ -789,7 +845,7 @@ class Solver:
 
 
 	def _hiddenSinglesRow(self) -> bool:
-		""" Checks if note of digit exists only once in row.
+		""" (private) Checks if note of digit exists only once in row.
 		@return bool	- if puzzle changed"""
 		changed = False
 
@@ -811,7 +867,7 @@ class Solver:
 
 
 	def _hiddenSinglesColumn(self) -> bool:
-		""" Checks if note of digit exists only once in column
+		""" (private) Checks if note of digit exists only once in column
 		@return bool	- if puzzle changed"""
 		changed = False
 
@@ -835,7 +891,7 @@ class Solver:
 
 
 	def _hiddenSinglesBlock(self) -> bool:
-		""" Checks if note (of digit) exists only once in block.
+		""" (private) Checks if note (of digit) exists only once in block.
 		@return bool	- if puzzle changed"""
 		changed = False
 
@@ -863,7 +919,7 @@ class Solver:
 	#########################################################################################
 
 	def _nakedPairs(self) -> bool:
-		""" If two cells hold the same two digits (row, col, block),
+		""" (private) If two cells hold the same two digits (row, col, block),
 		then remove the digits in other cells (row, col, block).
 		TODO implement
 		@return bool	- if puzzle changed"""
@@ -871,7 +927,7 @@ class Solver:
 
 
 	def _hiddenPairs(self) -> bool:
-		""" If two digits occur exclusively together (row, col, block),
+		""" (private) If two digits occur exclusively together (row, col, block),
 		then remove the other digits in these cells (row, col, block).
 		TODO implement
 		@return bool	- if puzzle changed"""
@@ -882,14 +938,14 @@ class Solver:
 	#########################################################################################
 
 	def _lockedCandidates(self) -> bool:
-		""" Looking at overlapping rows/cols and blocks, check if there is a locked row/col or block
+		""" (private) Looking at overlapping rows/cols and blocks, check if there is a locked row/col or block
 		TODO implement
 		@return bool	- if puzzle changed"""
 		return False
 
 
 	def _backtrack(self) -> bool:
-		""" Brute Force, if stuck
+		""" (private) Brute Force, if stuck
 		NOTE: usage of recursion, watch memory
 		@return bool	- if successfully found a unique solution
 

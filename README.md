@@ -52,7 +52,7 @@ This separation ensures **maintainability and extensibility**.
 
 ### Requirements
 - Python 3.8+
-- (optional) tkinter
+- (optional) python-package *tkinter*
 
 ### Installation
 ```bash
@@ -69,6 +69,9 @@ python3 cli.py
 # note that this requires tkinter installed
 python3 app.py
 ```
+
+![Sudoku Screenshot](Screenshot_Sudoku_Easy.png)
+
 
 ### How to play
 The App starts a Sudoku Game with the Level *Easy* by default. You can change the Level in the top menu on *New Game*, choose your level and a new puzzle will be generated. There is only one solution even on the harder levels. If the ui feels too bright, go to *Settings* and *toggle darkmode*.

@@ -10,11 +10,10 @@
 - add *auto-swap on finished digit* option
 
 ## Architecture
-- Game-Accesses in UI as functions in app
 - UIState as its own Class
+- app, game, ui as singleton
 - add and implement more advanced constraint-methods for solver
 
 ## Maintainance
-- add Doxygen compatible comments
 - add Doxygen Documentation to git
 - unit-tests for algorithms (models.py and game.py)
