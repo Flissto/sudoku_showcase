@@ -4,6 +4,7 @@
 
 import sys
 from .app import App
+from .models import Solver
 
 
 def help() -> None:
@@ -24,17 +25,16 @@ def help() -> None:
 
 def main():
 	""" executed on cli without UI
-	TODO argparse
+	TODO cleaner with argparse
+	TODO cleanup _currentGrid access with app-functions
 	"""
 	app = App(useUi=False)
-
 	difficulty = "Easy"
 
 	if len(sys.argv) > 1:
 		difficulty = sys.argv[1]
 
 	print(f"Start Sudoku ({difficulty}) ...")
-
 	app.startNewGame(difficulty)
 	print(app.game._currentGrid)
 

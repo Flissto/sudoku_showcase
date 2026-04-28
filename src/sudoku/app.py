@@ -31,6 +31,7 @@ class App:
 		self._darkmode = False
 		self._highlightCells = False
 		self._highlightDigits = True
+		self._errorCells = set()
 
 	#########################################################################################
 	### Properties
@@ -71,8 +72,8 @@ class App:
 		@return None"""
 		if not (
 			pos is None or
-			pos[0] in ALLOWED_INDEX or
-			pos[1] in ALLOWED_INDEX):
+			(pos[0] in ALLOWED_INDEX and
+			pos[1] in ALLOWED_INDEX)):
 			raise ValueError(f"Selected cell has to be in between 1 and {N} or None")
 		self._selectedCell = pos
 
@@ -330,7 +331,6 @@ class Game:
 	A Game creates a sudoku-object, wich will be solved.
 	This class holds the game logic within several puzzles (solution, initial and current)
 	and knows about the current state of the game, such as mistakes.
-	The instance of Game is handled like a Singleton.
 
 	The initial puzzle leads to a unique solution, which are both hold in this class.
 	The Non-Empty-Fields in those puzzles are not editable, so called fixed.

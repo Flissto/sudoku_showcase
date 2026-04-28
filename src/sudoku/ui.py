@@ -29,9 +29,11 @@ class UI:
 
 		self._cells = [[None]*N for _ in range(N)]
 		self.digitButtons = [None] * N # TODO make property using winfo_children()
-		self._errorCells = set() # the cells to highlight on mistake
 		self._timer = None
 		self._mistakes = None
+
+		# the cells to highlight on mistake
+		self._errorCells = set() # TODO In strict MVC this is a state
 
 		self._createFrame()
 		self._createMenu()
@@ -44,13 +46,13 @@ class UI:
 		self._root.title(title)
 
 
-	def _runTimer(self) -> None:
+	def _loopTimer(self) -> None:
 		""" Calls the _updateTimer method every second.
 		Ends when the game has ended.
 		@return None """
 		self._updateTimer()
 		if not self.app.hasGameEnded():
-			self._root.after(1000, self._runTimer)
+			self._root.after(1000, self._loopTimer)
 
 
 	def run(self) -> None:
@@ -123,7 +125,7 @@ class UI:
 				self.topFrame,
 				font=self.DEFAULT_FONT)
 			self._timer.grid(row=0, column=2, padx=10, sticky="e")
-			# end of createTopFrame
+		# end of createTopFrame
 			
 
 		def createGrid() -> None:
@@ -158,7 +160,7 @@ class UI:
 
 					btn.grid(row=i, column=j, padx=padx, pady=pady, sticky="news")
 					self._cells[i][j] = btn
-			# end of createGrid
+		# end of createGrid
 
 
 		def createDigitButtons() -> None:
@@ -182,7 +184,7 @@ class UI:
 					command=partial(self._onDigitClick, digit))
 				btn.grid(row=0, column=i)
 				self.digitButtons[i] = btn
-			# end of createDigitButtons
+		# end of createDigitButtons
 		
 		# creates the underlaying frames, its objects 
 		self._setTitle()
@@ -341,14 +343,14 @@ class UI:
 
 
 	def _updateTimer(self) -> None:
-		""" (private) Updates the Timer-Label, which is automatically called by _runTimer
+		""" (private) Updates the Timer-Label, which is automatically called by _loopTimer
 		NOTE: works even when Label doesnt exist yet
 		@return None """
 		if self._timer:
 			minutes = 0
 			seconds = self.app.getElapsedTime()
 
-			if seconds > 60:
+			if seconds >= 60:
 				minutes = int(seconds / 60)
 				seconds = seconds % 60
 			
@@ -586,8 +588,8 @@ class UI:
 		@param row: int	- the row of the clicked cell
 		@param col: int	- the col of the clicked cell 
 		@return None """
-		self.app.selectedCell = (row, col)
-		self.app.handleMove(row, col)
+		self.app.selectedCell = (row, col) # since this is a property, its validated in app. But this is an edge case
+		self.app.handleMove(row, col) 
 		self.update()
 
 
@@ -595,6 +597,7 @@ class UI:
 		""" (private) When a new digit is selected
 		@param value: int	- the newly selected digit
 		@return None """
+		# since these are properties, its validated in app. But these are edge cases
 		self.app.selectedDigit = None if value == self.app.selectedDigit else value
 		self.app.selectedCell = None
 		self.update()
@@ -606,10 +609,10 @@ class UI:
 		@return None """
 		# recreate the setup
 		self._destroySetup()
-		self._setup() 
+		self._setup()
 
 		self.update() # update everything
-		self._runTimer() # loops until game.hasEnded()
+		self._loopTimer() # loops until game.hasEnded()
 
 
 	def onKeyboardInput(self) -> None:

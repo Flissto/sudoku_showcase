@@ -4,7 +4,7 @@ A clean and modular **Sudoku application built in Python**, designed to demonstr
 
 ---
 
-## ✨ Features
+## Features
 
 - **Fully playable Sudoku game** with real-time input validation
 - Sudoku generator with several levels of difficulty and **only one valid solution**

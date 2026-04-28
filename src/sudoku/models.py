@@ -387,19 +387,6 @@ class Puzzle:
 		return True
 
 
-	@property
-	def isValid(self) -> bool:
-		""" (readonly property) If one Field with no possible Note exist, the puzzle is invalid.
-		NOTE: notes will be overwritten
-		TODO: do this better (maybe clone or smth, but dont edit notes)
-		@return bool"""
-		self.autoNotes()
-		for elem in self.getEmptyFields():
-			if len(elem.notes) == 0:
-				return False
-		return True
-
-
 	#########################################################################################
 	### Value-Functions
 	#########################################################################################
@@ -565,6 +552,22 @@ class Puzzle:
 			if f.x != row and f.y != col and f.value == value:
 				return False
 
+		return True
+
+
+	def isValid(self) -> bool:
+		""" If one Field with no possible Note exist, the puzzle is invalid.
+		TODO make this less expensive
+		@return bool"""
+		copy = Puzzle.clone(self) # clone, otherwise the notes are overwritten
+		copy.autoNotes()
+
+		emptyFields = copy.getEmptyFields()
+		del copy
+
+		for elem in emptyFields:
+			if len(elem.notes) == 0:
+				return False
 		return True
 
 
@@ -801,9 +804,10 @@ class Solver:
 		TODO change return to True, if finished and let the solver check if puzzle is valid
 
 		@return bool	- if puzzle is valid by sudoku rules"""
-		self.puzzle.autoNotes()
+		
 		while True:
 			changed = False
+			self.puzzle.autoNotes()
 
 			if self._nakedSingles():
 				changed = True
@@ -829,7 +833,7 @@ class Solver:
 			if not changed:
 				break
 
-			if not self.puzzle.isValid: # calls autoNotes()
+			if not self.puzzle.isValid():
 				return False
 
 		return True
