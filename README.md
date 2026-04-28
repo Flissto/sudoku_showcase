@@ -11,6 +11,7 @@ A clean and modular **Sudoku application built in Python**, designed to demonstr
 - Clean separation of app, game logic and UI (**MVC**)  
 - Object-oriented architecture (**OOP**)
 - Graphical user interface (Tkinter-based)
+
 See the [Roadmap](/Roadmap.md) for upcoming features
 
 ## Project Goals
@@ -90,8 +91,8 @@ pip install -e .
 
 There are two options to run the application, either with the ui or on the cli
 ```bash
-# use the ui 
-sudoku-app.exe
+# use the ui (recommended)
+sudoku-app
 # or cli 
 sudoku-cli
 ```
