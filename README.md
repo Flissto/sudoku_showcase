@@ -70,7 +70,7 @@ python3 cli.py
 python3 app.py
 ```
 
-![Sudoku Screenshot](Screenshot_Sudoku_Easy.png)
+![Sudoku Screenshot](/assets/Screenshot_Sudoku_Easy.png)
 
 
 ### How to play
