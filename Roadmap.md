@@ -1,8 +1,5 @@
 # Roadmap
 
-## Git
-- add Screenshots to README
-
 ## Appearance
 - own menu instead of tkinter-Menu
 - show state of modes in *settings*-Menu
@@ -11,7 +8,6 @@
 
 ## Architecture
 - UIState as its own Class
-- app, game, ui as singleton
 - add and implement more advanced constraint-methods for solver
 
 ## Maintainance

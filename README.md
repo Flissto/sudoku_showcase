@@ -11,7 +11,7 @@ A clean and modular **Sudoku application built in Python**, designed to demonstr
 - Clean separation of app, game logic and UI (**MVC**)  
 - Object-oriented architecture (**OOP**)
 - Graphical user interface (Tkinter-based)
-
+See the [Roadmap](/Roadmap.md) for upcoming features
 
 ## Project Goals
 
@@ -52,22 +52,48 @@ This separation ensures **maintainability and extensibility**.
 
 ### Requirements
 - Python 3.8+
-- (optional) python-package *tkinter*
 
-### Installation
+### Additional Requirements
+
+This project uses **Tkinter** for the graphical user interface.
+
+Tkinter is included with most Python installations, but on some systems you may need to install it manually:
+
+#### Linux (Debian/Ubuntu)
+```bash
+sudo apt-get install python3-tk
+```
+#### macOS
+Usually included with Python from python.org
+If missing: reinstall Python or use Homebrew
+#### Windows
+Included in the official Python installer (make sure "*tcl/tk*" is selected)
+
+
+### Installation and run the application
 ```bash
 git clone https://github.com/Flissto/sudoku_showcase.git
 cd sudoku_showcase
 ```
-### Run the application
-There are two options to run the application, either on the command line interface
+Create and activate a Virtual Environment to install the package
 ```bash
-python3 cli.py
+python3 -m venv venv
+# on Windows
+.\venv\Scripts\activate
+
+# on macOS/ Linux
+source ./venv/bin/activate
+
+# Now install the package.
+pip install -e .
 ```
-... or on using the ui based on the python-package *tkinter*.
+
+There are two options to run the application, either with the ui or on the cli
 ```bash
-# note that this requires tkinter installed
-python3 app.py
+# use the ui 
+sudoku-app.exe
+# or cli 
+sudoku-cli
 ```
 
 ![Sudoku Screenshot](/assets/Screenshot_Sudoku_Easy.png)
@@ -76,10 +102,10 @@ python3 app.py
 ### How to play
 The App starts a Sudoku Game with the Level *Easy* by default. You can change the Level in the top menu on *New Game*, choose your level and a new puzzle will be generated. There is only one solution even on the harder levels. If the ui feels too bright, go to *Settings* and *toggle darkmode*.
 
-You can select or deselect a digit by clicking it in the row below the puzzle. The digit will be highlighted in the puzzle by default. To turn that off, go to *Settings* and *toggle highlight digits*. 
+You can select or deselect a digit by clicking it in the row below the puzzle. The digit will be highlighted in the puzzle by default. To turn that off, go to *Settings* and *toggle highlight digits*. The rules of sudoku are straight forward. Each digit (from 1 to 9) shall only exists once per row, column, block (3x3 fields). To visualize the sudoku rules click *toggle highlight cells*.
 
 When selected a digit, click on an empty cell, where you think the digit has to be.
-To visualize the sudoku rules click *toggle highlight cells*. On violating the rules the cells being violated are highlighted in red for a second and the mistake counter in red on the top left increases.
+On violating the rules the cells being violated are highlighted in red for a second and the mistake counter in red on the top left increases.
 
 If there are no rules violated, the digit will appear in blue font. Note that a digit in a cell not violating the rules, but wrong in terms of the overall puzzle will not increase the mistakes.
 If realized a digit is set to the wrong cell, click the the *Erase*-Button on top of the puzzle and then click desired cell.
