@@ -189,13 +189,13 @@ class Field:
 
 
 	@property
-	def notes(self) -> set:
+	def notes(self) -> set[int]:
 		""" (readonly property) Returns a set of notes for the Field.
 		To change the current set of notes:
 			- @see Field.addNote()
 			- @see Field.removeNote()
 			- @see Field.clearNotes()
-		@return set"""
+		@return set[int]"""
 		return self._notes
 
 	#########################################################################################
@@ -248,6 +248,7 @@ class Puzzle:
 	"""
 
 	def __init__(self):
+		""" Creates an empty Puzzle with the grid and Fields set up"""
 
 		self._grid = [[Field(i,j) for j in range(N)] for i in range(N)]
 		""" (private) internal Field storage
@@ -292,6 +293,14 @@ class Puzzle:
 		print("")
 		return ""
 
+
+	def serialize(self) -> tuple[int | None]:
+		""" Serializes the puzzle as a tuple.
+		Usefull to compare two puzzles with each other.
+		@return set[list[int | None]] """
+		return tuple(f.value for f in self.getFlatGrid())
+
+
 	#########################################################################################
 	### Core Functions
 	#########################################################################################
@@ -324,6 +333,13 @@ class Puzzle:
 		NOTE: Use this function, when iterating over full grid
 		@return list[Field] """
 		return [elem for row in self._grid for elem in row]
+
+	
+	def iterGrid(self) -> iter[Field]:
+		""" Generator over the grid """
+		for row in self._grid:
+			for elem in row:
+				yield elem
 
 	
 	def getRow(self, *, row: int) -> list[Field]:
@@ -534,6 +550,7 @@ class Puzzle:
 	def isValidCell(self, row: int, col: int, value: int) -> bool:
 		""" The standard sudoku rules - 
 		If value not in row, column or block, then True.
+		NOTE: The field defined by row and col will be ignored.
 		NOTE: This does not necessarily checks for a correct solution move!!
 
 		@param row: int	- the row of the field
@@ -628,8 +645,51 @@ class Puzzle:
 		new = cls()
 		for field in original.getFlatGrid():
 			new._grid[field.x][field.y] = Field.clone(field) # (flat) copy each field and its attributes
-
 		return new
+
+
+	@classmethod
+	def loadFromSerialized(cls, serialized: tuple[int | None]) -> "Puzzle":
+		""" Creates a Puzzle from a serialized tuple.
+		NOTE: the Non-Empty values in the puzzle will be locked 
+
+		@classmethod
+		@param serialized: tuple[int | None]
+		@exception IndexError	- if serialized does not have the same length as a flat puzzle
+		@return Puzzle"""
+		new = cls() # create empty Puzzle
+		
+		if len(serialized) != len(new.getFlatGrid()):
+			raise Exception(f"'serialized' must have the same length as the flat grid of {len(new.getFlatGrid())}: {len(serialized)}")
+
+		for field in new.iterGrid():
+			field = new.getField(row, col)
+			field.value = serialized[field.x * N + field.y] # assigning a not valid value will raise an exception
+		
+		new._lockValues()
+		return new
+
+
+	@classmethod
+	def loadFromList(cls, grid: list[list[int | None]]) -> "Puzzle":
+		""" Creates a Puzzle from a nested list.
+		NOTE: the Non-Empty values in the puzzle will be locked 
+
+		@classmethod
+		@param grid: list[list[int | None]]
+		@exception IndexError	- if grid does not have the same dimension as a puzzle
+		@return Puzzle"""
+		new = cls() # create empty Puzzle
+
+		for field in new.iterGrid():
+			try:
+				field.value = grid[field.x][field.y]
+			except IndexError: # rather ask for forgiveness, than permission
+				raise IndexError(f"'grid' must have the dimension {N}x{N}")
+				
+		new._lockValues()
+		return new
+
 
 	@classmethod
 	def generateSolution(cls, verbose: bool = True) -> "Puzzle":
@@ -780,12 +840,60 @@ class Solver:
 
 	def __init__(self, puzzle: "Puzzle"):
 		self.puzzle = Puzzle.clone(puzzle) # the puzzle to solve
-		self.solutions = [] # stack of different solutions
+		self._solutions = set() # stack of different solutions (sets do not store duplicates)
+
+	
+	@property
+	def solutions(self) -> set[tuple[int]]:
+		""" (property) The unique solutions found by the solver.
+		A solution is a serialized puzzle with no empty fields.
+		To add a solution @see _addSolution() or mergeSolutions() 
+
+		@return set[tuple[int | None]] """
+		return self._solutions
+
+	
+	def _addSolution(self, solution: tuple[int] | Puzzle) -> None:
+		""" Saves a solution in the solver.
+		This function accepts both a puzzle and a serialized puzzle.
+		NOTE: the puzzle has to be finished!
+
+		@param solution: tuple[int] | Puzzle
+		@return None
+		"""
+		if isinstance(solution, Puzzle):
+			if not solution.isFinished: # thats not a solution then
+				print(str(solution))
+				raise Exception("A solution has to be a finished puzzle. Cannot add the above puzzle to as solution to solver.")
+			self._solutions.add(solution.serialize())
+
+		elif isinstance(solution, tuple):
+			Puzzle.loadFromSerialized(solution) # raises an exception if failed
+			self._solutions.add(solution)
+		
+		else:
+			raise TypeError(f"Added solution is neither 'tuple[int]' or 'Puzzle': {type(solution)}")
+
+
+	@classmethod
+	def mergeSolutions(cls, this: "Solver", other: "Solver") -> None:
+		""" Merge the solutions of the solver.
+		NOTE: this will be the Solver with the updated solution.
+
+		@classmethod
+		@param this: Solver		- the Solver to merge the solution into
+		@param other: Solver	- the Solver to merge from
+		@return None """
+		this._solutions.update(other._solutions)
+
+
+	#########################################################################################
+	### Solve the puzzle
+	#########################################################################################	
 
 	def solve(self) -> bool:
 		""" Tries to solve the Puzzle using chain of constraints and if stuck, brute force
 		@return bool	- if unique solution """
-		self.solutions = [] # set the solutions to empty
 
 		if not self._propagate():
 			return False # puzzle is invalid
@@ -963,7 +1071,7 @@ class Solver:
 
 	def _backtrack(self) -> bool:
 		""" (private) Brute Force, if stuck
-		NOTE: usage of recursion, watch memory
+		NOTE: usage of recursion und expensive algorithm. But this project is just for clarity and demo, not perfomance
 		@return bool	- if successfully found a unique solution
 
 		<i>Cut my life into pieces, this is my last resort ...<i>"""
@@ -971,8 +1079,8 @@ class Solver:
 			return False # more than one solution is invalid
 
 		if self.puzzle.isFinished:
-			self.solutions.append(Puzzle.clone(self.puzzle))
-			return True # we have a solution
+			self._addSolution(self.puzzle.serialize())
+			return True # we have a solution, Sir!
 
 		self.puzzle.autoNotes()
 
@@ -992,7 +1100,7 @@ class Solver:
 					continue # invalid puzzle, try next note
 
 				solver._backtrack()
-				self.solutions.extend(solver.solutions)
+				Solver.mergeSolutions(self, solver)
 
 				if len(self.solutions) > 1: # did solver get another solution?
 					return False # more than one solution is invalid
