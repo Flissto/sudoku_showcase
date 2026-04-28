@@ -3,8 +3,8 @@
 #
 
 import time
-from models import *
-from ui import *
+from .models import *
+from .ui import *
 
 
 class App:
@@ -579,7 +579,9 @@ class Game:
 		print("You made a mistake!")
 
 
-
-if __name__ == "__main__":
+def main():
 	app = App()
 	app.run()
+
+if __name__ == "__main__":
+	main()

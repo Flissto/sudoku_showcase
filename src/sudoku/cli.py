@@ -2,8 +2,8 @@
 # -*- coding: utf8 -*-
 #
 
-from app import App
 import sys
+from .app import App
 
 
 def help() -> None:

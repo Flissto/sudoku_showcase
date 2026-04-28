@@ -2,9 +2,9 @@
 # -*- coding: utf8 -*-
 #
 
-from models import N, BLOCK_SIZE
 import tkinter as tk
 from functools import partial
+from .models import N, BLOCK_SIZE
 
 
 class UI:
@@ -614,5 +614,6 @@ class UI:
 
 	def onKeyboardInput(self) -> None:
 		""" Eventhandler on keyboard input
+		TODO implement
 		@return None """
 		pass

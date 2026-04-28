@@ -4,11 +4,21 @@
 
 import random
 
-## module defines the model of an sudoku-object
+## this module defines the model of an sudoku-object and depending classes, such as
+# 	- Field: Atomic object
+# 	- Puzzle: object grid holding the Fields
+# 	- Solver: object to solve a Puzzle
+#  
+
+# The number of rows / columns in the grid
 N = 9
+
+# the size of a block in the grid
 BLOCK_SIZE = int(N / 3)
 
+# the allowed Indexes for the grid
 ALLOWED_INDEX = [i for i in range(N)]
+
 
 class Field:
 	""" Atomic object in a Sudoku Game
@@ -765,7 +775,7 @@ class Solver:
 	Calls itself recursively, when using backtrack-function (last resort when solving)
 	"""
 
-	def __init__(self, puzzle: Puzzle):
+	def __init__(self, puzzle: "Puzzle"):
 		self.puzzle = Puzzle.clone(puzzle) # the puzzle to solve
 		self.solutions = [] # stack of different solutions
 
@@ -943,6 +953,9 @@ class Solver:
 		@return bool	- if puzzle changed"""
 		return False
 
+	#########################################################################################
+	### Backtracking
+	#########################################################################################
 
 	def _backtrack(self) -> bool:
 		""" (private) Brute Force, if stuck
@@ -982,7 +995,3 @@ class Solver:
 
 		# only invalid puzzles found
 		return False 
-
-
-
-	
