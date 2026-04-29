@@ -17,7 +17,8 @@ class UI:
 	DEFAULT_FONT = ('Britannic', 13, 'bold')
 	GAME_END_FONT = ("Courier New", 13, "bold")
 
-	CELL_HEIGHT = 3
+	# TODO setting small, standard, large
+	CELL_HEIGHT = 1
 	CELL_WIDTH = CELL_HEIGHT * 2
 
 
@@ -391,7 +392,7 @@ class UI:
 			return {
 				"fg": "#000000",
 				"bg_light": "#ffffff",
-				"bg_dark": "#e2e2e2",
+				"bg_dark": "#d2d2d2",
 				"highlight": "#ccccda",
 				"active": "#a6c8ff",
 				"digit": "#4444ff",
