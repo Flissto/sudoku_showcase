@@ -106,14 +106,12 @@ The project is structured into distinct layers derived from the Model-View-Contr
 - Objectorientated definitions of fields, puzzles and solver
 - Sudoku rules validation
 - Generating valid puzzles
-See classes like @ref Puzzle, Field, Solver
 
 ### 2. UI Layer (ui.py)
 - Rendering the Sudoku grid  
 - Handling user input  
 - Displaying errors and game state
 - Theme handling and highlighting
-See class @ref UI
 
 ### 3. Controller Layer (app.py)
 - Connecting UI and logic
