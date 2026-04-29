@@ -335,7 +335,7 @@ class Puzzle:
 		return [elem for row in self._grid for elem in row]
 
 	
-	def iterGrid(self) -> iter[Field]:
+	def iterGrid(self):
 		""" Generator over the grid """
 		for row in self._grid:
 			for elem in row:
@@ -663,7 +663,7 @@ class Puzzle:
 			raise Exception(f"'serialized' must have the same length as the flat grid of {len(new.getFlatGrid())}: {len(serialized)}")
 
 		for field in new.iterGrid():
-			field = new.getField(row, col)
+			field = new.getField(field.x, field.y)
 			field.value = serialized[field.x * N + field.y] # assigning a not valid value will raise an exception
 		
 		new._lockValues()
