@@ -78,17 +78,16 @@ class Field:
 
 	@classmethod
 	def clone(cls, other: "Field") -> "Field":
-		""" Returns a flat copy of a Field (call-by-value)
+		""" (classmethod) Returns a flat copy of a Field (call-by-value)
 		Usage: newField = Field.clone(oldField)
-		@classmethod
+		
 		@return Field """
 		return cls(other.x, other.y, value=other.value, fixed=other.fixed, notes=other.notes)
 
 
 	@classmethod
 	def getRandomValue(cls) -> int:
-		""" Returns random valid value
-		@classmethod
+		""" (classmethod) Returns random valid value
 		@return int """
 		return random.randint(1, N)
 
@@ -128,7 +127,7 @@ class Field:
 	def position(self) -> tuple[int,int]:
 		""" (readonly property) Position as a tuple of ints.
 		NOTE: The values are set on initialization.
-		@retun tuple[int, int]"""
+		@return tuple[int, int]"""
 		return (self._x, self._y)
 
 	@property
@@ -635,11 +634,10 @@ class Puzzle:
 
 	@classmethod
 	def clone(cls, original: "Puzzle" ) -> "Puzzle":
-		""" Creates a new Puzzle with the attributes as the original Puzzle.
+		""" (classmethod) Creates a new Puzzle with the attributes as the original Puzzle.
 		Function uses Call-By-Value, so the Copy can be edited without changing the Original
 		Usage: newPuzzle = Puzzle.clone(puzzleToCopy)
 
-		@classmethod
 		@param original: Puzzle	- the puzzle to copy by value
 		@return Puzzle"""
 		new = cls()
@@ -650,10 +648,9 @@ class Puzzle:
 
 	@classmethod
 	def loadFromSerialized(cls, serialized: tuple[int | None]) -> "Puzzle":
-		""" Creates a Puzzle from a serialized tuple.
+		""" (classmethod) Creates a Puzzle from a serialized tuple.
 		NOTE: the Non-Empty values in the puzzle will be locked 
 
-		@classmethod
 		@param serialized: tuple[int | None]
 		@exception IndexError	- if serialized does not have the same length as a flat puzzle
 		@return Puzzle"""
@@ -672,10 +669,9 @@ class Puzzle:
 
 	@classmethod
 	def loadFromList(cls, grid: list[list[int | None]]) -> "Puzzle":
-		""" Creates a Puzzle from a nested list.
+		""" (classmethod) Creates a Puzzle from a nested list.
 		NOTE: the Non-Empty values in the puzzle will be locked 
 
-		@classmethod
 		@param grid: list[list[int | None]]
 		@exception IndexError	- if grid does not have the same dimension as a puzzle
 		@return Puzzle"""
@@ -693,11 +689,10 @@ class Puzzle:
 
 	@classmethod
 	def generateSolution(cls, verbose: bool = True) -> "Puzzle":
-		""" Creates an empty Puzzle and generates a Solution
+		""" (classmethod) Creates an empty Puzzle and generates a Solution
 		Fills the diagonal Blocks from top left to bottom right with random Digits (independent to each other).
 		Tries to fill the remaining blocks using recursion.
 		
-		@classmethod
 		@return Puzzle	- where all Fields have a valid value"""
 
 		if verbose:
@@ -768,7 +763,7 @@ class Puzzle:
 	
 	@classmethod
 	def createPuzzle(cls, numDigitsToDelete: int, verbose: bool = True) -> tuple["Puzzle", "Puzzle"]:
-		""" Entry Point to create a Solution and a Puzzle.
+		""" (classmethod) Entry Point to create a Solution and a Puzzle.
 		Generates a valid solution and then deletes digits, but aiming for unique solution.
 		The Non-Empty Fields for both puzzles are going to be locked.
 
@@ -877,10 +872,9 @@ class Solver:
 
 	@classmethod
 	def mergeSolutions(cls, this: "Solver", other: "Solver") -> None:
-		""" Merge the solutions of the solver.
+		""" (classmethod) Merge the solutions of the solver.
 		NOTE: this will be the Solver with the updated solution.
 
-		@classmethod
 		@param this: Solver		- the Solver to merge the solution into
 		@param other: Solver	- the Solver to merge from
 		@return None """

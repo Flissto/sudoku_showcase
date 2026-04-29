@@ -30,7 +30,7 @@ def help() -> None:
 		print(f"\t{cmd}")
 
 
-def handlePrint(app: App) -> None:
+def handlePrint(app: App, *args, **kwargs) -> None:
 	""" Prints the current grid
 	@param app: App
 	@param args: list

@@ -272,7 +272,7 @@ class App:
 	def getFieldValue(self, row: int, col: int) -> int | None:
 		""" Returns the value for a Field at (row, col)
 		@param row: int	- the row of the field in question
-		@param row: int	- the column of the field in question
+		@param col: int	- the column of the field in question
 		@return int | None """
 		field = self.game.getField(row, col)
 		return field.value if field else Field.NULL
@@ -281,7 +281,7 @@ class App:
 	def getFieldStr(self, row: int, col: int) -> str:
 		""" Returns the Label for a Field at (row, col)
 		@param row: int	- the row of the field in question
-		@param row: int	- the column of the field in question
+		@param col: int	- the column of the field in question
 		@return str """
 		field = self.game.getField(row, col)
 		return str(field) if field else Field.DEFAULT_AS_STRING
