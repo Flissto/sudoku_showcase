@@ -102,32 +102,32 @@ If there are three mistakes made or if the puzzle is successfully solved, the ga
 
 The project is structured into distinct layers derived from the Model-View-Controller-Architecture:
 
-### 1. Model Layer
+### 1. Model Layer (models.py)
 - Objectorientated definitions of fields, puzzles and solver
 - Sudoku rules validation
 - Generating valid puzzles
 See classes like @ref Puzzle, Field, Solver
 
-### 2. UI Layer
+### 2. UI Layer (ui.py)
 - Rendering the Sudoku grid  
 - Handling user input  
 - Displaying errors and game state
 - Theme handling and highlighting
 See class @ref UI
 
-### 3. Controller Layer
+### 3. Controller Layer (app.py)
 - Connecting UI and logic
 - Board state management
 - Handles user actions and updates state
 - Gamification Features, such as mistakes
-See classes like @ref App, Game
+
 
 This separation ensures **maintainability and extensibility**.
-See full [Documentation](https://flissto.github.io/sudoku_showcase/).
+See the full [API Documentation](https://flissto.github.io/sudoku_showcase/) on Github Pages.
 
 ---
 
 ## License
 
 This project is licensed under the MIT License.
-See the [LICENSE](LICENSE) file for details
+See the [LICENSE](/LICENSE) file for details
