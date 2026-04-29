@@ -170,6 +170,7 @@ class App:
 
 	def autoSwapNextSelectedDigit(self) -> None:
 		""" Switches to the next available Digit, which does not occur 9 times
+		TODO
 		@return None """
 		if self.selectedDigit in self.game.getSetDigits():
 			self.selectedCell = None
@@ -250,6 +251,10 @@ class App:
 
 		self.autoSwapNextSelectedDigit()
 	# end of handleMove
+
+	def getPuzzle(self) -> str:
+		""" Returns the str-repr of the current puzzle """
+		return self.game.getPuzzle()
 
 
 	def getCurrentDifficulty(self) -> str:
@@ -434,8 +439,7 @@ class Game:
 	def getFields(self) -> list[Field] | list:
 		""" Returns a list of all Fields.
 		NOTE: If current Grid is not set, an empty list is returned.
-		@return list[Field] | list
-		"""
+		@return list[Field] | list """
 		return self._currentGrid.getFlatGrid() if self._currentGrid else list()
 
 
@@ -476,6 +480,12 @@ class Game:
 				fields.append(elem)
 
 		return fields
+
+
+	def getPuzzle(self) -> str:
+		""" Returns the str-repr of the current puzzle
+		@return str """
+		return str(self._currentGrid)
 
 
 	#########################################################################################

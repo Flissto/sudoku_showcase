@@ -3,30 +3,102 @@
 #
 
 import sys
+import argparse
+
 from .app import App
 from .models import Solver
 
 
+COMMANDS = {
+	"set": handleSet,
+	"select": handleSelect,
+	"erase": handleErase,
+	"print": handlePrint,
+	"inspect": handleInspect,
+	"exit": handleExit,
+	"quit": handleExit,
+	"new": handleNew,
+	"help": help
+}
+
 def help() -> None:
 	""" Output on help
-	Ordered by command asc"""
-
+	Ordered by command asc
+	@return None"""
 	print("Commands:")
-	print("\tautonotes")
-	print("\terase r c")
-	print("\texit")
-	print("\tinspect r c")
-	print("\tnew difficulty")
-	print("\tprint")
-	print("\tselect v")
-	print("\tset r c")
-	print("\tsolve")
+	for cmd in sorted(COMMANDS.keys()):
+		print(f"\t{cmd}")
 
 
-def main():
+def handlePrint(app: App) -> None:
+	""" Prints the current grid
+	@param app: App
+	@param args: list
+	@param kwargs: dict
+	@return None """
+	print(app.getPuzzle())
+
+
+def handleSet(app: App, *args, **kwargs) -> None:
+	""" Tries to set a value to field
+	@param app: App
+	@param args: list
+	@param kwargs: dict
+	@return None """
+	if len(args) > 1:
+		app.handleMove(int(args[0]), int(args[1]))
+
+
+def handleSelect(app: App, *args, **kwargs) -> None:
+	"""
+	@param app: App
+	@param args: list
+	@param kwargs: dict
+	@return None """
+	if len(args):
+		app.selectedDigit = int(args[0])
+
+
+def handleErase(app: App, *args, **kwargs) -> None:
+	"""
+	@param app: App
+	@param args: list
+	@param kwargs: dict
+	@return None """
+	if len(args) > 1:
+		app.toggleEraseMode()
+		app.handleMove(int(args[0]), int(args[1]))
+		app.toggleEraseMode()
+
+
+def handleInspect(app: App, *args, **kwargs) -> None:
+	"""
+	@param app: App
+	@param args: list
+	@param kwargs: dict
+	@return None """
+	if len(args) > 1:
+		app.getFieldStr(int(args[0]), int(args[1]))
+
+
+def handleNew(app: App, *args, **kwargs) -> None:
+	""" Starts a new game
+	If valid Difficulty given
+	@param app: App
+	@param args: list
+	@param kwargs: dict
+	@return None """
+	if len(args) > 0 and isinstance(args[0], str) and args[0] in app.getAllDifficultyNames():
+		app.startNewGame(difficulty=args[0])
+	else:
+		app.startNewGame()
+
+
+
+def main() -> None:
 	""" executed on cli without UI
 	TODO cleaner with argparse
-	TODO cleanup _currentGrid access with app-functions
+	@return None
 	"""
 	app = App(useUi=False)
 	difficulty = "Easy"
@@ -34,66 +106,29 @@ def main():
 	if len(sys.argv) > 1:
 		difficulty = sys.argv[1]
 
-	print(f"Start Sudoku ({difficulty}) ...")
 	app.startNewGame(difficulty)
-	print(app.game._currentGrid)
+	print(f"Start Sudoku ({app.getCurrentDifficulty()}) ...")
+	
+	handlePrint(app)
 
 	while True:
-		cmd = input(">> ").strip().lower().split()
+		cmd, *args = input(">> ").strip().lower().split()
 		if len(cmd) == 0:
 			continue
 
-		elif cmd[0] == "autonotes":
-			app.game._currentGrid.autoNotes()
-
-		elif cmd[0] == "erase":
-			if len(cmd) >= 3:
-				app.toggleEraseMode()
-				app.handleMove(int(cmd[1]), int(cmd[2]))
-				app.toggleEraseMode()
-				print("Erased Field at (" + str(cmd[1]) + "," + str(cmd[2]) + ")")
-
-		elif cmd[0] == "exit":
+		# exit the app
+		elif cmd == "exit" or cmd == "quit": 
 			break
 
-		elif cmd[0] == "inspect":
-			if len(cmd) < 3:
-				print("set takes positional arguments: row, column")
-				continue
-			print(app.game._currentGrid.grid[int(cmd[1])][int(cmd[2])].inspect())
-
-		elif cmd[0] == "new":
-			diff = cmd[1] if len(cmd) > 1 else difficulty
-			app.startNewGame(diff)
-
-		elif cmd[0] == "print":
-			print(app.game._currentGrid)
-
-		elif cmd[0] == "select":
-			if len(cmd) > 2:
-				app.selectedDigit = int(cmd[1])
-				print("Selected Digit " + str(app.selectedDigit))
-
-		elif cmd[0] == "set":
-			if len(cmd) < 3:
-				print("set takes positional arguments: row, column")
-				continue
-			# set row col
-			app.handleMove(int(cmd[1]), int(cmd[2]))
-			print("set " + str(app.selectedDigit) + " to (" + str(cmd[1]) + "," + str(cmd[2]) + ")")
-			print(app.game._currentGrid)
-
-		elif cmd[0] == "solve":
-			solver = Solver(app.game._currentGrid)
-			solver.solve()
-			print(solver.puzzle)
-
-		elif cmd[0] == "help":
-			help()
+		elif cmd in COMMANDS:
+			COMMANDS[cmd](*args)
+			handlePrint(app)
 
 		else:
 			print("unknown command: " + str(cmd) + "\n")
 			help()
+			continue
+		
 
 if __name__ == "__main__":
 	main()
