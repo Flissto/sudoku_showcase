@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Sudoku Showcase: Main Page</title>
+<title>Sudoku Showcase: Sudoku Showcase</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -60,11 +60,113 @@ $(function() {
 </iframe>
 </div>
 
-<div class="header">
+<div class="PageDoc"><div class="header">
   <div class="headertitle">
-<div class="title">Sudoku Showcase Documentation</div>  </div>
+<div class="title">Sudoku Showcase </div>  </div>
 </div><!--header-->
 <div class="contents">
+<div class="textblock"><p><a class="anchor" id="md_README"></a> A clean and modular <b>Sudoku application built in Python</b>, designed to demonstrate software architecture, object-oriented design, and UI implementation skills.</p>
+<hr  />
+<h1><a class="anchor" id="autotoc_md2"></a>
+Features</h1>
+<ul>
+<li><b>Fully playable Sudoku game</b> with real-time input validation</li>
+<li>Sudoku generator with several levels of difficulty and <b>only one valid solution</b></li>
+<li>Clean separation of app, game logic and UI (<b>MVC</b>) <br  />
+</li>
+<li>Object-oriented architecture (<b>OOP</b>)</li>
+<li>Graphical user interface (Tkinter-based)</li>
+</ul>
+<p>See the <a class="el" href="Roadmap_8md.html">Roadmap</a> for upcoming features</p>
+<h1><a class="anchor" id="autotoc_md3"></a>
+Project Goals</h1>
+<p>This project was created as a <b>technical showcase</b> to demonstrate:</p>
+<ul>
+<li>Clean software design principles (OOP and MVC)</li>
+<li>Maintainable code structure (Type Hints, doxygen-compatible)</li>
+<li>Separation of concerns (logic vs UI)</li>
+<li>Practical implementation of constraint-based game logic</li>
+<li>UI-driven Python application development</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md4"></a>
+Architecture Overview</h1>
+<p>The project is structured into distinct layers derived from the Model-View-Controller-Architecture:</p>
+<h2><a class="anchor" id="autotoc_md5"></a>
+1. Model Layer</h2>
+<ul>
+<li>Objectorientated definitions of fields, puzzles and solver</li>
+<li>Sudoku rules validation</li>
+<li>Generating valid puzzles</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md6"></a>
+2. UI Layer</h2>
+<ul>
+<li>Rendering the Sudoku grid <br  />
+</li>
+<li>Handling user input <br  />
+</li>
+<li>Displaying errors and game state</li>
+<li>Theme handling and highlighting</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md7"></a>
+3. Controller Layer</h2>
+<ul>
+<li>Connecting UI and logic</li>
+<li>Board state management</li>
+<li>Handles user actions and updates state</li>
+<li>Gamification Features, such as mistakes</li>
+</ul>
+<p>This separation ensures <b>maintainability and extensibility</b>.</p>
+<hr  />
+<h1><a class="anchor" id="autotoc_md9"></a>
+Getting Started</h1>
+<h2><a class="anchor" id="autotoc_md10"></a>
+Requirements</h2>
+<ul>
+<li>Python 3.8+</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md11"></a>
+Additional Requirements</h2>
+<p>This project uses <b>Tkinter</b> for the graphical user interface.</p>
+<p>Tkinter is included with most Python installations, but on some systems you may need to install it manually:</p>
+<h3><a class="anchor" id="autotoc_md12"></a>
+Linux (Debian/Ubuntu)</h3>
+<div class="fragment"><div class="line">sudo apt-get install python3-tk</div>
+</div><!-- fragment --> <h3><a class="anchor" id="autotoc_md13"></a>
+macOS</h3>
+<p>Usually included with Python from python.org If missing: reinstall Python or use Homebrew </p>
+<h3><a class="anchor" id="autotoc_md14"></a>
+Windows</h3>
+<p>Included in the official Python installer (make sure "*tcl/tk*" is selected)</p>
+<h2><a class="anchor" id="autotoc_md15"></a>
+Installation and run the application</h2>
+<div class="fragment"><div class="line">git clone https://github.com/Flissto/sudoku_showcase.git</div>
+<div class="line">cd sudoku_showcase</div>
+</div><!-- fragment --><p> Create and activate a Virtual Environment to install the package </p><div class="fragment"><div class="line">python3 -m venv venv</div>
+<div class="line"># on Windows</div>
+<div class="line">.\venv\Scripts\activate</div>
+<div class="line"> </div>
+<div class="line"># on macOS/ Linux</div>
+<div class="line">source ./venv/bin/activate</div>
+<div class="line"> </div>
+<div class="line"># Now install the package.</div>
+<div class="line">pip install -e .</div>
+</div><!-- fragment --><p>There are two options to run the application, either with the ui or on the cli </p><div class="fragment"><div class="line"># use the ui (recommended)</div>
+<div class="line">sudoku-app</div>
+<div class="line"># or cli </div>
+<div class="line">sudoku-cli</div>
+</div><!-- fragment --><p><img src="/assets/Screenshot_Sudoku_Easy.png" alt="Sudoku Screenshot" class="inline"/></p>
+<h2><a class="anchor" id="autotoc_md16"></a>
+How to play</h2>
+<p>The App starts a Sudoku Game with the Level <em>Easy</em> by default. You can change the Level in the top menu on <em>New Game</em>, choose your level and a new puzzle will be generated. There is only one solution even on the harder levels. If the ui feels too bright, go to <em>Settings</em> and <em>toggle darkmode</em>.</p>
+<p>You can select or deselect a digit by clicking it in the row below the puzzle. The digit will be highlighted in the puzzle by default. To turn that off, go to <em>Settings</em> and <em>toggle highlight digits</em>. The rules of sudoku are straight forward. Each digit (from 1 to 9) shall only exists once per row, column, block (3x3 fields). To visualize the sudoku rules click <em>toggle highlight cells</em>.</p>
+<p>When selected a digit, click on an empty cell, where you think the digit has to be. On violating the rules the cells being violated are highlighted in red for a second and the mistake counter in red on the top left increases.</p>
+<p>If there are no rules violated, the digit will appear in blue font. Note that a digit in a cell not violating the rules, but wrong in terms of the overall puzzle will not increase the mistakes. If realized a digit is set to the wrong cell, click the the <em>Erase</em>-Button on top of the puzzle and then click desired cell.</p>
+<p>If there are three mistakes made or if the puzzle is successfully solved, the game will end and you can start a new game, if you wish to. And until then, good luck, have fun!</p>
+<h1><a class="anchor" id="autotoc_md17"></a>
+License</h1>
+<p>This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details </p>
+</div></div><!-- PageDoc -->
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
