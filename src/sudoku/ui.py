@@ -18,7 +18,7 @@ class UI:
 	GAME_END_FONT = ("Courier New", 13, "bold")
 
 	# TODO setting small, standard, large
-	CELL_HEIGHT = 1
+	CELL_HEIGHT = 2
 	CELL_WIDTH = CELL_HEIGHT * 2
 
 
@@ -118,7 +118,8 @@ class UI:
 				self.topFrame,
 				text="Erase",
 				font=self.DEFAULT_FONT,
-				borderwidth=0,
+				relief="raised",
+				bd=1,
 				command=self._toggleEraseButton)
 			self._erase.grid(row=0, column=1, padx=10, sticky="ew")
 
@@ -296,10 +297,16 @@ class UI:
 			# show value, colorize
 			text = self.app.getFieldStr(row, col)
 			btn = self._getCell(row,col)
-			btn.config(text=text)
 
 			fg, bg = self._getCellColor(row, col)
-			btn.config(fg=fg, bg=bg, activeforeground=fg, activebackground=bg)
+			btn.config(
+				text=text,
+				width=self.CELL_WIDTH,
+				height=self.CELL_HEIGHT,
+				fg=fg,
+				bg=bg,
+				activeforeground=fg,
+				activebackground=bg)
 			# end of updateCell()
 
 
@@ -314,7 +321,14 @@ class UI:
 				if value in self.app.getSetDigits() or self.app.hasGameEnded():
 					state = 'disabled'
 
-				btn.config(fg=fg, activeforeground=fg, bg=bg, activebackground=bg, state=state)
+				btn.config(
+					width=self.CELL_WIDTH,
+					height=self.CELL_HEIGHT,
+					fg=fg,
+					activeforeground=fg,
+					bg=bg,
+					activebackground=bg,
+					state=state)
 			# end of updateDigits()
 
 		for i in range(N):
@@ -472,7 +486,9 @@ class UI:
 		bg = theme["bg_light"]
 
 		if value == self.app.selectedDigit:
-			bg = theme["active"]
+			# "highlight" instead of "active", since it confuses visually with cell buttons
+			bg = theme["highlight"]
+			fg = theme["digit"]
 		return fg, bg
 
 
@@ -551,8 +567,8 @@ class UI:
 		""" (private) internal forwarding to toggle darkmode
 		@return None """
 		self.app.toggleDarkMode()
-		self.update()
 		self._updateSetup()
+		self.update()
 
 	def _toggleHighlightCells(self) -> None:
 		""" (private) internal forwarding to toggle highlight cells
@@ -571,7 +587,7 @@ class UI:
 		@return None """
 		self.app.toggleEraseMode()
 		color = self._getTheme().get("active") if self.app.inEraseMode else self._getTheme().get("bg_light")
-		self._erase.config(bg=color, activebackground=color, borderwidth=0)
+		self._erase.config(bg=color, activebackground=color)
 		self.update()
 
 	def _toggleNoteButton(self) -> None:
