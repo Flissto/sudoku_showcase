@@ -1,0 +1,28 @@
+{
+	"dark": {
+		"name": "Dark Theme",
+		"fontcolor": "#e6e6e6",
+		"fontcolorCustom": "#7aa2f7",
+		"background": "#1e1e1e",
+		"cellBorder": "#282828",
+		"gridBackground": "#282828",
+		"rulesColor": "#2f3340",
+		"activeDigit": "#2f3340",
+		"selectedDigitBackground": "#282828",
+		"selectedDigitForeground": "#7aa2f7",
+		"mistake": "#ef4444"
+	},
+	"gray": {
+		"name": "Soft Gray Theme",
+		"fontcolor": "#e8e8e8",
+		"fontcolorCustom": "#c8c8c8",
+		"background": "#262626",
+		"cellBorder": "#2e2e2e",
+		"gridBackground": "#2e2e2e",
+		"rulesColor": "#3a3a3a",
+		"activeDigit": "#8a8a8a",
+		"selectedDigitBackground": "#3a3a3a",
+		"selectedDigitForeground": "#f0f0f0",
+		"mistake": "#e05a5a"
+	}
+}

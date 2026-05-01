@@ -1,40 +1,44 @@
 #!/usr/bin/env python3
 # -*- coding: utf8 -*-
+# src/sudoku/app.py
+#
+## This class is THE Controller in the Application in terms of Model-View-Controller-Architecture.
+# This module controlls all submodules and classes and works as an API, which result in many functions just forwarding.
+# This is a design decision made, to keep the other classes relatively clean.  
+# Additionally the App controls Game Flow Logic such the Erase-Modes, which is not the Game's responsibility.
+# 
 #
 
 import time
-from .models import *
-from .ui import *
+from .models.constants import N, BLOCK_SIZE, ALLOWED_INDEX, ALLOWED_VALUES
+from .models.field import Field 
+from .game import Game
+from .models.state import State
+from .ui import UI
 
 
 class App:
-	"""
-	The App is the Controller of this.
-	Has a Game-object (Gamelogic) and if not CLI, an UI-Object (View).
-	Contains all Attributs which are not Logic-related (like Gamemodes).
-	Controls Game-Flow.
-	"""
+
+	""" The App is the Controller and API of this Application:
+		- has a Game-object (Gamelogic and contains Model)
+		- has an UI-Object (View), if not in CLI
+		- has a State-Object containing all attributs which are not Logic-related (like Gamemodes).
+	
+	NOTE: this results in App being both State-Manager for UI-States and Controller, and in a big class.
+	But this is a design decision made to achieve MVC-Architecture.  """
 	
 	def __init__(self, useUi: bool = True, verbose: bool = True):
-		self.game = Game(verbose)
-		self.ui = UI(self) if useUi else None
+		# app properties
+		self._state = State(verbose)
+
+		self._game = Game(verbose)
+		self._ui = UI(self) if useUi else None
 
 		self._verbose = verbose
 
-		# Game Modes
-		self._selectedCell = None
-		self._selectedDigit = None
-		self._eraseMode = False
-		self._noteMode = False
-
-		# UI Modes
-		self._darkmode = False
-		self._highlightCells = False
-		self._highlightDigits = True
-		self._errorCells = set()
 
 	#########################################################################################
-	### Properties
+	### Properties - State Management
 	#########################################################################################
 
 	@property
@@ -43,8 +47,7 @@ class App:
 		Returns a digit [1 .. 9] if selected.
 		To set the selectedDigit, use self.selectedDigit = value
 		@return int | None """
-		return self._selectedDigit
-
+		return self._state.selectedDigit
 
 	@selectedDigit.setter
 	def selectedDigit(self, digit: int | None) -> None:
@@ -53,8 +56,9 @@ class App:
 		@return None """
 		if not (digit in Field.ALLOWED_VALUES or digit is None):
 			raise ValueError(f"digit has to be a number in between 1 and {N} or None.")
-		self._selectedDigit = digit
-
+		self._state.selectedDigit = digit
+		if self._verbose:
+			print("SET selectedDigit:", digit)
 
 	@property
 	def selectedCell(self) -> tuple[int, int] | None:
@@ -62,11 +66,10 @@ class App:
 		Required to visualize the sudoku rules in the ui.
 		To set a value, use self.selectedCell = tuple(int(x), int(y))
 		@return tuple[int,int] | None """
-		return self._selectedCell
-
+		return self._state.selectedCell
 
 	@selectedCell.setter
-	def selectedCell(self, pos: tuple | None) -> None:
+	def selectedCell(self, pos: tuple[int, int] | None) -> None:
 		""" Sets the property selectedCell to a tuple of coordinates or None.
 		@param pos: tuple | None
 		@return None"""
@@ -75,141 +78,262 @@ class App:
 			(pos[0] in ALLOWED_INDEX and
 			pos[1] in ALLOWED_INDEX)):
 			raise ValueError(f"Selected cell has to be in between 1 and {N} or None")
-		self._selectedCell = pos
+		self._state.selectedCell = pos
 
 
 	@property
 	def inEraseMode(self) -> bool:
 		""" (property) Defines if app is in eraseMode or not.
 		In eraseMode, the selectedCell will be set to no value.
-		To set the darkmode, use self.toggleEraseMode()
+		To set the eraseMode, use self.toggleEraseMode()
 		@return bool """
-		return self._eraseMode
-
+		return self._state.eraseMode
 
 	@property
 	def inNoteMode(self) -> bool:
 		""" (property) Defines if app is in noteMode or not.
 		In noteMode, the selectedDigit can be assigned as a note to the selectedCell
-		To set the darkmode, use self.toggleNoteMode()
+		To set the NoteMode, use self.toggleNoteMode()
 		@return bool """
-		return self._noteMode
+		return self._state.noteMode
 
 
 	@property
-	def darkmode(self) -> bool:
-		""" (property) Defines if the ui is using the dark theme.
-		This setting does not affect the gameplay itself.
-		To set the darkmode, use self.toggleDarkMode()
+	def highlightRules(self) -> bool:
+		""" (property) Defines if the ui visualizes the sudoku rules depending on the selected cell.
+		NOTE: This setting does not affect the gameplay itself.
+		@see self.toggleHighlightRules(), to set the highlightDigits
 		@return bool """
-		return self._darkmode
+		return self._state.highlightRules
 
-
-	@property
-	def highlightCells(self) -> bool:
-		""" (property) Defines if the ui visualizes the sudoku rules
-		depending on the selected cell.
-		This setting does not affect the gameplay itself.
-		To set the highlightCells, use self.toggleHighlightCells()
-		@return bool """
-		return self._highlightCells
-
-	
 	@property
 	def highlightDigits(self) -> bool:
-		""" (property) Defines if the ui is visualizing the digits in the puzzle
-		depending on the selected Digit.
-		This setting does not affect the gameplay itself.
-		To set the highlightDigits, use self.toggleHighlightCells()
+		""" (property) Defines if the ui is visualizing the digits in the puzzle depending on the selected Digit.
+		NOTE: This setting does not affect the gameplay itself.
+		@see self.toggleHighlightDigits(), to set the highlightDigits
 		@return bool """
-		return self._highlightDigits
+		return self._state.highlightDigits
 
 
 	#########################################################################################
-	### Modes - property functions
+	### toggle property functions
 	#########################################################################################
 
 	def toggleEraseMode(self) -> None:
-		""" Toggle property eraseMode
+		""" Toggle property eraseMode.
 		@return None """
-		self._eraseMode = not self._eraseMode
+		self._state.eraseMode = not self._state.eraseMode
 		if self._verbose:
-			print("Set erasemode to " + str(self._eraseMode))
-
+			print("Set erasemode to " + str(self._state.eraseMode))
 
 	def toggleNoteMode(self) -> None:
-		""" Toggle property noteMode
+		""" Toggle property noteMode.
 		@return None """
-		self._noteMode = not self._noteMode
+		self._state.noteMode = not self._state.noteMode
 		if self._verbose:
-			print("Set noteMode to " + str(self._noteMode))
+			print("Set noteMode to " + str(self._state.noteMode))
 
 
-	def toggleDarkMode(self) -> None:
-		""" Toggle property darkMode
+	def toggleHighlightRules(self) -> None:
+		""" Toggle property highlightRules.
 		@return None """
-		self._darkmode = not self._darkmode
-		if self._verbose:
-			print("Set darkmode to " + str(self._darkmode))
-
-
-	def toggleHighlightCells(self) -> None:
-		""" Toggle property highlightCells
-		@return None """
-		self._highlightCells = not self._highlightCells
-		if self._verbose: print("Set Highlight Cells to " + str(self._highlightCells))
-
+		self._state.highlightRules = not self._state.highlightRules
+		if self._verbose: print("Set highlightRules to " + str(self._state.highlightRules))
 
 	def toggleHighlightDigits(self) -> None:
-		""" Toggle property highlighDigits
+		""" Toggle property highlighDigits.
 		@return None """
-		self._highlightDigits = not self._highlightDigits
+		self._state.highlightDigits = not self._state.highlightDigits
 		if self._verbose:
-			print("Set Highlight Digits to " + str(self._highlightDigits))
+			print("Set Highlight Digits to " + str(self._state.highlightDigits))
 
-
-	def autoSwapNextSelectedDigit(self) -> None:
-		""" Switches to the next available Digit, which does not occur 9 times
-		TODO
-		@return None """
-		if self.selectedDigit in self.game.getSetDigits():
-			self.selectedCell = None
-			self.selectedDigit = None
 
 	#########################################################################################
-	### Game Functions
+	### public property functions
+	#########################################################################################
+
+
+	def getErrorCells(self) -> set[tuple[int, int]]:
+		""" Returns the current errorcells.
+		@return set[tuple[int, int]] """
+		return self._state.errorCells
+
+	def addErrorCell(self, row: int, col: int) -> None:
+		""" Adds a cell to errorCells.
+		@param row: int
+		@param col: int
+		@return None """
+		self._state.errorCells.add((row, col))
+
+	def removeErrorCell(self, row: int, col: int) -> None:
+		""" Removes a Cell from errorCells.
+		@param row: int
+		@param col: int
+		@return None """
+		self._state.errorCells.discard((row, col))
+
+
+	def clearErrorCells(self) -> None:
+		""" Removes all cells from errorCells.
+		@param row: int
+		@param col: int
+		@return None """
+		self._state.errorCells.clear()
+
+
+	def selectDigit(self, value: int) -> None:
+		""" Sets the selectedDigit to the value.
+		NOTE: if digit is already selected, it will be deselected. (like toggling)
+		@param value: int	- the newly selected digit
+		@return None """
+		self.selectedDigit = None if value == self.selectedDigit else value
+		
+	def selectCell(self, row: int, col: int) -> None:
+		""" Sets a cell as selected. Requirement to show rules.
+		@param row: int	- the row of selected cell
+		@param col: int	- the column of selected cell
+		@return None """
+		self.selectedCell = (row, col)
+
+	def deselectCell(self) -> None:
+		""" Deselects the cell.
+		@return None """
+		self.selectedCell = None
+
+
+	def _autoSwapNextSelectedDigit(self) -> None:
+		""" Switches to the next available Digit, which does not occur 9 times
+		@return None """
+		if self.selectedDigit is None:
+			return
+
+		setDigits = set(self.getSetDigits())
+		if not self.selectedDigit in setDigits:
+			return
+		
+		# then its a call to swap
+		self.deselectCell()
+		values = Field.ALLOWED_VALUES
+		startIndex = values.index(self.selectedDigit)
+	
+		# get next, so start with 1
+		for i in range(1, len(values) + 1):
+			nextDigit = values[(startIndex + i) % len(values)]
+			if not nextDigit in setDigits:
+				self.selectedDigit = nextDigit
+				return
+
+		self.selectedDigit = None
+		return
+
+	#########################################################################################
+	### Game Core Functions
 	#########################################################################################
 
 	def run(self) -> None:
-		""" Starts to run the application
+		""" Starts to run the application.
 		and creates a new game with default difficulty
 		@return None """
 		self.startNewGame(Game.DEFAULT_DIFFICULTY)
 
-		if self.ui: # start the loop
-			self.ui.run()
+		if self._ui: # start the loop
+			self._ui.run()
 
 
-	def startNewGame(self, difficulty: str = "Game.DEFAULT_DIFFICULTY") -> None:
+	def _onGameStart(self) -> None:
+		""" (private) On the start of game, reset modes.
+		@return None """
+		self._state.reset()
+		self._state.selectedDigit = Field.getRandomValue()
+
+	def startNewGame(self, difficulty: str) -> None:
 		""" Starts a new Game and creates the ui, if needed.
 		All game-related settings will be reset.
-
 		@param difficulty: str
 		@return None """
-		self._eraseMode = False
-		self._noteMode = False
-		self.game.startNewGame(difficulty)
-
-		row = random.randint(0, N - 1)
-		col = random.randint(0, N - 1) 
-		self.selectedCell = (row, col)
-		self.selectedDigit = self.game.getField(row,col).value
-		if self.ui:
-			self.ui.onNewGame()
-
+		self._onGameStart()
+		self._game.startNewGame(difficulty)
+		if self._ui:
+			self._ui.onNewGame()
 		if self._verbose:
 			print(f"New game started with difficulty {difficulty}")
 
+
+	def restartGame(self) -> None:
+		""" Restarts the current game.
+		Usually called from Client.
+		@return None """
+		self._onGameStart()
+		self._game.restart()
+
+
+	def hasGameEnded(self) -> bool:
+		""" If the current game has ended.
+		@return bool """
+		return self._game.hasEnded()
+
+	def _onGameEnd(self) -> None:
+		""" (private) Handles the game end
+		@return None """
+		self._state.selectedCell = None
+		self._state.selectedDigit = None
+
+	#########################################################################################
+	### Game Core getter Functions
+	#########################################################################################
+
+	def getPuzzle(self) -> str:
+		""" Returns the str-repr of the current puzzle.
+		@return str """
+		return self._game.getPuzzle()
+
+
+	@classmethod
+	def getGridSize(cls) -> int:
+		""" (classmethod) Returns the size of the grid (Puzzle)
+		@return int """
+		return N
+
+	@classmethod
+	def getBlockSize(cls) -> int:
+		""" (classmethod) Returns the size of a Block.
+		@return int """
+		return BLOCK_SIZE
+
+
+	def getCurrentDifficulty(self) -> str:
+		""" Returns the difficulty of the current game.
+		@return str """
+		return self._game.difficulty
+
+	@classmethod
+	def getAllDifficultyNames(cls) -> list[str]:
+		""" (classmethod) Returns the names of difficulty levels.
+		@return list[str] """
+		return list(Game.DIFFICULTY.keys())
+
+	
+	def getMistakesMade(self) -> int:
+		""" Returns the amount of mistakes made in the current game.
+		@return int """
+		return self._game.mistakes
+
+	@classmethod
+	def getMaxMistakes(cls) -> int:
+		""" (classmethod) Returns the maximum amount of mistakes per game.
+		@return int """
+		return Game.MAX_MISTAKES
+
+
+	def getElapsedTime(self) -> int:
+		""" Returns the elapsed time in seconds of the current game.
+		@return int """
+		return self._game.getElapsedTime()
+
+
+	#########################################################################################
+	### Game Move Functions
+	#########################################################################################
 
 	def handleMove(self, row: int, col: int) -> None:
 		""" Lets the game handle a move depending on modes and the selectedDigit.
@@ -217,56 +341,75 @@ class App:
 		@param row: int
 		@param col: int
 		@return None """
+		self.selectCell(row, col)
 
-		if not self.selectedDigit and not self.inEraseMode: # nothing selected, nothing to do
+		if not self._state.selectedDigit and not self.inEraseMode: # nothing selected, nothing to do
 			return
 
-		# modes
-		if self.inEraseMode and self.inNoteMode:
-			self.game.removeNote(row=row, col=col, value=self.selectedDigit)
+		if not self._applyMove(row, col):
+			self._onMistake(row, col)
 		
+		self._handleGameEnd()
+		self._autoSwapNextSelectedDigit()
+
+
+	def _applyMove(self, row: int, col: int) -> bool:
+		""" (private) Applies the move issued by Client, based on game mode.
+		@param row: int
+		@param col: int
+		@return bool """
+		if self.inEraseMode and self.inNoteMode:
+			self._game.removeNote(row=row, col=col, value=self._state.selectedDigit)
+
 		elif self.inEraseMode:
-			self.game.clearValue(row=row, col=col)
+			self._game.clearValue(row=row, col=col)
 		
 		elif self.inNoteMode:
-			self.game.addNote(row=row, col=col, value=self.selectedDigit)
+			self._game.addNote(row=row, col=col, value=self._state.selectedDigit)
 		
 		else:
-			if not self.game.setValue(row=row, col=col, value=self.selectedDigit) and self.ui:
-				for field in self.game.getFieldsCausingMistake(row, col, self.selectedDigit):
-					self.ui.highlightMistake(field.x, field.y)
-
-		# Gamification
-		if self.game.isGameOver():
-			if self._verbose:
-				print("GAME OVER!")
-			if self.ui:
-				self.ui.showGameOver()
-
-		elif self.game.isWon():
-			if self._verbose:
-				print("You won!")
-			if self.ui:
-				self.ui.showGameWin()
-
-		self.autoSwapNextSelectedDigit()
-	# end of handleMove
-
-	def getPuzzle(self) -> str:
-		""" Returns the str-repr of the current puzzle """
-		return self.game.getPuzzle()
+			return self._game.setValue(row=row, col=col, value=self._state.selectedDigit)
+		return True
 
 
-	def getCurrentDifficulty(self) -> str:
-		""" Returns the difficulty of the current game.
-		@return str """
-		return self.game.difficulty
+	def _onMistake(self, row: int, col: int) -> None:
+		""" (private) Change error-Cells-state and triggers the ui.
+		@param row: int
+		@param col: int
+		@return None """
+		for field in self._game.getFieldsCausingMistake(row, col, self._state.selectedDigit):
+			self.addErrorCell(field.x, field.y)
+
+		if self._ui:
+			self._ui.onMistake()
 
 
-	def getAllDifficultyNames(self) -> list[str]:
-		""" Returns the names of difficulty levels
-		@return list[str] """
-		return list(self.game.DIFFICULTY.keys())
+	def _handleGameEnd(self) -> None:
+		""" (private) Checks if game has ended.
+		Triggers the ui, if necessary.
+		@return None """
+		if not self._game.hasEnded():
+			return
+
+		endLabel = ""
+		if self._game.isGameOver():
+			endLabel = "Game Over!!!"
+			if self._ui:
+				self._ui.showGameOver(endLabel)
+
+		elif self._game.isWon():
+			endLabel = "Congratulation!!!"
+			if self._ui:
+				self._ui.showGameWin(endLabel)
+
+		self._onGameEnd()
+		if self._verbose:
+			print(endLabel)
+		
+
+	#########################################################################################
+	### Getter Functions (Field, Digits)
+	#########################################################################################
 
 
 	def getFieldValue(self, row: int, col: int) -> int | None:
@@ -274,7 +417,7 @@ class App:
 		@param row: int	- the row of the field in question
 		@param col: int	- the column of the field in question
 		@return int | None """
-		field = self.game.getField(row, col)
+		field = self._game.getField(row, col)
 		return field.value if field else Field.NULL
 
 
@@ -283,14 +426,14 @@ class App:
 		@param row: int	- the row of the field in question
 		@param col: int	- the column of the field in question
 		@return str """
-		field = self.game.getField(row, col)
+		field = self._game.getField(row, col)
 		return str(field) if field else Field.DEFAULT_AS_STRING
 
 
 	def isFieldFixed(self, row: int, col: int) -> bool:
 		""" Returns if a field is fixed.
 		@return bool """
-		field = self.game.getField(row, col)
+		field = self._game.getField(row, col)
 		return field.fixed if field else False
 
 
@@ -298,300 +441,22 @@ class App:
 		""" Returns all the Digits, which occur 9 times in the current game.
 		NOTE: list can be empty!
 		@return list[int] | list """
-		return self.game.getSetDigits()
-
-
-	def getMistakesMade(self) -> int:
-		""" Returns the amount of mistakes made in the current game.
-		@return int """
-		return self.game.mistakes
-
-
-	def getMaxMistakes(self) -> int:
-		""" Returns the maximum amount of mistakes per game.
-		@return int """
-		return self.game.MAX_MISTAKES
-
-
-	def getElapsedTime(self) -> int:
-		""" Returns the elapsed time in seconds of the current game.
-		@return int """
-		return self.game.getElapsedTime()
-
-
-	def hasGameEnded(self) -> bool:
-		""" If the current game has ended.
-		@return bool """
-		return self.game.hasEnded()
-
-# end of App
+		digits = [key for key, value in self._game.getDigitCount().items() if value >= N]
+		return digits
 
 
 #########################################################################################
-### Game
+### Call App
 #########################################################################################
 
-class Game:
-	"""
-	A Game creates a sudoku-object, wich will be solved.
-	This class holds the game logic within several puzzles (solution, initial and current)
-	and knows about the current state of the game, such as mistakes.
-
-	The initial puzzle leads to a unique solution, which are both hold in this class.
-	The Non-Empty-Fields in those puzzles are not editable, so called fixed.
-	The current grid derives from the initial puzzle and holds the user input.
-
-	Short comment about mistakes:
-	An invalid move regarding the sudoku rules result in a mistake.
-	A digit set (move) to the current grid, which differs from the solution,
-	but not violating sudoku rules, is not a mistake.
-	When reaching MAX_MISTAKES the game will be over,
-	Therefor bruteforcing the solution is not an option.
-	"""
-
-	DIFFICULTY = {'Nearly Full': 25, 'Easy': 40, 'Medium': 48, 'Hard': 51, 'Extreme': 55}
-	DEFAULT_DIFFICULTY = 'Easy'
-	
-	# the maximum amount of mistakes to be made, 
-	MAX_MISTAKES = 3
-
-	def __init__(self, verbose: bool = True):
-		""" When the App starts or user creates a new Game
-		Mistakes will be set to zero, time to zero, and grids will be cleared
-		"""
-		self._verbose = verbose
-
-		# properties
-		self._difficulty = self.DEFAULT_DIFFICULTY
-		self._mistakes = 0
-
-		self._startTime = time.time()
-
-		# the puzzles
-		self._solution = None
-		self._initial = None
-		self._currentGrid = None
-
-	#########################################################################################
-	### Properties
-	#########################################################################################
-
-	@property
-	def difficulty(self) -> str:
-		""" (readonly property) The difficulty level of a game
-		@return str """
-		return self._difficulty
-
-	@property
-	def mistakes(self) -> int:
-		""" (readonly property) The mistakes made in the game
-		NOTE: A mistake is a violation of the sudoku rules.
-		@return int """
-		return self._mistakes
-
-
-	#########################################################################################
-	### Mechanics
-	#########################################################################################
-
-
-	def startNewGame(self, difficulty: str = "") -> None:
-		""" Entry Point to start a new Game with described Difficulty.
-		The game attributes will be reset and the solution and initial grid are calculated.
-		NOTE: Does not create a new Game-Object.
-
-		@param difficulty: str
-		@exception KeyError		- when difficulty is unknown
-		@return None
-		"""
-
-		# set difficulty
-		if not difficulty in self.DIFFICULTY.keys():
-			raise KeyError("Unknown difficulty: " + str(difficulty))
-
-		self._difficulty = difficulty
-		numDigitsToDelete = self.DIFFICULTY[difficulty]
-
-		self._solution, self._initial = Puzzle.createPuzzle(numDigitsToDelete, verbose=self._verbose)
-
-		# create current Grid, the inital cells are already locked
-		self._currentGrid = Puzzle.clone(self._initial)
-
-		# reset attributes
-		self._mistakes = 0
-		self._startTime = time.time()
-
-
-	#########################################################################################
-	### getter
-	#########################################################################################
-
-	def getField(self, row: int, col: int) -> Field | None:
-		""" Returns a Field from the current Game
-		NOTE: If the current game doesnt exist, return None. 
-
-		@param row: int	- the row of the Field in question
-		@param col: int	- the column of the Field in question
-		@return Field | None """
-		return self._currentGrid.getField(row, col) if self._currentGrid else None
-
-
-	def getFields(self) -> list[Field] | list:
-		""" Returns a list of all Fields.
-		NOTE: If current Grid is not set, an empty list is returned.
-		@return list[Field] | list """
-		return self._currentGrid.getFlatGrid() if self._currentGrid else list()
-
-
-	def getSetDigits(self) -> list[int] | list:
-		""" Returns all the Digits, which occur 9 times in the grid
-		NOTE: when current grid is not set, return empty
-		@return list[int] | list"""
-		if not self._currentGrid:
-			return list()
-
-		numbers = {key: 0 for key in range(1, N + 1)}
-		for field in self._currentGrid.getNonEmptyFields():
-			numbers[field.value] += 1
-		
-		return [key for key, value in numbers.items() if value >= N]
-
-
-	def getFieldsCausingMistake(self, row: int, col: int, value: int) -> list[Field] | list:
-		""" Returns the Fields causing the mistake.
-		NOTE: If there are no mistakes made, the returned list will be empty.
-
-		@param row: int
-		@param col: int
-		@param value: int
-		@return list[Field] | list
-		"""
-		fields = []
-		for elem in self._currentGrid.getRow(row=row):
-			if elem.value == value:
-				fields.append(elem)
-		
-		for elem in self._currentGrid.getColumn(col=col):
-			if elem.value == value:
-				fields.append(elem)
-
-		for elem in self._currentGrid.getBlock(row=row, col=col):
-			if elem.value == value:
-				fields.append(elem)
-
-		return fields
-
-
-	def getPuzzle(self) -> str:
-		""" Returns the str-repr of the current puzzle
-		@return str """
-		return str(self._currentGrid)
-
-
-	#########################################################################################
-	### Make Moves
-	#########################################################################################
-
-	def setValue(self, row: int, col: int, value: int) -> bool:
-		""" Sets a Value and handles violated rules.
-		Returns False if rule is violated, else True.
-		NOTE: A valid move is not necessarily a correct solution move!!
-		
-		@param row: int	- the row of the field
-		@param col: int	- the column of the field
-		@param value: int	- the value to set
-		@return bool - if rules violated or not
-		"""
-		field = self._currentGrid.getField(row, col)
-		if field.fixed:
-			return True # it is no Error
-		
-		if not self._currentGrid.setValue(row=row, col=col, value=value):
-			self._increaseMistakes()
-			return False
-		return True
-
-
-	def clearValue(self, row: int, col: int) -> bool:
-		""" Clears a value (and Notes) from the grid
-		
-		@param row: int	- the row of the field
-		@param col: int	- the column of the field
-		@return bool """
-		return self._currentGrid.clearValue(row, col)
-
-
-	def addNote(self, row: int, col: int, value: int) -> bool:
-		"""Adds a Note to a Field
-		@param row: int	- the row of the field
-		@param col: int	- the column of the field
-		@param value: int	- the value to add as note
-		@return bool """
-		return self._currentGrid.addNote(row, col, value)
-
-
-	def clearNotes(self, row: int, col: int) -> None:
-		""" Removes all Notes from a Field
-		@param row: int	- the row of the field
-		@param col: int	- the column of the field
-		@return None """
-		self._currentGrid.clearNotes(row, col)
-
-
-	def autoNotes(self) -> None:
-		""" Adds Notes in the puzzle automatically
-		@return None """
-		self._currentGrid.autoNotes()
-
-
-	def clearAllNotes(self) -> None:
-		""" Removes all the notes. 
-		This reverses self.autoNotes()
-		@return None """
-		self._currentGrid.clearAllNotes()
-
-
-	#########################################################################################
-	### Gamification
-	#########################################################################################
-
-	def getElapsedTime(self) -> int:
-		""" Returns the elapsed time in seconds
-		@return int """
-		return int(time.time() - self._startTime)
-
-
-	def isGameOver(self) -> bool:
-		""" Wether the game is over due to mistakes
-		@return bool """
-		if self.mistakes >= self.MAX_MISTAKES:
-			return True
-		return False
-
-
-	def isWon(self) -> bool:
-		""" The game can be won or its not
-		@return bool """
-		return self._currentGrid.isFinished
-
-
-	def hasEnded(self) -> bool:
-		""" If game has ended.
-		A game has ended, when its either won or gameOver.
-		@return bool """
-		return self.isWon() or self.isGameOver()
-
-
-	def _increaseMistakes(self) -> None:
-		""" (private) Increases the mistakes by one
-		@return None """
-		self._mistakes += 1
-		print("You made a mistake!")
-
-
-def main():
+def main() -> None:
+	""" The main function for app.py to run
+	@return None """
 	app = App()
 	app.run()
 
+# when called directly
 if __name__ == "__main__":
 	main()
+
+# EOF

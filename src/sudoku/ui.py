@@ -1,43 +1,78 @@
 #!/usr/bin/env python3
 # -*- coding: utf8 -*-
+# src/sudoku/ui.py
+#
+## This module represents the View in the Model-View-Controller-Architecture.
+# It holds the class UI, which creates the window and the visual elements.
+#
+# The UI class uses submethods (methods in methods):
+#	- when only called once in class
+# 	- to structure the parent method
+# 	- childmethod not callable, so UI has not more functions than needed
+#  
+# NOTE: UI uses the PULL-concept, instead of an event system.
+# This means, all necessary informations are pulled from App through get-functions.
+# The UI does not change states or anything directly. It just calls App then.
 #
 
 import tkinter as tk
-from functools import partial
-from .models import N, BLOCK_SIZE
+import json
+from .models.themes import Theme, HEX, RGB
 
 
 class UI:
 	"""
 	The UI-class represents the View in the Model-View-Controller-Architecture.
 	It knows nothing about rules, logic or anything. Its just about visuals.
-	The only api it should call is app.
+	The only other class the UI should call is App.	
 	"""
 
+	# Constants
 	DEFAULT_FONT = ('Britannic', 13, 'bold')
 	GAME_END_FONT = ("Courier New", 13, "bold")
 
-	# TODO setting small, standard, large
-	CELL_HEIGHT = 2
-	CELL_WIDTH = CELL_HEIGHT * 2
+	CELL_SIZE = {"Small": 1, "Standard": 2, "Large": 3}
+	
+	DEFAULT_LIGHT_THEME = Theme(
+		name = "Light Theme",
+		fontcolor = "#000000",
+		fontcolorCustom = "#3b5bdb",
+		background = "#f9f9fa",
+		cellBorder = "#d2d2d2",
+		gridBackground = "#d2d2d2",
+		rulesColor = "#dde3f0",
+		activeDigit = "#a6c8ff",
+		selectedDigitBackground = "#dde3f0",
+		selectedDigitForeground = "#3b5bdb",
+		mistake = "#e53935",
+	)
 
 
 	def __init__(self, app: "App"):
+		""" Creates an instance of UI.
+		This also creates the window and the main attributes."""
 		self.app = app
 
-		self._root = tk.Tk() 
-		self._frame = None
+		self._root = tk.Tk()
+		self._themes = {"light": self.DEFAULT_LIGHT_THEME} # available Themes
 
-		self._cells = [[None]*N for _ in range(N)]
-		self.digitButtons = [None] * N # TODO make property using winfo_children()
+		# define namespaces for tk-objects
+		n = self.app.getGridSize()
+		self._frame = None
 		self._timer = None
 		self._mistakes = None
 
-		# the cells to highlight on mistake
-		self._errorCells = set() # TODO In strict MVC this is a state
+		self._cells = [[None] * n for _ in range(n)]
+		self.digitButtons = [None] * n # TODO make property using winfo_children()
 
+		# properties
+		self._cellHeight = 2
+		self._currentTheme: Theme = self.DEFAULT_LIGHT_THEME
+
+		# on init functions
 		self._createFrame()
-		self._createMenu()
+		self._loadThemes(path="themes.json")
+		self._createWindowMenu()
 
 
 	def _setTitle(self) -> None:
@@ -45,7 +80,6 @@ class UI:
 		@return None """
 		title = f"Sudoku {self.app.getCurrentDifficulty()}"
 		self._root.title(title)
-
 
 	def _loopTimer(self) -> None:
 		""" Calls the _updateTimer method every second.
@@ -55,35 +89,100 @@ class UI:
 		if not self.app.hasGameEnded():
 			self._root.after(1000, self._loopTimer)
 
-
 	def run(self) -> None:
-		""" Call when ui is built
+		""" Call when ui initialized and ready to go.
 		@return None """
 		self._root.mainloop()
+
+	#########################################################################################
+	### Properties
+	#########################################################################################
+
+	@property
+	def cellHeight(self) -> int:
+		""" (property) the cell-height
+		@return int """
+		return self._cellHeight
+
+	@property	
+	def cellWidth(self) -> int:
+		""" (readonly property) defines the cell-width by the cell height
+		@return int """
+		return 2 * self._cellHeight
+
+	@cellHeight.setter
+	def cellHeight(self, size: int) -> None:
+		""" Set the property cellHeight """
+		if not size in self.CELL_SIZE.values():
+			raise ValueError(f"Cell Height can only be '1', '2' or '3': '{size}'")
+		self._cellHeight = size
+
+
+	@property
+	def theme(self) -> Theme:
+		""" The currently selected Theme
+		@return Theme """
+		return self._currentTheme
 
 
 	#########################################################################################
 	### create Functions
 	#########################################################################################
 
-	def _createMenu(self) -> None:
-		""" (private) Creates the Window Menu with New Game and Settings
+	def _createWindowMenu(self) -> None:
+		""" (private) Creates the Window Menu with New Game-, Modes-, Theme- and Windowoptions.
 		@return None """
 		self.menubar = tk.Menu(self._root, font=self.DEFAULT_FONT)
 
-		newGame = tk.Menu(self.menubar, tearoff=0)
+		# new game
+		self.newGame = tk.Menu(self.menubar, tearoff=0)
 		for diff in self.app.getAllDifficultyNames():
-			newGame.add_command(label=diff, command=partial(self.app.startNewGame, diff))
-		self.menubar.add_cascade(label="New Game", menu=newGame)
+			self.newGame.add_command(label=diff, command=lambda d=diff: self.app.startNewGame(d))
+		self.menubar.add_cascade(label="New Game", menu=self.newGame)
 
-		settings = tk.Menu(self.menubar, tearoff=0)
-		settings.add_command(label="Toggle highlight digits", command=self._toggleHighlightDigits)
-		settings.add_command(label="Toggle highlight cells", command=self._toggleHighlightCells)
-		settings.add_command(label="Toggle Darkmode", command=self._toggleDarkMode)
-		self.menubar.add_cascade(label="Settings", menu=settings)
+		# the ui modes in the game
+		self.modesMenu = tk.Menu(self.menubar, tearoff=0)
+		self.highlightDigitsVar = tk.BooleanVar(value=True)
+		self.modesMenu.add_checkbutton(
+			label="Highlight digits",
+			variable=self.highlightDigitsVar,
+			command=self._toggleHighlightDigits
+		)
+		self.highlightRulesVar = tk.BooleanVar(value=False)
+		self.modesMenu.add_checkbutton(
+			label="Highlight rules",
+			variable=self.highlightRulesVar,
+			command=self._toggleHighlightRules
+		)
+		self.menubar.add_cascade(label="Modes", menu=self.modesMenu)
 
+		# picka, picka theme
+		self.themesMenu = tk.Menu(self.menubar, tearoff=0)
+		self.themeVar = tk.StringVar(value=self._currentTheme.name)
+
+		for key, theme in self._themes.items():
+			self.themesMenu.add_radiobutton(
+				label = theme.name,
+				value = theme.name,
+				variable = self.themeVar,
+				command=lambda k=key: self._changeTheme(k)
+			)
+		self.menubar.add_cascade(label="Themes", menu=self.themesMenu)
+
+		# the window size based on the cell size
+		self.windowMenu = tk.Menu(self.menubar, tearoff=0)
+		self.windowSizeVar = tk.StringVar(value="Standard")
+		for name, size in self.CELL_SIZE.items():
+			self.windowMenu.add_radiobutton(
+				label=name,
+				value=name,
+				variable=self.windowSizeVar,
+				command=lambda s=size: self._onWindowResize(s))
+		self.menubar.add_cascade(label="Window", menu=self.windowMenu)
+
+		self.menubar.add_command(label="Restart", command=self._onGameRestart)
 		self._root.config(menu=self.menubar)
-
+	# end of _createWindowMenu
 
 	def _createFrame(self) -> None:
 		""" (private) creates the master-Frame.
@@ -91,13 +190,17 @@ class UI:
 		@return None"""
 		self._frame = tk.Frame()
 		self._frame.grid(row=0, column=0)
-		self._frame.grid_rowconfigure(0, weight=1)
-		self._frame.grid_columnconfigure(0, weight=1)
+		for i in range(3):
+			self._frame.grid_rowconfigure(i, weight=1)
+			self._frame.grid_columnconfigure(i, weight=1)
 
 
 	def _setup(self) -> None:
-		""" Creates the window and initializes the ui objects
+		""" (private) Creates the window, sets the title and initializes the ui objects,
+		such as elements of top row, the grid, and the digit row.
+		Each elemen will be colorized based on the theme.
 		@return None """
+		n = self.app.getGridSize()
 		
 		def createTopFrame() -> None:
 			""" Creates the top Row for game modes, mistakes and Timer
@@ -135,19 +238,22 @@ class UI:
 			@return None """
 			self.gridFrame = tk.Frame(self._frame)
 			self.gridFrame.grid(row=1, column=0, padx=5, pady=10, sticky="news")
-			self.gridFrame.grid_rowconfigure(0, weight=1)
-			self.gridFrame.grid_columnconfigure(0, weight=1)
 
-			for i in range(N): # row
-				for j in range(N): # column
+			for i in range(n):
+				self.gridFrame.grid_rowconfigure(i, weight=1)
+				self.gridFrame.grid_columnconfigure(i, weight=1)
+
+			for i in range(n): # row
+				for j in range(n): # column
 					# visualize blocks using padding
+					blockSize = self.app.getBlockSize()
 					padx = (
-						2 if j % BLOCK_SIZE == 0 else 1,
-						2 if j % BLOCK_SIZE == 2 else 1
+						2 if j % blockSize == 0 else 1,
+						2 if j % blockSize == 2 else 1
 					)
 					pady = (
-						2 if i % BLOCK_SIZE == 0 else 1,
-						2 if i % BLOCK_SIZE == 2 else 1
+						2 if i % blockSize == 0 else 1,
+						2 if i % blockSize == 2 else 1
 					)
 
 					btn = tk.Button(
@@ -156,9 +262,9 @@ class UI:
 						font=self.DEFAULT_FONT,
 						bd=0,
 						highlightthickness=0,
-						width=self.CELL_WIDTH,
-						height=self.CELL_HEIGHT,
-						command=partial(self._onCellClick, i, j))
+						width=self.cellWidth,
+						height=self.cellHeight,
+						command=lambda row=i, col=j: self._onCellClick(row, col))
 
 					btn.grid(row=i, column=j, padx=padx, pady=pady, sticky="news")
 					self._cells[i][j] = btn
@@ -174,16 +280,16 @@ class UI:
 			self.bottomFrame.grid_columnconfigure(0, weight=1)
 
 			# create Buttons
-			for i in range(N):
+			for i in range(n):
 				digit = i + 1
 				btn = tk.Button(
 					self.bottomFrame,
 					text=str(digit),
 					font=self.DEFAULT_FONT,
 					bd=0,
-					width=self.CELL_WIDTH,
-					height=self.CELL_HEIGHT,
-					command=partial(self._onDigitClick, digit))
+					width=self.cellWidth,
+					height=self.cellHeight,
+					command=lambda d=digit: self._onDigitClick(d))
 				btn.grid(row=0, column=i)
 				self.digitButtons[i] = btn
 		# end of createDigitButtons
@@ -211,64 +317,68 @@ class UI:
 	#########################################################################################
 
 	def _getCell(self, row: int, col: int) -> tk.Button:
-		""" Returns the tk-Button behind a cell.
+		""" (private) Returns the tk-Button behind a cell.
 		@param row: int	- the row of the cell
 		@param col: int	- the col of the cell
 		@exception Indexerror	- when (row, col) not in grid
 		@return tk.Button """
+		n = self.app.getGridSize()
 		if row < 0:
 			raise IndexError(f" 'row' cannot be negative: {row}")
-		elif row >= N:
-			raise IndexError(f" 'row' is greater than {N-1} and not in grid: {row}")
+		elif row >= n:
+			raise IndexError(f" 'row' is greater than {n-1} and not in grid: {row}")
 		
 		if col < 0:
 			raise IndexError(f" 'col' cannot be negative: {col}")
-		elif col >= N:
-			raise IndexError(f" 'col' is greater than {N-1} and not in grid: {col}")
+		elif col >= n:
+			raise IndexError(f" 'col' is greater than {n-1} and not in grid: {col}")
 
 		return self._cells[row][col]
 
 
 	def _getRow(self, *, row: int) -> list[tk.Button]:
-		""" Returns all cells in a row
+		""" (private) Returns all cells in a row
 		NOTE: kwargs required!
 
 		@param row: int	- the row of the cell
 		@param col: int	- the col of the cell
 		@exception Indexerror	- when row not in grid
 		@return list[tk.Button] """
+		n = self.app.getGridSize()
 		if row < 0:
 			raise IndexError(f" 'row' cannot be negative: {row}")
-		elif row >= N:
-			raise IndexError(f" 'row' is greater than {N-1} and not in grid: {row}")
+		elif row >= n:
+			raise IndexError(f" 'row' is greater than {n-1} and not in grid: {row}")
 		return self._cells[row]
 
 
 	def _getColumn(self, *, col: int) -> list[tk.Button]:
-		""" Returns all cells in a column
+		""" (private) Returns all cells in a column
 		@param row: int	- the row of the cell
 		@param col: int	- the col of the cell
 		@exception Indexerror	- when col not in grid
 		@return list[tk.Button]"""
+		n = self.app.getGridSize()
 		if col < 0:
 			raise IndexError(f" 'col' cannot be negative: {col}")
-		elif col >= N:
-			raise IndexError(f" 'col' is greater than {N-1} and not in grid: {col}")
-		return [self._cells[i][col] for i in range(N)]
+		elif col >= n:
+			raise IndexError(f" 'col' is greater than {n-1} and not in grid: {col}")
+		return [self._cells[i][col] for i in range(n)]
 
 
-	def getBlock(self, row: int, col: int) -> list[tk.Button]:
-		""" Returns all cells of a Block
+	def _getBlock(self, row: int, col: int) -> list[tk.Button]:
+		""" (private) Returns all cells of a Block
 		@param row: int	- the row of the cell
 		@param col: int	- the col of the cell
 		@exception Indexerror	- when (row, col) not in grid
 		@return list[tk.Button] """
 		block = []
-		startRow = row - row % BLOCK_SIZE
-		startCol = col - col % BLOCK_SIZE
+		blockSize = self.app.getBlockSize()
+		startRow = row - row % blockSize
+		startCol = col - col % blockSize
 
-		for i in range(BLOCK_SIZE):
-			for j in range(BLOCK_SIZE):
+		for i in range(blockSize):
+			for j in range(blockSize):
 				block.append(self._getCell(startRow + i, startCol + j))
 		return block
 
@@ -286,7 +396,8 @@ class UI:
 	#########################################################################################
 
 	def update(self) -> None:
-		""" Update the whole UI
+		""" Updates and colorizes the grid, the digit Buttons.
+		Also updates the mistakes count.
 		@return None """
 
 		def updateCell(row: int, col: int) -> None:
@@ -301,13 +412,13 @@ class UI:
 			fg, bg = self._getCellColor(row, col)
 			btn.config(
 				text=text,
-				width=self.CELL_WIDTH,
-				height=self.CELL_HEIGHT,
+				width=self.cellWidth,
+				height=self.cellHeight,
 				fg=fg,
 				bg=bg,
 				activeforeground=fg,
 				activebackground=bg)
-			# end of updateCell()
+		# end of updateCell()
 
 
 		def updateDigits() -> None:
@@ -322,43 +433,44 @@ class UI:
 					state = 'disabled'
 
 				btn.config(
-					width=self.CELL_WIDTH,
-					height=self.CELL_HEIGHT,
+					width=self.cellWidth,
+					height=self.cellHeight,
 					fg=fg,
 					activeforeground=fg,
 					bg=bg,
 					activebackground=bg,
 					state=state)
-			# end of updateDigits()
+		# end of updateDigits()
 
-		for i in range(N):
-			for j in range(N):
+		n = self.app.getGridSize()
+		for i in range(n):
+			for j in range(n):
 				updateCell(i,j)
 
 		updateDigits()
 		self._updateMistakes()
-		# end of update()
+	# end of update()
 
 
 	def _updateSetup(self) -> None:
-		""" (private) set color to frames and setup obj based on theme
+		""" (private) set color to frames and top row.
 		@return None """
-		theme = self._getTheme()
-		bg = theme["bg_light"]
+		bg = self.theme.background
 		for frame in self._frame.winfo_children():
 			frame.config(bg=bg)
 
 		self._frame.config(bg=bg)
 		self._root.config(bg=bg)
-		self._mistakes.config(fg=theme["mistake"], bg=bg)
-		self._erase.config(fg=theme["fg"], bg=bg)
-		self._timer.config(fg=theme["fg"], bg=bg)
+		self._mistakes.config(fg=self.theme.mistake, bg=bg)
+		self._erase.config(fg=self.theme.fontcolor, bg=bg)
+		self._timer.config(fg=self.theme.fontcolor, bg=bg)
 
-		self.gridFrame.config(bg=theme["bg_dark"]) # to show the actual grid
+		# to show the actual grid, other color
+		self.gridFrame.config(bg=self.theme.gridBackground) 
 
 
 	def _updateTimer(self) -> None:
-		""" (private) Updates the Timer-Label, which is automatically called by _loopTimer
+		""" (private) Updates the content of Timer-Label, which is automatically called by _loopTimer
 		NOTE: works even when Label doesnt exist yet
 		@return None """
 		if self._timer:
@@ -377,7 +489,7 @@ class UI:
 
 
 	def _updateMistakes(self) -> None:
-		""" (private) Update the Mistakes Label.
+		""" (private) Update the content on Mistakes Label.
 		NOTE: works even when label doesnt exist
 		@return None """
 		if self._mistakes:
@@ -389,29 +501,29 @@ class UI:
 	### Themes, Color
 	#########################################################################################
 
-	def _getTheme(self) -> dict:
-		""" (private) returns the color theme
-		@return dict """
-		if self.app.darkmode:
-			return {
-				"fg": "#ffffff",
-				"bg_light": "#2e2e2e",
-				"bg_dark": "#151515",
-				"highlight": "#5a5a5a",
-				"active": "#2e64aa",
-				"digit": "#a9a9f5",
-				"mistake": "#df0101"
-			}
-		else:
-			return {
-				"fg": "#000000",
-				"bg_light": "#ffffff",
-				"bg_dark": "#d2d2d2",
-				"highlight": "#ccccda",
-				"active": "#a6c8ff",
-				"digit": "#4444ff",
-				"mistake": "#ee2222"
-			}
+	def _loadThemes(self, path: str = "themes.json") -> None:
+		""" (private) Load themes from a json-file
+		@param path: str	- the path and filename of the json
+		@return None """
+		with open(path, "r", encoding="utf-8") as f:
+			raw = json.load(f)
+
+		for name, values in raw.items():
+			if not name in self._themes.keys():
+				try:
+					self._themes[name] = Theme(**values)
+				except ValueError:
+					print(f"Failed to add '{name}' to themes")
+
+	def _setTheme(self, themeName: str) -> None:
+		""" (private) Sets a theme.
+		@param themeName: str	- the name of the Theme
+		@return None """
+		if not themeName in self._themes.keys():
+			themeNames = "', '".join(self._themes.keys())
+			raise KeyError(f"Theme '{themeName}' is not known. Choose one of these: '{themeNames}'")
+		
+		self._currentTheme = self._themes[themeName]
 	
 
 	def _getCellColor(self, row: int, col: int) -> tuple[str,str]:
@@ -426,23 +538,23 @@ class UI:
 			@param col: int	- the column of the cell
 			@param bg: str	- the backgroundcolor
 			@return str """
-			if not (self.app.selectedCell and self.app.highlightCells):
+			if not (self.app.selectedCell and self.app.highlightRules):
 				return bg
 
 			# Colorize by selection
-			theme = self._getTheme()
 			sr, sc = self.app.selectedCell
 
 			# same row or column
 			if row == sr or col == sc:
-				bg = theme["highlight"]
+				bg = self.theme.rulesColor
 			
 			# same block
-			if (row // BLOCK_SIZE, col // BLOCK_SIZE) == (sr // BLOCK_SIZE, sc // BLOCK_SIZE):
-				bg = theme["highlight"]
+			blockSize = self.app.getBlockSize()
+			if (row // blockSize, col // blockSize) == (sr // blockSize, sc // blockSize):
+				bg = self.theme.rulesColor
 			
 			if (row, col) == self.app.selectedCell: # same cell, overwrite
-				bg = theme["active"]
+				bg = self.theme.activeDigit
 
 			return bg
 			# end of applySelectionHighlight()
@@ -458,60 +570,56 @@ class UI:
 				return bg
 
 			if self.app.getFieldValue(row, col) == self.app.selectedDigit:
-				return self._getTheme().get("active")
+				return self.theme.activeDigit
 			return bg
 			# end of applyDigitHighlight()
 
-
 		# theme based coloring
-		theme = self._getTheme()
-		fg = theme["fg"] if self.app.isFieldFixed(row, col) else theme["digit"]
-		bg = theme["bg_light"]
+		fg = self.theme.fontcolor if self.app.isFieldFixed(row, col) else self.theme.fontcolorCustom
+		bg = self.theme.background
 
 		# highlighting based on settings
 		bg = applySelectionHighlight(row, col, bg)
 		bg = applyDigitHighlight(row, col, bg)
 
-		if (row, col) in self._errorCells: # if currently highlighted due to mistake
-			bg = theme['mistake']
+		# if currently highlighted due to mistake
+		if (row, col) in self.app.getErrorCells(): 
+			bg = self.theme.mistake
 		return fg, bg
 
 
 	def _getDigitColor(self, value: int) -> tuple[str, str]:
-		""" Returns the foreground- and backgroundcolor based on selected digit and modes
+		""" (private) Returns the foreground- and backgroundcolor based on selected digit and modes
 		@param value: int	- the value / digit
 		@return tuple[str,str] """
-		theme = self._getTheme()
-		fg = theme["fg"]
-		bg = theme["bg_light"]
+		fg = self.theme.fontcolor
+		bg = self.theme.background
 
 		if value == self.app.selectedDigit:
 			# "highlight" instead of "active", since it confuses visually with cell buttons
-			bg = theme["highlight"]
-			fg = theme["digit"]
+			fg = self.theme.selectedDigitForeground
+			bg = self.theme.selectedDigitBackground
+			
 		return fg, bg
 
 
-	def highlightMistake(self, row: int, col: int) -> None:
-		""" Adds cell to highlight as reason for mistake
-		@param row: int	- the row of the cell
-		@param col: int	- the column of the cell
+	def onMistake(self) -> None:
+		""" Updates the ui and update again after one second.
+		NOTE: update itself recolors the cells causing mistakes.
 		@return None """
 
-		def clearHighlightMistake(row: int, col: int) -> None:
-			""" Called after period of time to cancel the red highlight
-			@param row: int	- the row of the cell
-			@param col: int	- the column of the cell
+		def clearErrorsThenUpdate() -> None:
+			""" Clears the errors and then updates
 			@return None """
-			self._errorCells.discard((row, col))
+			self.app.clearErrorCells()
 			self.update()
 
-		self._errorCells.add((row, col))
-		self._root.after(1000, lambda: clearHighlightMistake(row, col))
+		self.update()
+		self._root.after(1000, clearErrorsThenUpdate)
 
 
 	#########################################################################################
-	### Game End
+	### Game End - Triggers
 	#########################################################################################
 
 	def _onGameEnd(self) -> None:
@@ -524,24 +632,24 @@ class UI:
 			btn.config(state="disabled")
 		
 		self._erase.config(state="disabled")
-		self.app.selectedCell = None
-		self.app.selectedDigit = None
 
 
-	def showGameOver(self) -> None:
-		""" shows the Game-Over-Screen
+	def showGameOver(self, label: str = "Game Over!!!") -> None:
+		""" shows the Game-Over-Screen.
+		@param label: str	- the label to show on Game Over
 		@return None """
 		self._onGameEnd()
-		color = self._getTheme().get("mistake")
-		self._setGameEndLabel("Game Over!!!", color)
+		color = self.theme.mistake
+		self._setGameEndLabel(label, color)
 
 
-	def showGameWin(self) -> None:
-		""" Shows the Win-screen
+	def showGameWin(self, label: str = "Congratulation!!!") -> None:
+		""" Shows the Win-screen.
+		@param label: str	- the label to show on Game Win
 		@return None """
 		self._onGameEnd()
-		color = self._getTheme().get("digit")
-		self._setGameEndLabel("Congratulation!!!", color)
+		color = self.theme.fontcolorCustom
+		self._setGameEndLabel(label, color)
 
 
 	def _setGameEndLabel(self, text: str, color: str) -> None:
@@ -557,23 +665,25 @@ class UI:
 			bg=color,
 			font=self.GAME_END_FONT
 			)
-		winLabel.grid(row=int(N/2), column=int(N / BLOCK_SIZE), columnspan=int(N / BLOCK_SIZE), sticky="news")
+		winLabel.place(relx=0.5, rely=0.5, anchor="center")
 
 	#########################################################################################
-	### Toggle funcxtions
+	### Settings / Menu funcxtions
 	#########################################################################################
 
-	def _toggleDarkMode(self) -> None:
-		""" (private) internal forwarding to toggle darkmode
+	def _changeTheme(self, name: str) -> None:
+		""" (private) changes the Theme and then updates the whole UI.
+		@param name: str	- the name of the Theme
 		@return None """
-		self.app.toggleDarkMode()
+		self._setTheme(name)
 		self._updateSetup()
 		self.update()
 
-	def _toggleHighlightCells(self) -> None:
+
+	def _toggleHighlightRules(self) -> None:
 		""" (private) internal forwarding to toggle highlight cells
 		@return None """
-		self.app.toggleHighlightCells()
+		self.app.toggleHighlightRules()
 		self.update()
 
 	def _toggleHighlightDigits(self) -> None:
@@ -582,11 +692,12 @@ class UI:
 		self.app.toggleHighlightDigits()
 		self.update()
 
+
 	def _toggleEraseButton(self) -> None:
 		""" (private) internal forwarding to toggle erase mode
 		@return None """
 		self.app.toggleEraseMode()
-		color = self._getTheme().get("active") if self.app.inEraseMode else self._getTheme().get("bg_light")
+		color = self.theme.activeDigit if self.app.inEraseMode else self.theme.background
 		self._erase.config(bg=color, activebackground=color)
 		self.update()
 
@@ -596,27 +707,12 @@ class UI:
 		self.app.toggleNoteMode()
 		self.update()
 
-	#########################################################################################
-	### Event functions
-	#########################################################################################
 
-	def _onCellClick(self, row: int, col: int) -> None:
-		""" (private) When a cell is clicked
-		@param row: int	- the row of the clicked cell
-		@param col: int	- the col of the clicked cell 
+	def _onWindowResize(self, size: int) -> None:
+		""" (private) When changing the window size in menu
+		@param size: int	- enum(1,2,3)
 		@return None """
-		self.app.selectedCell = (row, col) # since this is a property, its validated in app. But this is an edge case
-		self.app.handleMove(row, col) 
-		self.update()
-
-
-	def _onDigitClick(self, value: int) -> None:
-		""" (private) When a new digit is selected
-		@param value: int	- the newly selected digit
-		@return None """
-		# since these are properties, its validated in app. But these are edge cases
-		self.app.selectedDigit = None if value == self.app.selectedDigit else value
-		self.app.selectedCell = None
+		self.cellHeight = size # validates itself
 		self.update()
 
 	
@@ -631,9 +727,38 @@ class UI:
 		self.update() # update everything
 		self._loopTimer() # loops until game.hasEnded()
 
+	def _onGameRestart(self) -> None:
+		""" (private) To call when the game is restarted.
+		@return None """
+		self.app.restartGame()
+		self.onNewGame()
+
+	#########################################################################################
+	### Event functions
+	#########################################################################################
+
+	def _onCellClick(self, row: int, col: int) -> None:
+		""" (private) When a cell is clicked
+		@param row: int	- the row of the clicked cell
+		@param col: int	- the col of the clicked cell 
+		@return None """
+		self.app.handleMove(row, col) 
+		self.update()
+
+	def _onDigitClick(self, value: int) -> None:
+		""" (private) When a new digit is selected
+		@param value: int	- the newly selected digit
+		@return None """
+		self.app.selectDigit(value)
+		self.app.deselectCell()
+		self.update()
+
 
 	def onKeyboardInput(self) -> None:
 		""" Eventhandler on keyboard input
 		TODO implement
 		@return None """
 		pass
+
+
+# EOF
