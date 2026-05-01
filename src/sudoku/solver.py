@@ -52,15 +52,14 @@ class Solver:
 		@param solution: tuple[int] | Puzzle
 		@return None
 		"""
+		if isinstance(solution, tuple):
+			solution = Puzzle.loadFromSerialized(solution) # raises an exception if failed
+
 		if isinstance(solution, Puzzle):
 			if not solution.isFinished: # thats not a solution then
 				print(str(solution))
 				raise Exception("A solution has to be a finished puzzle. Cannot add the above puzzle to as solution to solver.")
 			self._solutions.add(solution.serialize())
-
-		elif isinstance(solution, tuple):
-			Puzzle.loadFromSerialized(solution) # raises an exception if failed
-			self._solutions.add(solution)
 		
 		else:
 			raise TypeError(f"Added solution is neither 'tuple[int]' or 'Puzzle': {type(solution)}")

@@ -77,15 +77,17 @@ def test_propagate_valid_empty_puzzle():
 
 def test_propagate_on_valid_partial_puzzle():
 	""" Test: propagate on puzzle with no values on diaogonal axis """
-	p = Puzzle.generateSolution(verbose=False)
+	solution = Puzzle.generateSolution(verbose=False)
+	p = Puzzle.clone(solution)
 	j = 0
-	for i, f in enumerate(p.getFlatGrid()): # clear some fields
-		if i % N == j:
-			f.clear()
-		if i % N == 0:
-			j += 1
+	for i in range(N): # clear some fields
+		p.getField(i,i).clear()
 	s = Solver(p)
 	assert s._propagate() is True
+	assert len(s.solutions) == 1
+
+	sSolution = list(s.solutions)[0]
+	assert sSolution == solution.serialize()
 
 
 def test_naked_singles():
@@ -96,7 +98,6 @@ def test_naked_singles():
 		(0, 0): {5},
 		(0, 1): {1, 2}
 	})
-
 	changed = s._nakedSingles()
 	assert changed == True
 	assert s.puzzle.getValue(0, 0) == 5
@@ -162,23 +163,30 @@ def test_hidden_single_row_no_change():
 #########################################################################################
 
 def test_solve_simple_generated_puzzle():
-	""" """
-	p = Puzzle.generateSolution(verbose=False)
+	""" Test: solve with empty diagonal """
+	solution = Puzzle.generateSolution(verbose=False)
+	p = Puzzle.clone(solution)
 	j = 0
-	for i, f in enumerate(p.getFlatGrid()): # clear some fields
-		if i % N == j:
-			f.clear()
-		if i % N == 0:
-			j += 1
+	for i in range(N): # clear some fields
+		p.getField(i,i).clear()
+		
 	s = Solver(p)
 	result = s.solve()
 	assert result is True
 	assert len(s.solutions) == 1
 
+	pSolution = solution.serialize()
+	sSolution = list(s.solutions)[0]
+	assert sSolution == pSolution
+
+	p2 = Puzzle.loadFromSerialized(sSolution)
+	assert p2.isFinished
+	assert p2.isValid()
+
 
 def test_solve_already_solved():
+	""" Test: what if puzzle is already solved """
 	p = Puzzle.generateSolution(verbose=False)
-
 	s = Solver(p)
 	assert s.solve() is True
 	assert len(s.solutions) == 1
@@ -190,6 +198,7 @@ def test_solve_already_solved():
 
 
 def test_backtrack_finds_solution():
+	""" Test: """
 	p = Puzzle()
 	p.setValue(0, 0, 1)
 	p.setValue(0, 1, 2)
