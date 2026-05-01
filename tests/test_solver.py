@@ -13,7 +13,6 @@ from sudoku.models.constants import N
 ### init 
 #########################################################################################
 
-
 def test_solver_init_clones_puzzle():
 	""" Test: test clone """
 	p = Puzzle()
