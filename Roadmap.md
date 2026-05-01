@@ -2,13 +2,10 @@
 
 ## Appearance
 - Notes-System in UI
-- add *auto-swap on finished digit* option
-- show state of modes in *settings*-Menu
+- keyboard input
 
 ## Architecture
-- UIState as its own Class
 - add and implement more advanced constraint-methods for solver
-- advanced theme management with custom theme option
 - Guide on next steps in ui 
 
 ## Maintainance
