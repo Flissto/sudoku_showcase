@@ -439,7 +439,9 @@ class Puzzle:
 
 		for field in new.iterGrid():
 			field = new.getField(field.x, field.y)
-			field.value = serialized[field.x * N + field.y] # assigning a not valid value will raise an exception
+			sv = serialized[field.x * N + field.y]
+			if sv: # if sv is None, nothing to, since Field default is None as well 
+				field.value = sv # assigning a not valid value will raise an exception
 		
 		if not new.isValid():
 			raise Exception("Tried to load a not valid Sudoku!")
@@ -460,7 +462,8 @@ class Puzzle:
 
 		for field in new.iterGrid():
 			try:
-				field.value = grid[field.x][field.y]
+				if grid[field.x][field.y] is not None:
+					field.value = grid[field.x][field.y]
 			except IndexError: # rather ask for forgiveness, than permission
 				raise IndexError(f"'grid' must have the dimension {N}x{N}")
 		

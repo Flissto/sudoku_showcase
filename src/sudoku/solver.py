@@ -85,11 +85,11 @@ class Solver:
 		""" Tries to solve the Puzzle using chain of constraints and if stuck, brute force
 		@return bool	- if unique solution """
 
-		if not self._propagate():
-			return False # puzzle is invalid
-
-		if self.puzzle.isFinished:
+		if self._propagate():
 			return True
+
+		if not self.puzzle.isValid():
+			return False
 
 		# point of no return
 		self._backtrack()
@@ -128,13 +128,14 @@ class Solver:
 			if self._lockedCandidates():
 				changed = True
 
+			if self.puzzle.isFinished:
+				self._addSolution(self.puzzle.serialize())
+				return True
+
 			if not changed:
 				break
 
-			if not self.puzzle.isValid():
-				return False
-
-		return True
+		return False
 
 
 	#########################################################################################

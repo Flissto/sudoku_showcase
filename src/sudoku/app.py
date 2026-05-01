@@ -54,7 +54,7 @@ class App:
 		""" Sets the property selectedDigit to a valid value or no value.
 		@param digit: int | None
 		@return None """
-		if not (digit in Field.ALLOWED_VALUES or digit is None):
+		if not (digit in ALLOWED_VALUES or digit is None):
 			raise ValueError(f"digit has to be a number in between 1 and {N} or None.")
 		self._state.selectedDigit = digit
 		if self._verbose:
@@ -213,7 +213,7 @@ class App:
 		
 		# then its a call to swap
 		self.deselectCell()
-		values = Field.ALLOWED_VALUES
+		values = ALLOWED_VALUES
 		startIndex = values.index(self.selectedDigit)
 	
 		# get next, so start with 1
