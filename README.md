@@ -123,7 +123,24 @@ The project is structured into distinct layers derived from the Model-View-Contr
 This separation ensures **maintainability and extensibility**.
 See the full [API Documentation](https://flissto.github.io/sudoku_showcase/) on Github Pages.
 
+## Dynamic Tests
+# pytest
+There are tests implemented using pytest in the tests-directory.
+```bash
+pytest tests/
+```
+As the project is still in development, only tests for the following modules have been implemented yet:
+- field.py
+- puzzle.py
+- solver.py
+There are more unit- and integration tests planned. For further details see the [Roadmap](/Roadmap.md).
+
 ---
+
+## AI Assistance
+
+AI tools, such as ChatGPT and GitHub Copilot, were used as a supporting tool during development (e.g. for feedback and debugging).
+All implementation decisions, architecture, and final code were written and verified by the author.
 
 ## License
 

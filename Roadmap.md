@@ -8,8 +8,15 @@
 - add and implement more advanced constraint-methods for solver
 - Guide on next steps in ui 
 
-## Maintainance
-- unit-tests for algorithms (models.py and game.py)
+## Maintenance
+- unit-tests:
+    - state.py
+    - themes.py
+- integration-tests:
+    - app.py
+    - ui.py
+    - cli.py
+
 - cli: argparse
 - cli: argument parser for input
 - cli: detailed help for commands
