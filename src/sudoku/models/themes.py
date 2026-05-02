@@ -17,7 +17,7 @@ class HEX:
 	""" A class representing the hexadecimal farbcode.
 	Raises ValueError if not a valid value. """
 
-	VALID_CHARS = [i for i in range(10)] + ['a', 'b', 'c', 'd', 'e', 'f']
+	VALID_CHARS = [str(i) for i in range(10)] + ['a', 'b', 'c', 'd', 'e', 'f']
 
 	def __init__(self, hex: str):
 
@@ -25,6 +25,9 @@ class HEX:
 		if not h.startswith("#"):
 			raise ValueError(f"Hex-Values must start with '#': {hex}")
 		
+		if len(h) != 7:
+			raise ValueError(f"Hex-Values must have exactly 6 chars and one '#': {hex}")
+
 		for i in range(1, len(h)):
 			if not h[i] in self.VALID_CHARS:
 				raise ValueError(f"Accepted hex-chars are {self.VALID_CHARS}: {hex}")
@@ -34,13 +37,13 @@ class HEX:
 
 	def __repr__(self):
 		""" The string-repr of an Hex-value"""
-		return self._hex
+		return str(self._hex)
 	
 
 	def __str__(self) -> str:
 		""" The string-repr of an Hex-value
 		@return str """
-		return str(self.__repr__)
+		return str(self._hex)
 
 #########################################################################################
 ### RGB Class
@@ -59,7 +62,9 @@ class RGB:
 		elif red > self.MAX_VALUE or green > self.MAX_VALUE or blue > self.MAX_VALUE:
 			raise ValueError(f"RGB only accepts values less than {self.MAX_VALUE + 1}")
 
-		self._r = red, self._g = green, self._b = blue
+		self._r = red
+		self._g = green
+		self._b = blue
 
 
 	def __repr__(self):

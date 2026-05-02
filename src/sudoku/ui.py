@@ -19,6 +19,10 @@ import tkinter as tk
 import json
 from .models.themes import Theme, HEX, RGB
 
+# circular import, but otherwise static code analysis goes crazy
+try: from .app import App
+except:	pass
+
 
 class UI:
 	"""
@@ -35,16 +39,16 @@ class UI:
 	
 	DEFAULT_LIGHT_THEME = Theme(
 		name = "Light Theme",
-		fontcolor = "#000000",
-		fontcolorCustom = "#3b5bdb",
-		background = "#f9f9fa",
-		cellBorder = "#d2d2d2",
-		gridBackground = "#d2d2d2",
-		rulesColor = "#dde3f0",
-		activeDigit = "#a6c8ff",
-		selectedDigitBackground = "#dde3f0",
-		selectedDigitForeground = "#3b5bdb",
-		mistake = "#e53935",
+		fontcolor = HEX("#000000"),
+		fontcolorCustom = HEX("#3b5bdb"),
+		background = HEX("#f9f9fa"),
+		cellBorder = HEX("#d2d2d2"),
+		gridBackground = HEX("#d2d2d2"),
+		rulesColor = HEX("#dde3f0"),
+		activeDigit = HEX("#a6c8ff"),
+		selectedDigitBackground = HEX("#dde3f0"),
+		selectedDigitForeground = HEX("#3b5bdb"),
+		mistake = HEX("#e53935"),
 	)
 
 
@@ -53,20 +57,20 @@ class UI:
 		This also creates the window and the main attributes."""
 		self.app = app
 
-		self._root = tk.Tk()
-		self._themes = {"light": self.DEFAULT_LIGHT_THEME} # available Themes
+		self._root: tk.Tk = tk.Tk()
+		self._themes: dict = {"light": self.DEFAULT_LIGHT_THEME} # available Themes
 
 		# define namespaces for tk-objects
 		n = self.app.getGridSize()
-		self._frame = None
-		self._timer = None
-		self._mistakes = None
+		self._frame: tk.Frame | None = None
+		self._timer: tk.Label | None = None
+		self._mistakes: tk.Label | None = None
 
-		self._cells = [[None] * n for _ in range(n)]
-		self.digitButtons = [None] * n # TODO make property using winfo_children()
+		self._cells: list[list[tk.Button]] = [[None] * n for _ in range(n)]
+		self.digitButtons: list[tk.Button | None] = [None] * n # TODO make property using winfo_children()
 
 		# properties
-		self._cellHeight = 2
+		self._cellHeight: int = 2
 		self._currentTheme: Theme = self.DEFAULT_LIGHT_THEME
 
 		# on init functions

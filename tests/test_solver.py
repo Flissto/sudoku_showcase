@@ -90,6 +90,25 @@ def test_propagate_on_valid_partial_puzzle():
 	assert sSolution == solution.serialize()
 
 
+def test_propagate_on_manual_puzzle():
+	""" Test: propagate on a manually grid """
+	pList = [
+		[None,4,7,1,5,3,6,9,8],
+		[None,5,3,None,None,9,None,2,1],
+		[None,None,9,None,2,None,5,3,4],
+		[None,7,8,2,None,None,None,5,None],
+		[3,None,None,5,None,6,8,7,None],
+		[5,2,6,9,7,8,1,None,None],
+		[8,6,2,None,9,4,3,1,None],
+		[None,3,4,None,1,5,2,6,7],
+		[7,1,5,3,6,2,4,8,None]
+	]
+	p = Puzzle.loadFromList(pList)
+	s = Solver(p)
+	assert s._propagate() is True
+	assert len(s.solutions) == 1
+
+
 def test_naked_singles():
 	""" Test: get the naked singles"""
 	p = Puzzle()
@@ -198,10 +217,19 @@ def test_solve_already_solved():
 
 
 def test_backtrack_finds_solution():
-	""" Test: """
-	p = Puzzle()
-	p.setValue(0, 0, 1)
-	p.setValue(0, 1, 2)
+	""" Test: backtracking on manually grid """
+	pList = [
+		[None,4,7,1,5,3,6,9,8],
+		[None,5,3,None,None,9,None,2,1],
+		[None,None,9,None,2,None,5,3,4],
+		[None,7,8,2,None,None,None,5,None],
+		[3,None,None,5,None,6,8,7,None],
+		[5,2,6,9,7,8,1,None,None],
+		[8,6,2,None,9,4,3,1,None],
+		[None,3,4,None,1,5,2,6,7],
+		[7,1,5,3,6,2,4,8,None]
+	]
+	p = Puzzle.loadFromList(pList)
 	s = Solver(p)
 	s._backtrack()
-	assert isinstance(s.solutions, set)
+	assert len(s.solutions) == 1

@@ -27,7 +27,7 @@ class State:
 		self.highlightDigits: bool = True
 
 		# the cells to be highlighted
-		self.errorCells = set()
+		self.errorCells: set[tuple[int, int]] = set()
 
 
 # EOF

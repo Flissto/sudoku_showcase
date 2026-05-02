@@ -6,24 +6,13 @@ import sys
 import argparse
 
 from .app import App
-from .models import Solver
+from .solver import Solver
 
 
-COMMANDS = {
-	"set": handleSet,
-	"select": handleSelect,
-	"erase": handleErase,
-	"print": handlePrint,
-	"inspect": handleInspect,
-	"exit": handleExit,
-	"quit": handleExit,
-	"new": handleNew,
-	"help": help
-}
-
-def help() -> None:
+def help(app: App) -> None:
 	""" Output on help
 	Ordered by command asc
+	@param app: App
 	@return None"""
 	print("Commands:")
 	for cmd in sorted(COMMANDS.keys()):
@@ -91,9 +80,20 @@ def handleNew(app: App, *args, **kwargs) -> None:
 	if len(args) > 0 and isinstance(args[0], str) and args[0] in app.getAllDifficultyNames():
 		app.startNewGame(difficulty=args[0])
 	else:
-		app.startNewGame()
+		app.startNewGame(app.getCurrentDifficulty())
 
 
+COMMANDS = {
+	"set": handleSet,
+	"select": handleSelect,
+	"erase": handleErase,
+	"print": handlePrint,
+	"inspect": handleInspect,
+	"exit": quit,
+	"quit": quit,
+	"new": handleNew,
+	"help": help
+}
 
 def main() -> None:
 	""" executed on cli without UI
@@ -121,12 +121,12 @@ def main() -> None:
 			break
 
 		elif cmd in COMMANDS:
-			COMMANDS[cmd](*args)
+			COMMANDS[cmd](app, *args)
 			handlePrint(app)
 
 		else:
 			print("unknown command: " + str(cmd) + "\n")
-			help()
+			help(app)
 			continue
 		
 
