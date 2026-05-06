@@ -349,20 +349,38 @@ class Puzzle:
 		return True
 
 
-	def isValid(self) -> bool:
-		""" If one Field with no possible Note exist, the puzzle is invalid.
-		TODO make this less expensive
-		@return bool"""
-		copy = Puzzle.clone(self) # clone, otherwise the notes are overwritten
-		copy.autoNotes()
-
-		emptyFields = copy.getEmptyFields()
-		del copy
-
-		for elem in emptyFields:
-			if len(elem.notes) == 0:
+	def hasValidCandidates(self) -> bool:
+		""" Check if one cell has no Candidates.
+		This would result in an unsolvable puzzle.
+		NOTE: Should return True, otherwise there is a fundamental problem!
+		@return bool """
+		for field in self.getEmptyFields():
+			possible = False
+			for n in ALLOWED_VALUES:
+				if self.isValidCell(field.x, field.y, n):
+					possible = True
+					break
+			if not possible:
 				return False
 		return True
+
+
+	def hasNoDuplicateValues(self) -> bool:
+		""" Checks for duplicate values in the puzzle regarding row, column and block.
+		NOTE: Should return True, otherwise there is a fundamental problem!
+		@return bool """
+		for field in self.getNonEmptyFields():
+			if not self.isValidCell(field.x, field.y, field.value):
+				return False
+		return True
+
+
+	def isValid(self) -> bool:
+		""" A puzzle is valid if there are no duplicate values in row, column and block
+		and every cell has at least one candidate.
+		NOTE: Should return True, otherwise there is a fundamental problem!
+		@return bool"""
+		return self.hasNoDuplicateValues() and self.hasValidCandidates()
 
 
 	#########################################################################################
@@ -428,19 +446,23 @@ class Puzzle:
 	def loadFromSerialized(cls, serialized: tuple[int | None]) -> "Puzzle":
 		""" (classmethod) Creates a Puzzle from a serialized tuple.
 		NOTE: the Non-Empty values in the puzzle will be locked 
+		NOTE: accepts 0 and None as not-set-value 
 
 		@param serialized: tuple[int | None]
+		@exception ValueError	- if serialized has invalid values
+		@exception Exception	- if the puzzle is not valid
 		@exception IndexError	- if serialized does not have the same length as a flat puzzle
 		@return Puzzle"""
 		new = cls() # create empty Puzzle
 		
 		if len(serialized) != len(new.getFlatGrid()):
-			raise Exception(f"'serialized' must have the same length as the flat grid of {len(new.getFlatGrid())}: {len(serialized)}")
+			raise Exception(f"'serialized' must have the same length as the flat grid (length: {len(new.getFlatGrid())}): got {len(serialized)}")
 
 		for field in new.iterGrid():
 			field = new.getField(field.x, field.y)
 			sv = serialized[field.x * N + field.y]
-			if sv: # if sv is None, nothing to, since Field default is None as well 
+			# if sv is None or 0, nothing to. Since Field default is None as well 
+			if sv and sv != 0: 
 				field.value = sv # assigning a not valid value will raise an exception
 		
 		if not new.isValid():
@@ -453,19 +475,28 @@ class Puzzle:
 	@classmethod
 	def loadFromList(cls, grid: list[list[int | None]]) -> "Puzzle":
 		""" (classmethod) Creates a Puzzle from a nested list.
-		NOTE: the Non-Empty values in the puzzle will be locked 
+		NOTE: the Non-Empty values in the puzzle will be locked
+		NOTE: accepts 0 and None as not-set-value 
 
 		@param grid: list[list[int | None]]
+		@exception ValueError	- if serialized has invalid values
+		@exception Exception	- if the puzzle is not valid
 		@exception IndexError	- if grid does not have the same dimension as a puzzle
 		@return Puzzle"""
 		new = cls() # create empty Puzzle
 
+		# validate dimensions
+		if len(grid) != N:
+			IndexError(f"'grid' must have the dimension {N}x{N}: got {len(grid)} rows")
+
+		for i, row in enumerate(grid):
+			if len(row) != N:
+				raise IndexError(f"'grid' must have the dimension {N}x{N}: got {len(row)} columns in {i}. row")
+
 		for field in new.iterGrid():
-			try:
-				if grid[field.x][field.y] is not None:
-					field.value = grid[field.x][field.y]
-			except IndexError: # rather ask for forgiveness, than permission
-				raise IndexError(f"'grid' must have the dimension {N}x{N}")
+			value = grid[field.x][field.y]
+			if value is not None and value != 0: # if False, then its empty anyway
+				field.value = value
 		
 		if not new.isValid():
 			raise Exception("Tried to load a not valid Sudoku!")
