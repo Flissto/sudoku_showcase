@@ -124,7 +124,7 @@ This separation ensures **maintainability and extensibility**.
 See the full [API Documentation](https://flissto.github.io/sudoku_showcase/) on Github Pages.
 
 ## Dynamic Tests
-# pytest
+### pytest
 There are tests implemented using pytest in the tests-directory.
 ```bash
 pytest tests/
