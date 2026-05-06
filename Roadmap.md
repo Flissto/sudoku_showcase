@@ -17,6 +17,7 @@
     - ui.py
     - cli.py
 
-- cli: argparse
-- cli: argument parser for input
-- cli: detailed help for commands
+- cli.py:
+    - argparse
+    - argument parser for input
+    - detailed help for commands
