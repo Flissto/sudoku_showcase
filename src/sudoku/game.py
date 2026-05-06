@@ -131,7 +131,7 @@ class Game:
 		solution = Puzzle.generateSolution(verbose=self._verbose)
 		generationDuration = time.time() - generationStartTime
 		if self._verbose:
-			print(f"Generation time ({self.difficulty}): {generationDuration} seconds")
+			print(f"Generation time ({self.difficulty}): {round(generationDuration,3)} seconds")
 		new = Puzzle.clone(solution)
 
 		creationStartTime = time.time()
@@ -176,7 +176,7 @@ class Game:
 		
 		creationDuration = time.time() - creationStartTime
 		if self._verbose:
-			print(f"Puzzle creation ({self.difficulty}): {creationDuration} seconds")
+			print(f"Puzzle creation ({self.difficulty}): {round(creationDuration,3)} seconds")
 			print(f"Deleted {deleted} digits")
 
 		# lock the NonEmptyFields in solution and initial grid

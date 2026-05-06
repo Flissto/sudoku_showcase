@@ -56,13 +56,14 @@ class Field:
 	def inspect(self) -> None:
 		""" Prints the public attributes of Field on cli
 		@return None"""
-		print("Inspect:")
-		print("x:", self.x)
-		print("y:", self.y)
-		print("value:", self.value)
-		print("fixed:", self.fixed)
-		print("isEmpty:", self.isEmpty)
-		print("Notes:", list(self.notes))
+		print("#"*7,"INSPECT","#"*7)
+		print("# x:\t\t", self.x)
+		print("# y:\t\t", self.y)
+		print("# value:\t", self.value)
+		print("# fixed:\t", self.fixed)
+		print("# isEmpty:\t", self.isEmpty)
+		print("# Notes:\t", list(self.notes))
+		print("#"*23)
 
 
 	@classmethod

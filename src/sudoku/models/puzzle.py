@@ -33,29 +33,29 @@ class Puzzle:
 		To get access @see Puzzle.getField() """
 
 
-	def __str__(self):
+	def __str__(self) -> str:
 		""" The str(Puzzle)
 		@see _print(_str=True), so internal """
-		self._print(_str=True)
-		return "" # has to return str
+		return self._print(_str=True)
 
-	def __repr__(self):
+	def __repr__(self) -> str:
 		""" The repr(Puzzle)
 		Internal usage of repr(Field)"""
-		self._print(_str=False)
+		return self._print(_str=False)
 
 
 	def _print(self, _str: bool) -> None:
 		""" (private) Helper-Function to print puzzle
 		@param _str: bool	- if str() or repr should be used
 		@return None """
+		res = ""
 
-		def horizontalLine():
-			print((("+" + ((N - 2) * "-")) * BLOCK_SIZE) + "+")
+		def horizontalLine() -> str:
+			return (("+" + ((N - 2) * "-")) * BLOCK_SIZE) + "+"
 
 		for i in range(len(self._grid)):
 			row = ""
-			if i % BLOCK_SIZE == 0: horizontalLine()
+			if i % BLOCK_SIZE == 0: res += horizontalLine() + "\n"
 			for j in range(len(self._grid)):
 				if j % BLOCK_SIZE == 0: row += "| " # print vertical line
 
@@ -63,12 +63,11 @@ class Puzzle:
 				if _str: row += str(self.getField(i, j)) + " "
 				else: row += self.getField(i, j) + " "
 
-			print(row + "|") # print row and last vertical line
+			res += row + "|\n" # print row and last vertical line
 		
 		# bottom of puzzle
-		horizontalLine()
-		print("")
-		return ""
+		res += horizontalLine()
+		return res
 
 
 	def serialize(self) -> tuple[int | None]:

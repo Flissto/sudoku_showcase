@@ -262,7 +262,7 @@ class UI:
 
 					btn = tk.Button(
 						self.gridFrame,
-						text=self.app.getFieldStr(i, j),
+						text=self.app.getFieldLabel(i, j),
 						font=self.DEFAULT_FONT,
 						bd=0,
 						highlightthickness=0,
@@ -410,7 +410,7 @@ class UI:
 			@param col: int
 			@return None """
 			# show value, colorize
-			text = self.app.getFieldStr(row, col)
+			text = self.app.getFielLabel(row, col)
 			btn = self._getCell(row,col)
 
 			fg, bg = self._getCellColor(row, col)

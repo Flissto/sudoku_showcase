@@ -9,7 +9,6 @@
 # 
 #
 
-import time
 from .models.constants import N, BLOCK_SIZE, ALLOWED_INDEX, ALLOWED_VALUES
 from .models.field import Field 
 from .game import Game
@@ -421,13 +420,21 @@ class App:
 		return field.value if field else Field.NULL
 
 
-	def getFieldStr(self, row: int, col: int) -> str:
+	def getFieldLabel(self, row: int, col: int) -> str:
 		""" Returns the Label for a Field at (row, col)
 		@param row: int	- the row of the field in question
 		@param col: int	- the column of the field in question
 		@return str """
 		field = self._game.getField(row, col)
 		return str(field) if field else Field.DEFAULT_AS_STRING
+
+
+	def printField(self, row: int, col: int) -> None:
+		""" Prints the Field attributes.
+		@param row: int	- the row of the field in question
+		@param col: int	- the column of the field in question
+		@return str """
+		self._game.getField(row, col).inspect()
 
 
 	def isFieldFixed(self, row: int, col: int) -> bool:
