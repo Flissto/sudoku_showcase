@@ -9,16 +9,101 @@ from sudoku.solver import Solver
 from sudoku.models.puzzle import Puzzle
 from sudoku.models.constants import N
 
+
+VALID_PUZZLE = [
+	[0,4,7, 1,5,3, 6,9,8],
+	[0,5,3, 0,0,9, 0,2,1],
+	[0,0,9, 0,2,0, 5,3,4],
+
+	[0,7,8, 2,0,0, 0,5,0],
+	[3,0,0, 5,0,6, 8,7,0],
+	[5,2,6, 9,7,8, 1,0,0],
+
+	[8,6,2, 0,9,4, 3,1,0],
+	[0,3,4, 0,1,5, 2,6,7],
+	[7,1,5, 3,6,2, 4,8,0]
+]
+
+
+VALID_SOLUTION = [
+	[9,8,1, 2,4,3, 6,5,7],
+	[3,2,5, 1,6,7, 4,9,8],
+	[6,4,7, 5,9,8, 2,1,3],
+
+	[2,3,8, 6,7,1, 9,4,5],
+	[1,6,9, 4,3,5, 8,7,2],
+	[5,7,4, 9,8,2, 3,6,1],
+
+	[8,9,2, 7,1,6, 5,3,4],
+	[4,1,3, 8,5,9, 7,2,6],
+	[7,5,6, 3,2,4, 1,8,9],
+]
+
+NOT_UNIQUE_SOLUTION = [
+	[9,8,1, 2,4,3, 6,5,7],
+	[3,2,5, 1,6,7, 4,9,8],
+	[6,4,7, 5,9,8, 2,1,3],
+
+	[2,3,8, 6,7,1, 9,4,5],
+	[1,6,9, 4,3,5, 8,7,2],
+	[0,0,0, 9,8,2, 3,6,1], # 7,5,4 or 5,7,4
+
+	[8,9,2, 7,1,6, 5,3,4],
+	[4,0,3, 8,5,9, 0,2,6], # 1,7 or 7,1
+	[0,0,6, 3,2,4, 0,8,9], # 5,7,1 or 5,1,7 or 7,5,1
+]
+
+INVALID_PUZZLE = [
+	[9,8,1, 2,4,3, 6,5,7],
+	[3,2,1, 1,6,7, 4,9,8], # 1 is in the block and column twice
+	[6,0,0, 5,9,8, 2,1,3],
+
+	[2,3,8, 6,7,1, 9,4,5],
+	[1,6,9, 4,3,5, 8,7,2],
+	[0,0,0, 9,8,2, 3,6,1],
+
+	[8,9,2, 7,1,6, 5,3,4],
+	[4,0,3, 8,5,9, 0,2,6],
+	[0,0,6, 3,2,4, 0,8,9],
+]
+
+NO_POSSIBLE_CANDIDATE = [
+    [7,4,1, 0,0,0, 0,0,0],
+    [8,0,2, 0,0,0, 0,0,0],
+    [9,5,3, 0,0,0, 0,0,0],
+
+    [0,6,0, 0,0,0, 0,0,0], # 6 is blocking column, but is missing at (1,1)
+    [0,0,0, 0,0,0, 0,0,0],
+    [0,0,0, 0,0,0, 0,0,0],
+
+    [0,0,0, 0,0,0, 0,0,0],
+    [0,0,0, 0,0,0, 0,0,0],
+    [0,0,0, 0,0,0, 0,0,0],
+]
+
+
+def loadFromList(grid: list) -> Puzzle:
+	""" Helper not validating the puzzle """
+	new = Puzzle()
+	for field in new.iterGrid():
+		value = grid[field.x][field.y]
+		if value is not None and value != 0: # if False, then its empty anyway
+			field.value = value
+
+	return new
+
+
 #########################################################################################
 ### init 
 #########################################################################################
 
 def test_solver_init_clones_puzzle():
-	""" Test: test clone """
-	p = Puzzle()
+	""" Test: solver must clone the original """
+	p = Puzzle.loadFromList(VALID_PUZZLE)
 	s = Solver(p)
-	assert isinstance(s.puzzle, Puzzle)
-	assert s.puzzle is not p 
+	assert isinstance(s.puzzle, Puzzle) # its a puzzle
+	assert s.puzzle is not p # the puzzle in solver is not the original
+	assert s.puzzle.serialize() == p.serialize() # but they have the same content
 
 
 #########################################################################################
@@ -27,12 +112,12 @@ def test_solver_init_clones_puzzle():
 
 def test_add_solution():
 	""" Test: add solution from puzzle and serialized """
-	p = Puzzle.generateSolution(verbose=False)
+	p = Puzzle.loadFromList(VALID_SOLUTION)
 	s = Solver(p)
 	s._addSolution(p)
 	assert len(s.solutions) == 1
-	s._addSolution(p.serialize())
-	assert len(s.solutions) == 1
+	s._addSolution(p.serialize()) # add the same solution again
+	assert len(s.solutions) == 1 # still one solution
 
 
 def test_add_incomplete_solution():
@@ -48,9 +133,9 @@ def test_merge_solutions():
 	p = Puzzle.generateSolution(verbose=False)
 	s1 = Solver(p)
 	s2 = Solver(p)
-	s1._addSolution(p.serialize())
+	s1._addSolution(p.serialize()) # add solution is tested before
 	s2._addSolution(p.serialize())
-	Solver.mergeSolutions(s1, s2)
+	Solver.mergeSolutions(s1, s2) # merging the same two solutions, should result in one
 	assert len(s1.solutions) == 1
 
 #########################################################################################
@@ -67,45 +152,26 @@ def set_notes(puzzle, notes_map):
 			f.addNote(n)
 
 
-def test_propagate_valid_empty_puzzle():
-	""" Test: propagate on an empty puzzle means no """
-	p = Puzzle()
-	s = Solver(p)
-	result = s._propagate()
-	assert result is False
-
-
-def test_propagate_on_valid_partial_puzzle():
-	""" Test: propagate on puzzle with no values on diaogonal axis """
-	solution = Puzzle.generateSolution(verbose=False)
-	p = Puzzle.clone(solution)
+def test_propagate_reconstruct_solution():
+	""" Test: from solution delete diagonal will result in the exact solution """
+	solution = Puzzle.loadFromList(VALID_SOLUTION)
+	p = Puzzle.clone(solution) # to edit
 	j = 0
-	for i in range(N): # clear some fields
+	for i in range(N): # clear the diagonal => simple to solve
 		p.getField(i,i).clear()
 	s = Solver(p)
-	assert s._propagate() is True
+	s._propagate()
 	assert len(s.solutions) == 1
 
 	sSolution = list(s.solutions)[0]
 	assert sSolution == solution.serialize()
 
 
-def test_propagate_on_manual_puzzle():
-	""" Test: propagate on a manually grid """
-	pList = [
-		[None,4,7,1,5,3,6,9,8],
-		[None,5,3,None,None,9,None,2,1],
-		[None,None,9,None,2,None,5,3,4],
-		[None,7,8,2,None,None,None,5,None],
-		[3,None,None,5,None,6,8,7,None],
-		[5,2,6,9,7,8,1,None,None],
-		[8,6,2,None,9,4,3,1,None],
-		[None,3,4,None,1,5,2,6,7],
-		[7,1,5,3,6,2,4,8,None]
-	]
-	p = Puzzle.loadFromList(pList)
+def test_propagate_on_valid_puzzle():
+	""" Test: propagate on a valid puzzle which derives not from solution """
+	p = Puzzle.loadFromList(VALID_PUZZLE)
 	s = Solver(p)
-	assert s._propagate() is True
+	s._propagate()
 	assert len(s.solutions) == 1
 
 
@@ -177,24 +243,55 @@ def test_hidden_single_row_no_change():
 	assert changed is False
 
 
+def test_propagate_no_possible_candidate():
+	""" Test: propagation should fail immediately due to contradiction """
+	p = loadFromList(NO_POSSIBLE_CANDIDATE)
+	s = Solver(p)
+
+	result = s._propagate()
+	assert len(s.solutions) == 0
+
+
+#########################################################################################
+### backtrack 
+#########################################################################################
+
+
+def test_backtrack_finds_solution():
+	""" Test: backtracking on a grid """
+	p = Puzzle.loadFromList(VALID_PUZZLE)
+	s = Solver(p)
+	s._backtrack()
+	assert len(s.solutions) == 1
+
+
+def test_backtrack_finds_multiple_solutions():
+	""" Test: backtracking on a grid """
+	p = Puzzle.loadFromList(NOT_UNIQUE_SOLUTION)
+	s = Solver(p)
+	s._backtrack()
+	assert len(s.solutions) == 3
+
+
 #########################################################################################
 ### solve 
 #########################################################################################
 
-def test_solve_simple_generated_puzzle():
+def test_solve_valid_puzzle():
 	""" Test: solve with empty diagonal """
-	solution = Puzzle.generateSolution(verbose=False)
-	p = Puzzle.clone(solution)
+	validSolution = Puzzle.loadFromList(VALID_SOLUTION)
+	p = Puzzle.clone(validSolution)
 	j = 0
 	for i in range(N): # clear some fields
 		p.getField(i,i).clear()
 		
 	s = Solver(p)
-	result = s.solve()
-	assert result is True
+	isSolved = s.solve()
+	assert isSolved is True
 	assert len(s.solutions) == 1
+	assert s.puzzle.isValid()
 
-	pSolution = solution.serialize()
+	pSolution = validSolution.serialize()
 	sSolution = list(s.solutions)[0]
 	assert sSolution == pSolution
 
@@ -205,31 +302,27 @@ def test_solve_simple_generated_puzzle():
 
 def test_solve_already_solved():
 	""" Test: what if puzzle is already solved """
-	p = Puzzle.generateSolution(verbose=False)
+	p = Puzzle.loadFromList(VALID_SOLUTION)
 	s = Solver(p)
 	assert s.solve() is True
 	assert len(s.solutions) == 1
+	assert s.puzzle.isValid()
 
 
-#########################################################################################
-### backtrack 
-#########################################################################################
-
-
-def test_backtrack_finds_solution():
-	""" Test: backtracking on manually grid """
-	pList = [
-		[None,4,7,1,5,3,6,9,8],
-		[None,5,3,None,None,9,None,2,1],
-		[None,None,9,None,2,None,5,3,4],
-		[None,7,8,2,None,None,None,5,None],
-		[3,None,None,5,None,6,8,7,None],
-		[5,2,6,9,7,8,1,None,None],
-		[8,6,2,None,9,4,3,1,None],
-		[None,3,4,None,1,5,2,6,7],
-		[7,1,5,3,6,2,4,8,None]
-	]
-	p = Puzzle.loadFromList(pList)
+def test_solve_no_possible_candidate():
+	""" Test: puzzle with contradiction should have no solution """
+	p = loadFromList(NO_POSSIBLE_CANDIDATE)
 	s = Solver(p)
-	s._backtrack()
-	assert len(s.solutions) == 1
+	isSolved = s.solve()
+	assert isSolved is False
+	assert len(s.solutions) == 0
+
+
+def test_solver_is_deterministic():
+	""" Test: solving the same puzzle should result in same solutions"""
+	p = Puzzle.loadFromList(VALID_PUZZLE)
+	s1 = Solver(p) # cloning is already tested 
+	s2 = Solver(p)
+	s1.solve()
+	s2.solve()
+	assert s1.solutions == s2.solutions

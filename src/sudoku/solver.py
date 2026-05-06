@@ -59,6 +59,11 @@ class Solver:
 			if not solution.isFinished: # thats not a solution then
 				print(str(solution))
 				raise Exception("A solution has to be a finished puzzle. Cannot add the above puzzle to as solution to solver.")
+
+			if not solution.isValid():
+				print(str(solution))
+				raise Exception("Invalid Puzzle! Cannot add the above puzzle to as solution to solver.")
+
 			self._solutions.add(solution.serialize())
 		
 		else:
@@ -76,6 +81,14 @@ class Solver:
 		this._solutions.update(other._solutions)
 
 
+	def printSolutions(self) -> None:
+		""" Function to print the found solution console
+		@return None """
+		for sol in self.solutions:
+			p = Puzzle.loadFromSerialized(sol)
+			print(str(p))
+
+
 	#########################################################################################
 	### Solve the puzzle
 	#########################################################################################	
@@ -84,57 +97,50 @@ class Solver:
 		""" Tries to solve the Puzzle using chain of constraints and if stuck, brute force
 		@return bool	- if unique solution """
 
-		if self._propagate():
-			return True
-
-		if not self.puzzle.isValid():
-			return False
+		self._propagate()
 
 		# point of no return
 		self._backtrack()
+
 		return len(self.solutions) == 1 # unique solution?
 
 
-	def _propagate(self) -> bool:
+	def _propagate(self) -> None:
 		""" (private) Try sudoku strategies on a constraint based algorithm
-		NOTE: return True doesnt necessarily means a solution, but valid puzzle.
-		TODO change return to True, if finished and let the solver check if puzzle is valid
+		If propagate found a solution, it will add it to self.solutions and returns.
+		
+		NOTE: this function does NOT guarantee uniqueness nor completeteness regarding the solutions.
+		Think of this function as an optimizer, not a solver!
 
-		@return bool	- if puzzle is valid by sudoku rules"""
+		@return None """
+
+		strategies = [
+			self._nakedSingles,
+			self._hiddenSinglesRow,
+			self._hiddenSinglesColumn,
+			self._hiddenSinglesBlock,
+			self._nakedPairs,
+			self._hiddenPairs,
+			self._lockedCandidates
+		]
 		
 		while True:
 			changed = False
 			self.puzzle.autoNotes()
 
-			if self._nakedSingles():
-				changed = True
+			for strat in strategies:
+				if strat():
+					changed = True
 
-			if self._hiddenSinglesRow():
-				changed = True
-
-			if self._hiddenSinglesColumn():
-				changed = True
-
-			if self._hiddenSinglesBlock():
-				changed = True
-
-			if self._nakedPairs():
-				changed = True
-
-			if self._hiddenPairs():
-				changed = True
-
-			if self._lockedCandidates():
-				changed = True
-
-			if self.puzzle.isFinished:
+			# a solution is a finished puzzle
+			if self.puzzle.isFinished: 
+				# add to solutions stack
 				self._addSolution(self.puzzle.serialize())
-				return True
+				return
 
+			# when nothing changed were done
 			if not changed:
-				break
-
-		return False
+				return
 
 
 	#########################################################################################
@@ -259,18 +265,18 @@ class Solver:
 	### Backtracking
 	#########################################################################################
 
-	def _backtrack(self) -> bool:
+	def _backtrack(self) -> None:
 		""" (private) Brute Force, if stuck
 		NOTE: usage of recursion und expensive algorithm. But this project is just for clarity and demo, not perfomance
-		@return bool	- if successfully found a unique solution
+		@return None
 
 		<i>Cut my life into pieces, this is my last resort ...<i>"""
 		if len(self.solutions) > 1:
-			return False # more than one solution is invalid
+			return # more than one solution is invalid
 
 		if self.puzzle.isFinished:
 			self._addSolution(self.puzzle.serialize())
-			return True # we have a solution, Sir!
+			return # we have a solution, Sir!
 
 		self.puzzle.autoNotes()
 
@@ -286,16 +292,15 @@ class Solver:
 			if snapshot.setValue(field.x, field.y, value):
 				solver = Solver(snapshot)
 
-				if not solver._propagate(): # try constraints first 
-					continue # invalid puzzle, try next note
+				solver._propagate()
+				#if solver._propagate(): # try constraints first
+				#	Solver.mergeSolutions(self, solver) # propagate got one solution in this branch
 
-				solver._backtrack()
+				solver._backtrack() # look for more solutions in this branch
 				Solver.mergeSolutions(self, solver)
 
 				if len(self.solutions) > 1: # did solver get another solution?
-					return False # more than one solution is invalid
-
-		# only invalid puzzles found
-		return False
+					return # more than one solution is invalid
+	# end of backtrack
 
 # EOF
