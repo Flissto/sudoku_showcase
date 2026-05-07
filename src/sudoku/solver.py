@@ -76,12 +76,10 @@ class Solver:
 
 		if isinstance(solution, Puzzle):
 			if not solution.isFinished: # thats not a solution then
-				print(str(solution))
-				raise Exception("A solution has to be a finished puzzle. Cannot add the above puzzle to as solution to solver.")
+				raise Exception("A solution has to be a finished puzzle. Cannot add the puzzle to as solution to solver.")
 
 			if not solution.isValid():
-				print(str(solution))
-				raise Exception("Invalid Puzzle! Cannot add the above puzzle to as solution to solver.")
+				raise Exception("Invalid Puzzle! Cannot add the puzzle to as solution to solver.")
 
 			self._solutions.add(solution.serialize())
 		
@@ -173,7 +171,7 @@ class Solver:
 		changed = False
 		for elem in self.puzzle.getEmptyFields(sortByNotesLength=True):
 			if len(elem.notes) == 1:
-				notes = list(elem.notes) # get the naked single, dont quote me on that
+				notes = list(elem.notes)
 				self.puzzle.setValue(elem.x, elem.y, notes[0])
 				changed = True
 			if len(elem.notes) > 1:
@@ -287,15 +285,13 @@ class Solver:
 	def _backtrack(self) -> None:
 		""" (private) Brute Force, if stuck
 		NOTE: usage of recursion und expensive algorithm. But this project is just for clarity and demo, not perfomance
-		@return None
-
-		<i>Cut my life into pieces, this is my last resort ...<i>"""
+		@return None """
 		if len(self.solutions) > 1:
 			return # more than one solution is invalid
 
 		if self.puzzle.isFinished:
 			self._addSolution(self.puzzle.serialize())
-			return # we have a solution, Sir!
+			return # we have a solution
 
 		self.puzzle.autoNotes()
 
@@ -312,8 +308,6 @@ class Solver:
 				solver = Solver(snapshot)
 
 				solver._propagate()
-				#if solver._propagate(): # try constraints first
-				#	Solver.mergeSolutions(self, solver) # propagate got one solution in this branch
 
 				solver._backtrack() # look for more solutions in this branch
 				Solver.mergeSolutions(self, solver)

@@ -502,7 +502,7 @@ class Puzzle:
 
 		# validate dimensions
 		if len(grid) != N:
-			IndexError(f"'grid' must have the dimension {N}x{N}: got {len(grid)} rows")
+			raise IndexError(f"'grid' must have the dimension {N}x{N}: got {len(grid)} rows")
 
 		for i, row in enumerate(grid):
 			if len(row) != N:

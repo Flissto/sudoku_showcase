@@ -82,13 +82,13 @@ class RGB:
 	def __repr__(self):
 		""" The string-repr of an RGB tuple
 		@return tuple """
-		return tuple(self._r, self._g, self._b)
+		return (self._r, self._g, self._b)
 	
 
 	def __str__(self) -> str:
 		""" The string-repr of an RGB tuple
 		@return str """
-		return str(self.__repr__)
+		return str(self.__repr__())
 
 
 	@property
@@ -102,14 +102,14 @@ class RGB:
 	def green(self) -> int:
 		""" Returns the value for Green
 		@return int """
-		return self._r
+		return self._g
 
 
 	@property
 	def blue(self) -> int:
 		""" Returns the value for Blue
 		@return int """
-		return self._r
+		return self._b
 
 
 #########################################################################################

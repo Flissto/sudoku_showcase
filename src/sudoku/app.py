@@ -205,6 +205,7 @@ class App:
 		""" Switches to the next available Digit, which does not occur 9 times
 		@return None """
 		if self.selectedDigit is None:
+			print("Selected digit: None")
 			return
 
 		setDigits = set(self.getSetDigits())

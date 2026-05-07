@@ -236,7 +236,7 @@ class CLI:
 						if len(args.difficulty) > 1: # more than one word
 							diff = " ".join(args.difficulty)
 						elif len(args.difficulty) == 1:
-							diff = args.difficulty[0] # more than one word
+							diff = args.difficulty[0] # single word
 						else:
 							diff = self._app.getDefaultDifficulty() # huh?
 							print("Using default difficulty:", diff)
