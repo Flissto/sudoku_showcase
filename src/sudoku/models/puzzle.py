@@ -207,6 +207,10 @@ class Puzzle:
 			return False
 		
 		self.getField(row, col).value = value
+
+		# remove the notes from the row, column and block
+		for field in set(self.getRow(row=row) + self.getColumn(col=col) + self.getBlock(row=row, col=col)):
+			field.removeNote(value)
 		return True
 
 
@@ -225,13 +229,14 @@ class Puzzle:
 	#########################################################################################
 
 	def addNote(self, row: int, col: int, value: int) -> bool:
-		""" Adds a Note to an empty, non-fixed Field
-		TODO: check if note is not violating rules
+		""" Adds a Note to an empty, non-fixed Field.
 
 		@param row: int	- the row of a Field
 		@param col: int	- the column of a Field
 		@param value: int	- the value to set as note
 		@return bool	- if successfull """
+		if not self.isValidCell(row, col, value):
+			return False
 		return self.getField(row, col).addNote(value)
 
 

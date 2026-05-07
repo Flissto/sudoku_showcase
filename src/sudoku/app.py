@@ -219,6 +219,8 @@ class App:
 		for i in range(1, len(values) + 1):
 			nextDigit = values[(startIndex + i) % len(values)]
 			if not nextDigit in setDigits:
+				if self._verbose:
+					print("Auto switched to", nextDigit, "as selected Digit.")
 				self.selectedDigit = nextDigit
 				return
 
@@ -407,7 +409,7 @@ class App:
 		
 
 	#########################################################################################
-	### Getter Functions (Field, Digits)
+	### Setter / Getter Functions (Field, Digits)
 	#########################################################################################
 
 
@@ -419,7 +421,6 @@ class App:
 		field = self._game.getField(row, col)
 		return field.value if field else Field.NULL
 
-
 	def getFieldLabel(self, row: int, col: int) -> str:
 		""" Returns the Label for a Field at (row, col)
 		@param row: int	- the row of the field in question
@@ -427,6 +428,15 @@ class App:
 		@return str """
 		field = self._game.getField(row, col)
 		return str(field) if field else Field.DEFAULT_AS_STRING
+
+
+	def getFieldNotes(self, row: int, col: int) -> list[int]:
+		""" Returns a list with all Notes from a Field.
+		NOTE: The list can be empty.
+		@param row: int	- the row of the field in question
+		@param col: int	- the column of the field in question
+		@return list[int] """
+		return self._game.getField(row, col).notes
 
 
 	def printField(self, row: int, col: int) -> None:
@@ -450,6 +460,18 @@ class App:
 		@return list[int] | list """
 		digits = [key for key, value in self._game.getDigitCount().items() if value >= N]
 		return digits
+
+
+	def setAutoNotes(self) -> None:
+		""" Set Notes for all Fields automatically.
+		@return None """
+		self._game.autoNotes()
+
+
+	def clearAllNotes(self) -> None:
+		""" Clear all notes in the puzzle.
+		@return None """
+		self._game.clearAllNotes()
 
 
 #########################################################################################
