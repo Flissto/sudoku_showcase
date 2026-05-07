@@ -4,6 +4,8 @@ A clean and modular **Sudoku application built in Python**, designed to demonstr
 
 ---
 
+![Sudoku Game](/assets/sudoku.gif)
+
 ## Overview
 
 This project provides:
