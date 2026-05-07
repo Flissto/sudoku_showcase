@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Sudoku Showcase: state.State Class Reference</title>
+<title>Sudoku Showcase: sudoku.cli.CLI Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -61,47 +61,51 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="namespacestate.html">state</a></li><li class="navelem"><a class="el" href="classstate_1_1State.html">State</a></li>  </ul>
+<li class="navelem"><a class="el" href="namespacesudoku.html">sudoku</a></li><li class="navelem"><a class="el" href="namespacesudoku_1_1cli.html">cli</a></li><li class="navelem"><a class="el" href="classsudoku_1_1cli_1_1CLI.html">CLI</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="classstate_1_1State-members.html">List of all members</a>  </div>
+<a href="classsudoku_1_1cli_1_1CLI-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">state.State Class Reference</div>  </div>
+<div class="title">sudoku.cli.CLI Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Simple data container for application state used by the App controller.  
- <a href="classstate_1_1State.html#details">More...</a></p>
+<p>Command line interface for playing Sudoku directly in the terminal.  
+ <a href="classsudoku_1_1cli_1_1CLI.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a677f4e95e14ebb7990e2152e857c0d92"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate_1_1State.html#a677f4e95e14ebb7990e2152e857c0d92">__init__</a> (self, bool verbose=True)</td></tr>
-<tr class="separator:a677f4e95e14ebb7990e2152e857c0d92"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a102d8856fda759d4e6a1166719cc566d"><td class="memItemLeft" align="right" valign="top">None&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate_1_1State.html#a102d8856fda759d4e6a1166719cc566d">reset</a> (self)</td></tr>
-<tr class="memdesc:a102d8856fda759d4e6a1166719cc566d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets all attributes to default.  <a href="classstate_1_1State.html#a102d8856fda759d4e6a1166719cc566d">More...</a><br /></td></tr>
-<tr class="separator:a102d8856fda759d4e6a1166719cc566d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae671eed408213341c9ebb9c426e6612c"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsudoku_1_1cli_1_1CLI.html#ae671eed408213341c9ebb9c426e6612c">__init__</a> (self, bool useUI=False)</td></tr>
+<tr class="separator:ae671eed408213341c9ebb9c426e6612c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acb585484f30eea9b5297684f0211327e"><td class="memItemLeft" align="right" valign="top">None&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsudoku_1_1cli_1_1CLI.html#acb585484f30eea9b5297684f0211327e">run</a> (self)</td></tr>
+<tr class="memdesc:acb585484f30eea9b5297684f0211327e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executed on cli without UI.  <a href="classsudoku_1_1cli_1_1CLI.html#acb585484f30eea9b5297684f0211327e">More...</a><br /></td></tr>
+<tr class="separator:acb585484f30eea9b5297684f0211327e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Simple data container for application state used by the App controller. </p>
-<p>It stores transient UI and interaction state that is not part of the core Sudoku logic, including:</p><ul>
-<li>selected cell and digit</li>
-<li>input modes (erase, note)</li>
-<li>UI highlighting flags</li>
-<li>error cell tracking</li>
+<div class="textblock"><p>Command line interface for playing Sudoku directly in the terminal. </p>
+<p>The <a class="el" href="classsudoku_1_1cli_1_1CLI.html" title="Command line interface for playing Sudoku directly in the terminal.">CLI</a> acts as a lightweight text-based frontend around the App controller and translates terminal commands into application actions. It uses argparse with subcommands to provide an interactive shell-like experience for managing gameplay, notes, puzzle generation, and inspection utilities.</p>
+<p>The interface supports:</p><ul>
+<li>creating new games with selectable difficulties</li>
+<li>selecting and placing digits</li>
+<li>erasing values</li>
+<li>managing notes manually or automatically</li>
+<li>inspecting field states</li>
+<li>printing the current puzzle state</li>
 </ul>
-<p>The <a class="el" href="classstate_1_1State.html" title="Simple data container for application state used by the App controller.">State</a> can be reset to restore default runtime behavior and contains no game logic beyond state initialization. </p>
+<p>The <a class="el" href="classsudoku_1_1cli_1_1CLI.html" title="Command line interface for playing Sudoku directly in the terminal.">CLI</a> intentionally keeps game logic outside of this class and forwards actions to the App controller instead. This keeps the terminal interface focused on input parsing, validation, and user interaction.</p>
+<p>The command parser is designed to provide descriptive help messages and graceful error handling for invalid commands and arguments. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a677f4e95e14ebb7990e2152e857c0d92"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a677f4e95e14ebb7990e2152e857c0d92">&#9670;&nbsp;</a></span>__init__()</h2>
+<a id="ae671eed408213341c9ebb9c426e6612c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae671eed408213341c9ebb9c426e6612c">&#9670;&nbsp;</a></span>__init__()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">def state.State.__init__ </td>
+          <td class="memname">def sudoku.cli.CLI.__init__ </td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname"><em>self</em>, </td>
@@ -110,7 +114,7 @@ Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">bool &#160;</td>
-          <td class="paramname"><em>verbose</em> = <code>True</code>&#160;</td>
+          <td class="paramname"><em>useUI</em> = <code>False</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -123,14 +127,14 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a102d8856fda759d4e6a1166719cc566d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a102d8856fda759d4e6a1166719cc566d">&#9670;&nbsp;</a></span>reset()</h2>
+<a id="acb585484f30eea9b5297684f0211327e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acb585484f30eea9b5297684f0211327e">&#9670;&nbsp;</a></span>run()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"> None state.State.reset </td>
+          <td class="memname"> None sudoku.cli.CLI.run </td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname"><em>self</em></td><td>)</td>
@@ -139,12 +143,13 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Sets all attributes to default. </p>
+<p>Executed on cli without UI. </p>
+<dl class="section return"><dt>Returns</dt><dd>None </dd></dl>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li><a class="el" href="state_8py.html">state.py</a></li>
+<li><a class="el" href="cli_8py.html">cli.py</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

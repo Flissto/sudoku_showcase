@@ -74,13 +74,13 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>A <a class="el" href="classsudoku_1_1game_1_1Game.html" title="A Game creates a sudoku-object, wich will be solved.">Game</a> creates a sudoku-object, wich will be solved.  
+<p>Represents the Sudoku game logic and acts as a sub-controller within the application's Model-View-Controller architecture.  
  <a href="classsudoku_1_1game_1_1Game.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a32204cba8bfe60e488d2dd9857cdc6f7"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsudoku_1_1game_1_1Game.html#a32204cba8bfe60e488d2dd9857cdc6f7">__init__</a> (self, bool verbose=True)</td></tr>
-<tr class="memdesc:a32204cba8bfe60e488d2dd9857cdc6f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">When the App starts or user creates a new <a class="el" href="classsudoku_1_1game_1_1Game.html" title="A Game creates a sudoku-object, wich will be solved.">Game</a> Mistakes will be set to zero, time to zero, and grids will be cleared.  <a href="classsudoku_1_1game_1_1Game.html#a32204cba8bfe60e488d2dd9857cdc6f7">More...</a><br /></td></tr>
+<tr class="memdesc:a32204cba8bfe60e488d2dd9857cdc6f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">When the App starts or user creates a new <a class="el" href="classsudoku_1_1game_1_1Game.html" title="Represents the Sudoku game logic and acts as a sub-controller within the application&#39;s Model-View-Con...">Game</a> Mistakes will be set to zero, time to zero, and grids will be cleared.  <a href="classsudoku_1_1game_1_1Game.html#a32204cba8bfe60e488d2dd9857cdc6f7">More...</a><br /></td></tr>
 <tr class="separator:a32204cba8bfe60e488d2dd9857cdc6f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af3b7bd5c53afdfb358f43c69a8b3f81f"><td class="memItemLeft" align="right" valign="top">str&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsudoku_1_1game_1_1Game.html#af3b7bd5c53afdfb358f43c69a8b3f81f">difficulty</a> (self)</td></tr>
 <tr class="memdesc:af3b7bd5c53afdfb358f43c69a8b3f81f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Properties.  <a href="classsudoku_1_1game_1_1Game.html#af3b7bd5c53afdfb358f43c69a8b3f81f">More...</a><br /></td></tr>
@@ -89,7 +89,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a1a426cb2c0b091a0a857cd39df7229e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">(readonly property) The mistakes made in the game NOTE: A mistake is a violation of the sudoku rules.  <a href="classsudoku_1_1game_1_1Game.html#a1a426cb2c0b091a0a857cd39df7229e3">More...</a><br /></td></tr>
 <tr class="separator:a1a426cb2c0b091a0a857cd39df7229e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2113e408cfcd8b6cb4550f9cc6b56fe5"><td class="memItemLeft" align="right" valign="top">None&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsudoku_1_1game_1_1Game.html#a2113e408cfcd8b6cb4550f9cc6b56fe5">startNewGame</a> (self, str <a class="el" href="classsudoku_1_1game_1_1Game.html#af3b7bd5c53afdfb358f43c69a8b3f81f">difficulty</a>=&quot;&quot;)</td></tr>
-<tr class="memdesc:a2113e408cfcd8b6cb4550f9cc6b56fe5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Entry Point to start a new <a class="el" href="classsudoku_1_1game_1_1Game.html" title="A Game creates a sudoku-object, wich will be solved.">Game</a> with described Difficulty.  <a href="classsudoku_1_1game_1_1Game.html#a2113e408cfcd8b6cb4550f9cc6b56fe5">More...</a><br /></td></tr>
+<tr class="memdesc:a2113e408cfcd8b6cb4550f9cc6b56fe5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Entry Point to start a new <a class="el" href="classsudoku_1_1game_1_1Game.html" title="Represents the Sudoku game logic and acts as a sub-controller within the application&#39;s Model-View-Con...">Game</a> with described Difficulty.  <a href="classsudoku_1_1game_1_1Game.html#a2113e408cfcd8b6cb4550f9cc6b56fe5">More...</a><br /></td></tr>
 <tr class="separator:a2113e408cfcd8b6cb4550f9cc6b56fe5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5c00d6c0eb17fa704e4738ca176b7ccc"><td class="memItemLeft" align="right" valign="top">None&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsudoku_1_1game_1_1Game.html#a5c00d6c0eb17fa704e4738ca176b7ccc">restart</a> (self)</td></tr>
 <tr class="memdesc:a5c00d6c0eb17fa704e4738ca176b7ccc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Restarts the game.  <a href="classsudoku_1_1game_1_1Game.html#a5c00d6c0eb17fa704e4738ca176b7ccc">More...</a><br /></td></tr>
@@ -150,10 +150,16 @@ Static Public Attributes</h2></td></tr>
 <tr class="separator:a15649f424ac5ffd9297b4e8224b9c4f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>A <a class="el" href="classsudoku_1_1game_1_1Game.html" title="A Game creates a sudoku-object, wich will be solved.">Game</a> creates a sudoku-object, wich will be solved. </p>
-<p>This class holds the game logic within several puzzles (solution, initial and current) and knows about the current state of the game, such as mistakes.</p>
-<p>The initial puzzle leads to a unique solution, which are both hold in this class. The Non-Empty-Fields in those puzzles are not editable, so called fixed. The current grid derives from the initial puzzle and holds the user input.</p>
-<p>Short comment about mistakes: An invalid move regarding the sudoku rules result in a mistake. A digit set (move) to the current grid, which differs from the solution, but not violating sudoku rules, is not a mistake. When reaching MAX_MISTAKES the game will be over, Therefor bruteforcing the solution is not an option. </p>
+<div class="textblock"><p>Represents the Sudoku game logic and acts as a sub-controller within the application's Model-View-Controller architecture. </p>
+<p>This class manages multiple puzzle states:</p><ul>
+<li>the solved puzzle (solution)</li>
+<li>the initial generated puzzle</li>
+<li>the current user state</li>
+</ul>
+<p>The initial puzzle is generated with a unique solution. Non-empty fields from the initial puzzle are treated as fixed and cannot be edited. The current puzzle derives from the initial state and stores all user input.</p>
+<p>The <a class="el" href="classsudoku_1_1game_1_1Game.html" title="Represents the Sudoku game logic and acts as a sub-controller within the application&#39;s Model-View-Con...">Game</a> is responsible for validating moves, tracking mistakes, and handling overall gameplay state. Invalid moves violating Sudoku rules count as mistakes, while incorrect but rule-compliant digits do not. To prevent brute forcing, the game ends once MAX_MISTAKES is reached.</p>
+<p>Most low-level puzzle operations, such as row or column access, are implemented in Puzzle. </p><dl class="section see"><dt>See also</dt><dd>Puzzle</dd></dl>
+<p>The puzzle generation algorithm prioritizes readability and maintainability over heavy optimization, which fits the educational showcase nature of this project. Despite this, puzzle and solution generation remains fast, even for extreme difficulty level (around 0.5 seconds). The time consumed generating the puzzle can be printed on console with verbose. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a32204cba8bfe60e488d2dd9857cdc6f7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a32204cba8bfe60e488d2dd9857cdc6f7">&#9670;&nbsp;</a></span>__init__()</h2>
@@ -181,7 +187,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>When the App starts or user creates a new <a class="el" href="classsudoku_1_1game_1_1Game.html" title="A Game creates a sudoku-object, wich will be solved.">Game</a> Mistakes will be set to zero, time to zero, and grids will be cleared. </p>
+<p>When the App starts or user creates a new <a class="el" href="classsudoku_1_1game_1_1Game.html" title="Represents the Sudoku game logic and acts as a sub-controller within the application&#39;s Model-View-Con...">Game</a> Mistakes will be set to zero, time to zero, and grids will be cleared. </p>
 
 </div>
 </div>
@@ -458,7 +464,7 @@ Static Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>getter </p>
-<p>Returns a Field from the current <a class="el" href="classsudoku_1_1game_1_1Game.html" title="A Game creates a sudoku-object, wich will be solved.">Game</a> NOTE: If the current game doesnt exist, return None.</p>
+<p>Returns a Field from the current <a class="el" href="classsudoku_1_1game_1_1Game.html" title="Represents the Sudoku game logic and acts as a sub-controller within the application&#39;s Model-View-Con...">Game</a> NOTE: If the current game doesnt exist, return None.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">row</td><td>int - the row of the Field in question </td></tr>
@@ -747,7 +753,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Entry Point to start a new <a class="el" href="classsudoku_1_1game_1_1Game.html" title="A Game creates a sudoku-object, wich will be solved.">Game</a> with described Difficulty. </p>
+<p>Entry Point to start a new <a class="el" href="classsudoku_1_1game_1_1Game.html" title="Represents the Sudoku game logic and acts as a sub-controller within the application&#39;s Model-View-Con...">Game</a> with described Difficulty. </p>
 <p>The game attributes will be reset and the solution and initial grid are calculated. NOTE: Does not create a new Game-Object.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">

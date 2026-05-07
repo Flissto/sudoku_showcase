@@ -74,7 +74,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>This class aims to solve a Puzzle using constraints and then backtracking.  
+<p>Solves Sudoku puzzles using a combination of constraint propagation and recursive backtracking.  
  <a href="classsudoku_1_1solver_1_1Solver.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
@@ -100,8 +100,15 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a9ce1073a0b29622915dcabdb582b2040"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>This class aims to solve a Puzzle using constraints and then backtracking. </p>
-<p>Main usage, when creating a unique Solution. Calls itself recursively, when using backtrack-function (last resort when solving) </p>
+<div class="textblock"><p>Solves Sudoku puzzles using a combination of constraint propagation and recursive backtracking. </p>
+<p>The solving process follows two stages:</p><ul>
+<li>applying constraint-based solving strategies</li>
+<li>using backtracking as a fallback when constraints are insufficient</li>
+</ul>
+<p>The constraint propagation step acts as an optimizer to reduce the search space efficiently, but does not guarantee completeness or uniqueness of the solution on its own.</p>
+<p>The backtracking algorithm selects the field with the fewest remaining candidates, clones the current puzzle state, applies one candidate, and then continues solving recursively with a new <a class="el" href="classsudoku_1_1solver_1_1Solver.html" title="Solves Sudoku puzzles using a combination of constraint propagation and recursive backtracking.">Solver</a> instance.</p>
+<p>If multiple valid solutions are detected during recursion, the solving process aborts to preserve uniqueness checks.</p>
+<p>The <a class="el" href="classsudoku_1_1solver_1_1Solver.html" title="Solves Sudoku puzzles using a combination of constraint propagation and recursive backtracking.">Solver</a> is primarily used for generating and validating uniquely solvable puzzles. While the implementation focuses on readability and understandability rather than maximum optimization, it still performs efficiently even on sparse puzzles. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ae81ec893c5f934b9a41f2974dd1bca17"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae81ec893c5f934b9a41f2974dd1bca17">&#9670;&nbsp;</a></span>__init__()</h2>
@@ -165,11 +172,11 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>(classmethod) Merge the solutions of the solver. </p>
-<p>NOTE: this will be the <a class="el" href="classsudoku_1_1solver_1_1Solver.html" title="This class aims to solve a Puzzle using constraints and then backtracking.">Solver</a> with the updated solution.</p>
+<p>NOTE: this will be the <a class="el" href="classsudoku_1_1solver_1_1Solver.html" title="Solves Sudoku puzzles using a combination of constraint propagation and recursive backtracking.">Solver</a> with the updated solution.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">this</td><td><a class="el" href="classsudoku_1_1solver_1_1Solver.html" title="This class aims to solve a Puzzle using constraints and then backtracking.">Solver</a> - the <a class="el" href="classsudoku_1_1solver_1_1Solver.html" title="This class aims to solve a Puzzle using constraints and then backtracking.">Solver</a> to merge the solution into </td></tr>
-    <tr><td class="paramname">other</td><td><a class="el" href="classsudoku_1_1solver_1_1Solver.html" title="This class aims to solve a Puzzle using constraints and then backtracking.">Solver</a> - the <a class="el" href="classsudoku_1_1solver_1_1Solver.html" title="This class aims to solve a Puzzle using constraints and then backtracking.">Solver</a> to merge from </td></tr>
+    <tr><td class="paramname">this</td><td><a class="el" href="classsudoku_1_1solver_1_1Solver.html" title="Solves Sudoku puzzles using a combination of constraint propagation and recursive backtracking.">Solver</a> - the <a class="el" href="classsudoku_1_1solver_1_1Solver.html" title="Solves Sudoku puzzles using a combination of constraint propagation and recursive backtracking.">Solver</a> to merge the solution into </td></tr>
+    <tr><td class="paramname">other</td><td><a class="el" href="classsudoku_1_1solver_1_1Solver.html" title="Solves Sudoku puzzles using a combination of constraint propagation and recursive backtracking.">Solver</a> - the <a class="el" href="classsudoku_1_1solver_1_1Solver.html" title="Solves Sudoku puzzles using a combination of constraint propagation and recursive backtracking.">Solver</a> to merge from </td></tr>
   </table>
   </dd>
 </dl>

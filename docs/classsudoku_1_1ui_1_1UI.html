@@ -75,13 +75,13 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>The UI-class represents the View in the Model-View-Controller-Architecture.  
+<p>Graphical user interface representing the View layer of the application's Model-View-Controller architecture.  
  <a href="classsudoku_1_1ui_1_1UI.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:afb1b4a97e2db45f9ad1286c759643ca5"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsudoku_1_1ui_1_1UI.html#afb1b4a97e2db45f9ad1286c759643ca5">__init__</a> (self, &quot;App&quot; app)</td></tr>
-<tr class="memdesc:afb1b4a97e2db45f9ad1286c759643ca5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates an instance of <a class="el" href="classsudoku_1_1ui_1_1UI.html" title="The UI-class represents the View in the Model-View-Controller-Architecture.">UI</a>.  <a href="classsudoku_1_1ui_1_1UI.html#afb1b4a97e2db45f9ad1286c759643ca5">More...</a><br /></td></tr>
+<tr class="memdesc:afb1b4a97e2db45f9ad1286c759643ca5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates an instance of <a class="el" href="classsudoku_1_1ui_1_1UI.html" title="Graphical user interface representing the View layer of the application&#39;s Model-View-Controller archi...">UI</a>.  <a href="classsudoku_1_1ui_1_1UI.html#afb1b4a97e2db45f9ad1286c759643ca5">More...</a><br /></td></tr>
 <tr class="separator:afb1b4a97e2db45f9ad1286c759643ca5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a50fee0482893c8e2d81835a5eecfc940"><td class="memItemLeft" align="right" valign="top">None&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsudoku_1_1ui_1_1UI.html#a50fee0482893c8e2d81835a5eecfc940">run</a> (self)</td></tr>
 <tr class="memdesc:a50fee0482893c8e2d81835a5eecfc940"><td class="mdescLeft">&#160;</td><td class="mdescRight">Call when ui initialized and ready to go.  <a href="classsudoku_1_1ui_1_1UI.html#a50fee0482893c8e2d81835a5eecfc940">More...</a><br /></td></tr>
@@ -160,8 +160,21 @@ Static Public Attributes</h2></td></tr>
 <tr class="separator:ab70fdf8179b7d5d442e74b07b497a991"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>The UI-class represents the View in the Model-View-Controller-Architecture. </p>
-<p>It knows nothing about rules, logic or anything. Its just about visuals. The only other class the <a class="el" href="classsudoku_1_1ui_1_1UI.html" title="The UI-class represents the View in the Model-View-Controller-Architecture.">UI</a> should call is App. </p>
+<div class="textblock"><p>Graphical user interface representing the View layer of the application's Model-View-Controller architecture. </p>
+<p>The <a class="el" href="classsudoku_1_1ui_1_1UI.html" title="Graphical user interface representing the View layer of the application&#39;s Model-View-Controller archi...">UI</a> is responsible solely for visualization and user interaction. It contains no Sudoku rules, solving logic, or gameplay validation. All state changes and logic interactions are delegated to the App controller through public interface functions.</p>
+<p>The interface is implemented using tkinter and dynamically creates the window, game grid, menus, digit buttons, status displays, and theme-based visual styling.</p>
+<p>The <a class="el" href="classsudoku_1_1ui_1_1UI.html" title="Graphical user interface representing the View layer of the application&#39;s Model-View-Controller archi...">UI</a> follows a pull-based design instead of an event distribution system. Required information is queried from the App whenever the interface updates, while user actions are forwarded back to the App.</p>
+<p>The class provides functionality for:</p><ul>
+<li>visualizing the puzzle grid</li>
+<li>updating game state representations</li>
+<li>handling themes and colors</li>
+<li>displaying timers and mistakes</li>
+<li>highlighting rules and digits</li>
+<li>managing window and display settings</li>
+<li>reacting to user input events</li>
+<li>showing game win and game over screens</li>
+</ul>
+<p>Many internal helper functions are intentionally implemented as nested submethods to improve readability and structure while avoiding an unnecessarily large public interface. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="afb1b4a97e2db45f9ad1286c759643ca5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#afb1b4a97e2db45f9ad1286c759643ca5">&#9670;&nbsp;</a></span>__init__()</h2>
@@ -189,7 +202,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Creates an instance of <a class="el" href="classsudoku_1_1ui_1_1UI.html" title="The UI-class represents the View in the Model-View-Controller-Architecture.">UI</a>. </p>
+<p>Creates an instance of <a class="el" href="classsudoku_1_1ui_1_1UI.html" title="Graphical user interface representing the View layer of the application&#39;s Model-View-Controller archi...">UI</a>. </p>
 <p>This also creates the window and the main attributes. </p>
 
 </div>

@@ -11,5 +11,5 @@ var searchData=
   ['roadmap_129',['Roadmap',['../md_Roadmap.html',1,'']]],
   ['roadmap_2emd_130',['Roadmap.md',['../Roadmap_8md.html',1,'']]],
   ['row_131',['row',['../classfield_1_1Field.html#a209fe92f5a8a60cbdab7690de563a97d',1,'field::Field']]],
-  ['run_132',['run',['../classsudoku_1_1app_1_1App.html#a614ad06e0fa799aac20f46ca0337e7db',1,'sudoku.app.App.run()'],['../classsudoku_1_1ui_1_1UI.html#a50fee0482893c8e2d81835a5eecfc940',1,'sudoku.ui.UI.run()']]]
+  ['run_132',['run',['../classsudoku_1_1app_1_1App.html#a614ad06e0fa799aac20f46ca0337e7db',1,'sudoku.app.App.run()'],['../classsudoku_1_1cli_1_1CLI.html#acb585484f30eea9b5297684f0211327e',1,'sudoku.cli.CLI.run()'],['../classsudoku_1_1ui_1_1UI.html#a50fee0482893c8e2d81835a5eecfc940',1,'sudoku.ui.UI.run()']]]
 ];
