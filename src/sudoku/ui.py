@@ -410,7 +410,7 @@ class UI:
 			@param col: int
 			@return None """
 			# show value, colorize
-			text = self.app.getFielLabel(row, col)
+			text = self.app.getFieldLabel(row, col)
 			btn = self._getCell(row,col)
 
 			fg, bg = self._getCellColor(row, col)
