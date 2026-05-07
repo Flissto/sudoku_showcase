@@ -74,7 +74,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>A class representing the <a class="el" href="classthemes_1_1RGB.html" title="A class representing the RGB farbcode.">RGB</a> farbcode.  
+<p>Represents a validated <a class="el" href="classthemes_1_1RGB.html" title="Represents a validated RGB color value.">RGB</a> color value.  
  <a href="classthemes_1_1RGB.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
@@ -82,10 +82,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a11aa321d37f285266d90c4d536bf71dd"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthemes_1_1RGB.html#a11aa321d37f285266d90c4d536bf71dd">__init__</a> (self, int <a class="el" href="classthemes_1_1RGB.html#a9683db4ca580973224ce8d4c89d2158c">red</a>, int <a class="el" href="classthemes_1_1RGB.html#af01486e0d0eeda1c34b15135bed836d3">green</a>, int <a class="el" href="classthemes_1_1RGB.html#aa6fb741455b948fb60ff109412d72d46">blue</a>)</td></tr>
 <tr class="separator:a11aa321d37f285266d90c4d536bf71dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adbe9e5f9c36a87d64be2265a6fad3027"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthemes_1_1RGB.html#adbe9e5f9c36a87d64be2265a6fad3027">__repr__</a> (self)</td></tr>
-<tr class="memdesc:adbe9e5f9c36a87d64be2265a6fad3027"><td class="mdescLeft">&#160;</td><td class="mdescRight">The string-repr of an <a class="el" href="classthemes_1_1RGB.html" title="A class representing the RGB farbcode.">RGB</a> tuple.  <a href="classthemes_1_1RGB.html#adbe9e5f9c36a87d64be2265a6fad3027">More...</a><br /></td></tr>
+<tr class="memdesc:adbe9e5f9c36a87d64be2265a6fad3027"><td class="mdescLeft">&#160;</td><td class="mdescRight">The string-repr of an <a class="el" href="classthemes_1_1RGB.html" title="Represents a validated RGB color value.">RGB</a> tuple.  <a href="classthemes_1_1RGB.html#adbe9e5f9c36a87d64be2265a6fad3027">More...</a><br /></td></tr>
 <tr class="separator:adbe9e5f9c36a87d64be2265a6fad3027"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9cde459db6da5a95e16a7d853927a1f5"><td class="memItemLeft" align="right" valign="top">str&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthemes_1_1RGB.html#a9cde459db6da5a95e16a7d853927a1f5">__str__</a> (self)</td></tr>
-<tr class="memdesc:a9cde459db6da5a95e16a7d853927a1f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">The string-repr of an <a class="el" href="classthemes_1_1RGB.html" title="A class representing the RGB farbcode.">RGB</a> tuple.  <a href="classthemes_1_1RGB.html#a9cde459db6da5a95e16a7d853927a1f5">More...</a><br /></td></tr>
+<tr class="memdesc:a9cde459db6da5a95e16a7d853927a1f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">The string-repr of an <a class="el" href="classthemes_1_1RGB.html" title="Represents a validated RGB color value.">RGB</a> tuple.  <a href="classthemes_1_1RGB.html#a9cde459db6da5a95e16a7d853927a1f5">More...</a><br /></td></tr>
 <tr class="separator:a9cde459db6da5a95e16a7d853927a1f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9683db4ca580973224ce8d4c89d2158c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthemes_1_1RGB.html#a9683db4ca580973224ce8d4c89d2158c">red</a> (self)</td></tr>
 <tr class="memdesc:a9683db4ca580973224ce8d4c89d2158c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the value for Red.  <a href="classthemes_1_1RGB.html#a9683db4ca580973224ce8d4c89d2158c">More...</a><br /></td></tr>
@@ -103,10 +103,13 @@ Static Public Attributes</h2></td></tr>
 <tr class="separator:a1e43b3c050dac7e0e07a6b01d2fa7d88"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>A class representing the <a class="el" href="classthemes_1_1RGB.html" title="A class representing the RGB farbcode.">RGB</a> farbcode. </p>
-<p>Raises ValueError if not a valid value. <br  />
- </p>
-</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<div class="textblock"><p>Represents a validated <a class="el" href="classthemes_1_1RGB.html" title="Represents a validated RGB color value.">RGB</a> color value. </p>
+<pre class="fragment">The RGB class stores a color as three integer components (red, green, blue)
+and enforces strict bounds checking (0–255) on initialization.
+
+It provides read-only access to individual color channels and is intended
+as a safe, immutable representation of RGB-based UI colors.
+</pre> </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a11aa321d37f285266d90c4d536bf71dd"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a11aa321d37f285266d90c4d536bf71dd">&#9670;&nbsp;</a></span>__init__()</h2>
 
@@ -164,7 +167,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>The string-repr of an <a class="el" href="classthemes_1_1RGB.html" title="A class representing the RGB farbcode.">RGB</a> tuple. </p>
+<p>The string-repr of an <a class="el" href="classthemes_1_1RGB.html" title="Represents a validated RGB color value.">RGB</a> tuple. </p>
 <dl class="section return"><dt>Returns</dt><dd>tuple </dd></dl>
 
 </div>
@@ -185,7 +188,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>The string-repr of an <a class="el" href="classthemes_1_1RGB.html" title="A class representing the RGB farbcode.">RGB</a> tuple. </p>
+<p>The string-repr of an <a class="el" href="classthemes_1_1RGB.html" title="Represents a validated RGB color value.">RGB</a> tuple. </p>
 <dl class="section return"><dt>Returns</dt><dd>str </dd></dl>
 
 </div>

@@ -1,7 +1,6 @@
 var searchData=
 [
-  ['handlemove_73',['handleMove',['../classsudoku_1_1app_1_1App.html#a3be530487ce86594886b8baf5a1991a2',1,'sudoku::app::App']]],
-  ['handleprint_74',['handlePrint',['../namespacesudoku_1_1cli.html#a8299a541cfb9812ebd69e14ab5546774',1,'sudoku::cli']]],
+  ['handlemove_74',['handleMove',['../classsudoku_1_1app_1_1App.html#a3be530487ce86594886b8baf5a1991a2',1,'sudoku::app::App']]],
   ['hasended_75',['hasEnded',['../classsudoku_1_1game_1_1Game.html#a879a3eb203af4475877fc4e57706e285',1,'sudoku::game::Game']]],
   ['hasgameended_76',['hasGameEnded',['../classsudoku_1_1app_1_1App.html#a74c669b00f5d17d1d9c43712cc454527',1,'sudoku::app::App']]],
   ['hasnoduplicatevalues_77',['hasNoDuplicateValues',['../classpuzzle_1_1Puzzle.html#a1c685a7787249527c597d6cc0b166fa7',1,'puzzle::Puzzle']]],

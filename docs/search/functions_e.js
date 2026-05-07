@@ -7,5 +7,5 @@ var searchData=
   ['restart_302',['restart',['../classsudoku_1_1game_1_1Game.html#a5c00d6c0eb17fa704e4738ca176b7ccc',1,'sudoku::game::Game']]],
   ['restartgame_303',['restartGame',['../classsudoku_1_1app_1_1App.html#acdd63aa5bc5f3efbedc5cf3dd25f3345',1,'sudoku::app::App']]],
   ['row_304',['row',['../classfield_1_1Field.html#a209fe92f5a8a60cbdab7690de563a97d',1,'field::Field']]],
-  ['run_305',['run',['../classsudoku_1_1app_1_1App.html#a614ad06e0fa799aac20f46ca0337e7db',1,'sudoku.app.App.run()'],['../classsudoku_1_1ui_1_1UI.html#a50fee0482893c8e2d81835a5eecfc940',1,'sudoku.ui.UI.run()']]]
+  ['run_305',['run',['../classsudoku_1_1app_1_1App.html#a614ad06e0fa799aac20f46ca0337e7db',1,'sudoku.app.App.run()'],['../classsudoku_1_1cli_1_1CLI.html#acb585484f30eea9b5297684f0211327e',1,'sudoku.cli.CLI.run()'],['../classsudoku_1_1ui_1_1UI.html#a50fee0482893c8e2d81835a5eecfc940',1,'sudoku.ui.UI.run()']]]
 ];

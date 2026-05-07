@@ -74,7 +74,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>The <a class="el" href="classsudoku_1_1app_1_1App.html" title="The App is the Controller and API of this Application:">App</a> is the Controller and API of this Application:  
+<p>The <a class="el" href="classsudoku_1_1app_1_1App.html" title="The App is the central Controller and API of the application following Model-View-Controller architec...">App</a> is the central Controller and API of the application following Model-View-Controller architecture.  
  <a href="classsudoku_1_1app_1_1App.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
@@ -162,6 +162,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a6a9de30feffb5ccb112269be54fd6dc0"><td class="memItemLeft" align="right" valign="top">str&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsudoku_1_1app_1_1App.html#a6a9de30feffb5ccb112269be54fd6dc0">getCurrentDifficulty</a> (self)</td></tr>
 <tr class="memdesc:a6a9de30feffb5ccb112269be54fd6dc0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the difficulty of the current game.  <a href="classsudoku_1_1app_1_1App.html#a6a9de30feffb5ccb112269be54fd6dc0">More...</a><br /></td></tr>
 <tr class="separator:a6a9de30feffb5ccb112269be54fd6dc0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a40ef956aa39ca953e85c022807f68c48"><td class="memItemLeft" align="right" valign="top">str&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsudoku_1_1app_1_1App.html#a40ef956aa39ca953e85c022807f68c48">getDefaultDifficulty</a> (self)</td></tr>
+<tr class="memdesc:a40ef956aa39ca953e85c022807f68c48"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the default difficulty of game.  <a href="classsudoku_1_1app_1_1App.html#a40ef956aa39ca953e85c022807f68c48">More...</a><br /></td></tr>
+<tr class="separator:a40ef956aa39ca953e85c022807f68c48"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:accbbdc0165e689aac55f375367497948"><td class="memItemLeft" align="right" valign="top">list[str]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsudoku_1_1app_1_1App.html#accbbdc0165e689aac55f375367497948">getAllDifficultyNames</a> (cls)</td></tr>
 <tr class="memdesc:accbbdc0165e689aac55f375367497948"><td class="mdescLeft">&#160;</td><td class="mdescRight">(classmethod) Returns the names of difficulty levels.  <a href="classsudoku_1_1app_1_1App.html#accbbdc0165e689aac55f375367497948">More...</a><br /></td></tr>
 <tr class="separator:accbbdc0165e689aac55f375367497948"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -210,14 +213,14 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a4394c026b06fc28f4a59ec09dd06b367"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>The <a class="el" href="classsudoku_1_1app_1_1App.html" title="The App is the Controller and API of this Application:">App</a> is the Controller and API of this Application: </p>
-<ul>
-<li>has a Game-object (Gamelogic and contains Model)</li>
-<li>has an UI-Object (View), if not in CLI</li>
-<li>has a State-Object containing all attributs which are not Logic-related (like Gamemodes).</li>
+<div class="textblock"><p>The <a class="el" href="classsudoku_1_1app_1_1App.html" title="The App is the central Controller and API of the application following Model-View-Controller architec...">App</a> is the central Controller and API of the application following Model-View-Controller architecture. </p>
+<p>It coordinates all major components:</p><ul>
+<li>Game (game logic and model handling)</li>
+<li>UI/View layer</li>
+<li>State management for non-logic related application states</li>
 </ul>
-<p>NOTE: this results in <a class="el" href="classsudoku_1_1app_1_1App.html" title="The App is the Controller and API of this Application:">App</a> being both State-Manager for UI-States and Controller, and in a big class. But this is a design decision made to achieve MVC-Architecture. <br  />
- </p>
+<p>The <a class="el" href="classsudoku_1_1app_1_1App.html" title="The App is the central Controller and API of the application following Model-View-Controller architec...">App</a> also controls overall game flow logic, such as erase modes and other UI-related behaviors, which are intentionally separated from the core game logic.</p>
+<p>This design intentionally results in a larger class with many forwarding functions, in order to keep submodules and domain classes cleaner and better separated. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a3c1ffaa93ac079ecc88362a573b207a5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3c1ffaa93ac079ecc88362a573b207a5">&#9670;&nbsp;</a></span>__init__()</h2>
@@ -336,13 +339,6 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Removes all cells from errorCells. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">row</td><td>int </td></tr>
-    <tr><td class="paramname">col</td><td>int </td></tr>
-  </table>
-  </dd>
-</dl>
 <dl class="section return"><dt>Returns</dt><dd>None </dd></dl>
 
 </div>
@@ -427,6 +423,27 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Returns the difficulty of the current game. </p>
+<dl class="section return"><dt>Returns</dt><dd>str </dd></dl>
+
+</div>
+</div>
+<a id="a40ef956aa39ca953e85c022807f68c48"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a40ef956aa39ca953e85c022807f68c48">&#9670;&nbsp;</a></span>getDefaultDifficulty()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"> str sudoku.app.App.getDefaultDifficulty </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the default difficulty of game. </p>
 <dl class="section return"><dt>Returns</dt><dd>str </dd></dl>
 
 </div>

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['rgb_185',['RGB',['../classthemes_1_1RGB.html',1,'themes']]]
+  ['puzzle_185',['Puzzle',['../classpuzzle_1_1Puzzle.html',1,'puzzle']]]
 ];

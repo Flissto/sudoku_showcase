@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['ui_189',['UI',['../classsudoku_1_1ui_1_1UI.html',1,'sudoku::ui']]]
+  ['theme_189',['Theme',['../classthemes_1_1Theme.html',1,'themes']]]
 ];
