@@ -2,12 +2,6 @@
 # -*- coding: utf8 -*-
 # src/sudoku/app.py
 #
-## This class is THE Controller in the Application in terms of Model-View-Controller-Architecture.
-# This module controlls all submodules and classes and works as an API, which result in many functions just forwarding.
-# This is a design decision made, to keep the other classes relatively clean.  
-# Additionally the App controls Game Flow Logic such the Erase-Modes, which is not the Game's responsibility.
-# 
-#
 
 from .models.constants import N, BLOCK_SIZE, ALLOWED_INDEX, ALLOWED_VALUES
 from .models.field import Field 
@@ -18,13 +12,22 @@ from .ui import UI
 
 class App:
 
-	""" The App is the Controller and API of this Application:
-		- has a Game-object (Gamelogic and contains Model)
-		- has an UI-Object (View), if not in CLI
-		- has a State-Object containing all attributs which are not Logic-related (like Gamemodes).
-	
-	NOTE: this results in App being both State-Manager for UI-States and Controller, and in a big class.
-	But this is a design decision made to achieve MVC-Architecture.  """
+	""" The App is the central Controller and API of the application following
+	Model-View-Controller architecture.
+
+	It coordinates all major components:
+		- Game (game logic and model handling)
+		- UI/View layer
+		- State management for non-logic related application states
+
+	The App also controls overall game flow logic, such as erase modes and
+	other UI-related behaviors, which are intentionally separated from the
+	core game logic.
+
+	This design intentionally results in a larger class with many forwarding
+	functions, in order to keep submodules and domain classes cleaner and
+	better separated.
+	"""
 	
 	def __init__(self, useUi: bool = True, verbose: bool = True):
 		# app properties
@@ -304,6 +307,11 @@ class App:
 		""" Returns the difficulty of the current game.
 		@return str """
 		return self._game.difficulty
+
+	def getDefaultDifficulty(self) -> str:
+		""" Returns the default difficulty of game.
+		@return str """
+		return self._game.DEFAULT_DIFFICULTY
 
 	@classmethod
 	def getAllDifficultyNames(cls) -> list[str]:

@@ -2,17 +2,6 @@
 # -*- coding: utf8 -*-
 # src/sudoku/game.py
 #
-## This module represents a (Sub-)Controller in terms of the Model-View-Architecture.
-# It contains the Sudoku GAME logic and grants access through public functions.
-# The more standard logic, like getRow is implemented in Puzzle.
-# @see models/puzzly.py
-#
-# The Puzzle Generation is not well optimised, but works and is readable and understandable.
-# Which remains the focus for the showcase-project.
-# The class can generate a solution and create a solvable puzzle, even for extreme difficuly-level,
-# in a short time (Extreme in around 0.5 seconds).
-#
-#
 
 import random
 import time
@@ -22,21 +11,32 @@ from .models.puzzle import Puzzle
 from .solver import Solver
 
 class Game:
-	"""
-	A Game creates a sudoku-object, wich will be solved.
-	This class holds the game logic within several puzzles (solution, initial and current)
-	and knows about the current state of the game, such as mistakes.
 
-	The initial puzzle leads to a unique solution, which are both hold in this class.
-	The Non-Empty-Fields in those puzzles are not editable, so called fixed.
-	The current grid derives from the initial puzzle and holds the user input.
+	""" Represents the Sudoku game logic and acts as a sub-controller within
+	the application's Model-View-Controller architecture.
 
-	Short comment about mistakes:
-	An invalid move regarding the sudoku rules result in a mistake.
-	A digit set (move) to the current grid, which differs from the solution,
-	but not violating sudoku rules, is not a mistake.
-	When reaching MAX_MISTAKES the game will be over,
-	Therefor bruteforcing the solution is not an option.
+	This class manages multiple puzzle states:
+		- the solved puzzle (solution)
+		- the initial generated puzzle
+		- the current user state
+
+	The initial puzzle is generated with a unique solution. Non-empty fields
+	from the initial puzzle are treated as fixed and cannot be edited. The
+	current puzzle derives from the initial state and stores all user input.
+
+	The Game is responsible for validating moves, tracking mistakes, and
+	handling overall gameplay state. Invalid moves violating Sudoku rules
+	count as mistakes, while incorrect but rule-compliant digits do not.
+	To prevent brute forcing, the game ends once MAX_MISTAKES is reached.
+
+	Most low-level puzzle operations, such as row or column access, are
+	implemented in Puzzle. @see Puzzle
+
+	The puzzle generation algorithm prioritizes readability and maintainability
+	over heavy optimization, which fits the educational showcase nature of
+	this project. Despite this, puzzle and solution generation remains fast,
+	even for extreme difficulty level (around 0.5 seconds). The time consumed
+	generating the puzzle can be printed on console with verbose.
 	"""
 
 	DIFFICULTY = {'Nearly Full': 25, 'Easy': 40, 'Medium': 48, 'Hard': 51, 'Extreme': 55}

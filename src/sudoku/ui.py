@@ -25,10 +25,36 @@ except:	pass
 
 
 class UI:
-	"""
-	The UI-class represents the View in the Model-View-Controller-Architecture.
-	It knows nothing about rules, logic or anything. Its just about visuals.
-	The only other class the UI should call is App.	
+	
+	""" Graphical user interface representing the View layer of the application's
+	Model-View-Controller architecture.
+
+	The UI is responsible solely for visualization and user interaction.
+	It contains no Sudoku rules, solving logic, or gameplay validation.
+	All state changes and logic interactions are delegated to the App
+	controller through public interface functions.
+
+	The interface is implemented using tkinter and dynamically creates the
+	window, game grid, menus, digit buttons, status displays, and theme-based
+	visual styling.
+
+	The UI follows a pull-based design instead of an event distribution
+	system. Required information is queried from the App whenever the
+	interface updates, while user actions are forwarded back to the App.
+
+	The class provides functionality for:
+		- visualizing the puzzle grid
+		- updating game state representations
+		- handling themes and colors
+		- displaying timers and mistakes
+		- highlighting rules and digits
+		- managing window and display settings
+		- reacting to user input events
+		- showing game win and game over screens
+
+	Many internal helper functions are intentionally implemented as nested
+	submethods to improve readability and structure while avoiding an
+	unnecessarily large public interface.
 	"""
 
 	# Constants

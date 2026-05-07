@@ -2,27 +2,38 @@
 # -*- coding: utf8 -*-
 # src/sudoku/models/puzzle.py
 #
-## This module contains a defensively implemented class of the sudoku puzzle.
-# It contains the an internal storage of Fields, which are beside getter-functions not available.
-# The Puzzle grants several functions to access Fields with certain attributs.
-# 
-# Most important functions are:
-#	- clone()
-#	- generateSolution()
-#	- getField()
-# 	- setValue()
-#
 
 from .constants import N, ALLOWED_VALUES, BLOCK_SIZE
 from .field import Field
 
 class Puzzle:
-	"""
-	The Sudoku-object itself.
-	It holds no Game Logic, beside the common Sudoku rules and sudoku generation.
-	The puzzle holds a 2d-list of Field-Objects in storage.
-	The public functions give access to a certain level to edit the puzzle.
-	"""
+
+	"""Represents the Sudoku puzzle model itself.
+
+	The Puzzle stores the grid as an internal 2D structure of Field objects
+	and provides a defensive public API to safely access and manipulate them.
+	Direct access to the internal storage is intentionally restricted in
+	order to preserve consistency and validation.
+
+	This class contains no higher-level game flow logic. Its responsibility is
+	limited to:
+		- enforcing standard Sudoku rules
+		- managing values and notes
+		- querying rows, columns, and blocks
+		- validating puzzle states
+		- generating a solution and cloning puzzles
+
+	The Puzzle exposes utility functions to retrieve specific groups of fields,
+	such as empty, fixed, or non-fixed cells, and provides helper methods for
+	serialization and loading external puzzle data.
+
+	The generation logic focuses on readability and maintainability rather than
+	heavy optimization. Nevertheless, valid Sudoku solutions can be generated
+	efficiently using recursive filling strategies.
+
+	This class acts as the core data model within the application's
+	Model-View-Controller architecture.
+"""
 
 	def __init__(self):
 		""" Creates an empty Puzzle with the grid and Fields set up"""

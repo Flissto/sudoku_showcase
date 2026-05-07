@@ -24,9 +24,28 @@ from .models.puzzle import Puzzle
 
 class Solver:
 
-	""" This class aims to solve a Puzzle using constraints and then backtracking.
-	Main usage, when creating a unique Solution.
-	Calls itself recursively, when using backtrack-function (last resort when solving)
+	""" Solves Sudoku puzzles using a combination of constraint propagation
+	and recursive backtracking.
+
+	The solving process follows two stages:
+		- applying constraint-based solving strategies
+		- using backtracking as a fallback when constraints are insufficient
+
+	The constraint propagation step acts as an optimizer to reduce the search
+	space efficiently, but does not guarantee completeness or uniqueness of
+	the solution on its own.
+
+	The backtracking algorithm selects the field with the fewest remaining
+	candidates, clones the current puzzle state, applies one candidate, and
+	then continues solving recursively with a new Solver instance.
+
+	If multiple valid solutions are detected during recursion, the solving
+	process aborts to preserve uniqueness checks.
+
+	The Solver is primarily used for generating and validating uniquely
+	solvable puzzles. While the implementation focuses on readability and
+	understandability rather than maximum optimization, it still performs
+	efficiently even on sparse puzzles.
 	"""
 
 	def __init__(self, puzzle: Puzzle):

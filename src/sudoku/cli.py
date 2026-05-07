@@ -8,7 +8,30 @@ import argparse
 from .app import App
 
 class CLI:
+	
+	""" Command line interface for playing Sudoku directly in the terminal.
 
+	The CLI acts as a lightweight text-based frontend around the App
+	controller and translates terminal commands into application actions.
+	It uses argparse with subcommands to provide an interactive shell-like
+	experience for managing gameplay, notes, puzzle generation, and
+	inspection utilities.
+
+	The interface supports:
+		- creating new games with selectable difficulties
+		- selecting and placing digits
+		- erasing values
+		- managing notes manually or automatically
+		- inspecting field states
+		- printing the current puzzle state
+
+	The CLI intentionally keeps game logic outside of this class and forwards
+	actions to the App controller instead. This keeps the terminal interface
+	focused on input parsing, validation, and user interaction.
+
+	The command parser is designed to provide descriptive help messages and
+	graceful error handling for invalid commands and arguments.
+	"""
 	
 
 	def __init__(self, useUI: bool = False):
