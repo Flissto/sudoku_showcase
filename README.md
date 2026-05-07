@@ -82,7 +82,7 @@ sudoku-app
 sudoku-cli
 ```
 
-![Sudoku Screenshot](/assets/Screenshot_Sudoku_Easy.png)
+
 
 
 ### How to play
