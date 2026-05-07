@@ -2,19 +2,33 @@
 # -*- coding: utf8 -*-
 # src/sudoku/models/field.py
 #
-## This module defines the atomic object of a sudoku: Field
-# The class is designed to be nearly immutable, when respecting private methods.
-# The overall concept is defensive programming, so every param will be validated.
-#
 
 import random
 from .constants import ALLOWED_VALUES, N
 
 class Field:
-	""" Atomic object in a Sudoku Game
-	It defines the properties and allowed actions to a field.
-	The position of a Field will be set on init.
-	The representation of a Field is its value.
+
+	""" Represents the atomic unit of a Sudoku puzzle: a single Field.
+
+	A Field stores its position, value, fixed state, and possible candidate
+	notes. It is designed with defensive programming principles and behaves
+	as a near-immutable data object when used correctly through its public API.
+
+	The class enforces strict validation for all modifications and ensures that
+	Sudoku constraints are respected at the field level. Direct manipulation of
+	internal state is intentionally restricted.
+
+	A Field can:
+		- store a numeric value or remain empty
+		- be marked as fixed (non-editable)
+		- maintain a set of candidate notes for solving strategies
+		- validate and clear its value and notes safely
+
+	Field provides utility functions for cloning, inspection, and random value
+	generation (used primarily during puzzle creation).
+
+	The value setter automatically clears notes when a value is assigned,
+	ensuring consistency between solved state and candidate state.
 	"""
 	
 	# Default for Field.value

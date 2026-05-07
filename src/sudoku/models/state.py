@@ -2,13 +2,21 @@
 # -*- coding: utf8 -*-
 # src/sudoku/state.py
 #
-## This module holds the data container for App to store values.
-#
 
 class State:
 
-	""" Data Container holding the state of the App
-	No other Class than App should take advantage of the State."""
+	""" Simple data container for application state used by the App controller.
+
+	It stores transient UI and interaction state that is not part of the core
+	Sudoku logic, including:
+		- selected cell and digit
+		- input modes (erase, note)
+		- UI highlighting flags
+		- error cell tracking
+
+	The State can be reset to restore default runtime behavior and contains no
+	game logic beyond state initialization.
+	"""
 
 	def __init__(self, verbose: bool = True):
 		self._verbose = verbose

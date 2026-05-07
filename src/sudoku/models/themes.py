@@ -14,8 +14,14 @@ from dataclasses import dataclass
 
 class HEX:
 
-	""" A class representing the hexadecimal farbcode.
-	Raises ValueError if not a valid value. """
+	""" Represents a validated hexadecimal color value.
+
+	The HEX class ensures that only properly formatted hex color strings
+	(e.g. "#ffffff") are accepted. It validates structure and allowed characters
+	on initialization and stores the value in a normalized, immutable form.
+
+	Provides string representations for use in UI rendering and configuration.
+	"""
 
 	VALID_CHARS = [str(i) for i in range(10)] + ['a', 'b', 'c', 'd', 'e', 'f']
 
@@ -51,8 +57,14 @@ class HEX:
 
 class RGB:
 
-	""" A class representing the RGB farbcode.
-	Raises ValueError if not a valid value.  """
+	"""Represents a validated RGB color value.
+
+	The RGB class stores a color as three integer components (red, green, blue)
+	and enforces strict bounds checking (0–255) on initialization.
+
+	It provides read-only access to individual color channels and is intended
+	as a safe, immutable representation of RGB-based UI colors.
+	"""
 
 	MAX_VALUE = 255
 
@@ -107,11 +119,15 @@ class RGB:
 @dataclass(frozen=True)
 class Theme:
 
-	""" The dataclass for a Theme.
-	It holds all farbcodes visualized by the UI.
-	Each attribut holds a comment on what they applied on.
-	
-	NOTE: An instance of Theme is immutable."""
+	""" Immutable UI theme definition for the Sudoku application.
+
+	The Theme dataclass groups all visual styling information used by the UI,
+	including font colors, background colors, grid styling, and highlight colors
+	for game states such as selection, rules, and mistakes.
+
+	Each theme is strictly typed using HEX or RGB color values and is designed
+	to be immutable to ensure consistent visual behavior across the application.
+	"""
 
 
 	name: str 
