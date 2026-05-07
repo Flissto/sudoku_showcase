@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['x_140',['x',['../classsudoku_1_1models_1_1Field.html#a0fbffb728b532ffc1b1e3bb93e6edf1b',1,'sudoku::models::Field']]]
+  ['windowmenu_176',['windowMenu',['../classsudoku_1_1ui_1_1UI.html#afa19eaa1e1c94c3d41fe87852b198546',1,'sudoku::ui::UI']]],
+  ['windowsizevar_177',['windowSizeVar',['../classsudoku_1_1ui_1_1UI.html#a4d4e6281e40f57d13041cbcfdec79218',1,'sudoku::ui::UI']]]
 ];

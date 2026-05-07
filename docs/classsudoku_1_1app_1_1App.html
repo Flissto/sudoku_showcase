@@ -74,7 +74,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>The <a class="el" href="classsudoku_1_1app_1_1App.html" title="The App is the Controller of this.">App</a> is the Controller of this.  
+<p>The <a class="el" href="classsudoku_1_1app_1_1App.html" title="The App is the Controller and API of this Application:">App</a> is the Controller and API of this Application:  
  <a href="classsudoku_1_1app_1_1App.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
@@ -82,7 +82,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a3c1ffaa93ac079ecc88362a573b207a5"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsudoku_1_1app_1_1App.html#a3c1ffaa93ac079ecc88362a573b207a5">__init__</a> (self, bool useUi=True, bool verbose=True)</td></tr>
 <tr class="separator:a3c1ffaa93ac079ecc88362a573b207a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abdb25b10ed3d70d4d05494d122883446"><td class="memItemLeft" align="right" valign="top">int|None&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsudoku_1_1app_1_1App.html#abdb25b10ed3d70d4d05494d122883446">selectedDigit</a> (self)</td></tr>
-<tr class="memdesc:abdb25b10ed3d70d4d05494d122883446"><td class="mdescLeft">&#160;</td><td class="mdescRight">Properties.  <a href="classsudoku_1_1app_1_1App.html#abdb25b10ed3d70d4d05494d122883446">More...</a><br /></td></tr>
+<tr class="memdesc:abdb25b10ed3d70d4d05494d122883446"><td class="mdescLeft">&#160;</td><td class="mdescRight">Properties - State Management.  <a href="classsudoku_1_1app_1_1App.html#abdb25b10ed3d70d4d05494d122883446">More...</a><br /></td></tr>
 <tr class="separator:abdb25b10ed3d70d4d05494d122883446"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a99a8c56ee51735ddb80979c3e8825345"><td class="memItemLeft" align="right" valign="top">None&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsudoku_1_1app_1_1App.html#a99a8c56ee51735ddb80979c3e8825345">selectedDigit</a> (self, int|None digit)</td></tr>
 <tr class="memdesc:a99a8c56ee51735ddb80979c3e8825345"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the property selectedDigit to a valid value or no value.  <a href="classsudoku_1_1app_1_1App.html#a99a8c56ee51735ddb80979c3e8825345">More...</a><br /></td></tr>
@@ -90,99 +90,134 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a49d52cdde9cd2eef3c79f87fb1a2ac60"><td class="memItemLeft" align="right" valign="top">tuple[int, int]|None&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsudoku_1_1app_1_1App.html#a49d52cdde9cd2eef3c79f87fb1a2ac60">selectedCell</a> (self)</td></tr>
 <tr class="memdesc:a49d52cdde9cd2eef3c79f87fb1a2ac60"><td class="mdescLeft">&#160;</td><td class="mdescRight">(property) The selected cell defines the field/cell in the puzzle.  <a href="classsudoku_1_1app_1_1App.html#a49d52cdde9cd2eef3c79f87fb1a2ac60">More...</a><br /></td></tr>
 <tr class="separator:a49d52cdde9cd2eef3c79f87fb1a2ac60"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5c4cead6cb94a691c62c4db5e6c9d4d7"><td class="memItemLeft" align="right" valign="top">None&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsudoku_1_1app_1_1App.html#a5c4cead6cb94a691c62c4db5e6c9d4d7">selectedCell</a> (self, tuple|None pos)</td></tr>
-<tr class="memdesc:a5c4cead6cb94a691c62c4db5e6c9d4d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the property selectedCell to a tuple of coordinates or None.  <a href="classsudoku_1_1app_1_1App.html#a5c4cead6cb94a691c62c4db5e6c9d4d7">More...</a><br /></td></tr>
-<tr class="separator:a5c4cead6cb94a691c62c4db5e6c9d4d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afe01aaa84e7572455c88b3d944ed0f0c"><td class="memItemLeft" align="right" valign="top">None&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsudoku_1_1app_1_1App.html#afe01aaa84e7572455c88b3d944ed0f0c">selectedCell</a> (self, tuple[int, int]|None pos)</td></tr>
+<tr class="memdesc:afe01aaa84e7572455c88b3d944ed0f0c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the property selectedCell to a tuple of coordinates or None.  <a href="classsudoku_1_1app_1_1App.html#afe01aaa84e7572455c88b3d944ed0f0c">More...</a><br /></td></tr>
+<tr class="separator:afe01aaa84e7572455c88b3d944ed0f0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9577c94d1104ca2f855a8fd7d15c4224"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsudoku_1_1app_1_1App.html#a9577c94d1104ca2f855a8fd7d15c4224">inEraseMode</a> (self)</td></tr>
 <tr class="memdesc:a9577c94d1104ca2f855a8fd7d15c4224"><td class="mdescLeft">&#160;</td><td class="mdescRight">(property) Defines if app is in eraseMode or not.  <a href="classsudoku_1_1app_1_1App.html#a9577c94d1104ca2f855a8fd7d15c4224">More...</a><br /></td></tr>
 <tr class="separator:a9577c94d1104ca2f855a8fd7d15c4224"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6c8c26e022d032f44bee896ab8009d46"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsudoku_1_1app_1_1App.html#a6c8c26e022d032f44bee896ab8009d46">inNoteMode</a> (self)</td></tr>
 <tr class="memdesc:a6c8c26e022d032f44bee896ab8009d46"><td class="mdescLeft">&#160;</td><td class="mdescRight">(property) Defines if app is in noteMode or not.  <a href="classsudoku_1_1app_1_1App.html#a6c8c26e022d032f44bee896ab8009d46">More...</a><br /></td></tr>
 <tr class="separator:a6c8c26e022d032f44bee896ab8009d46"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa4438ce616d9f972a56e75298d4c00c6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsudoku_1_1app_1_1App.html#aa4438ce616d9f972a56e75298d4c00c6">darkmode</a> (self)</td></tr>
-<tr class="memdesc:aa4438ce616d9f972a56e75298d4c00c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">(property) Defines if the ui is using the dark theme.  <a href="classsudoku_1_1app_1_1App.html#aa4438ce616d9f972a56e75298d4c00c6">More...</a><br /></td></tr>
-<tr class="separator:aa4438ce616d9f972a56e75298d4c00c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1d2e960fae1111ab3bce36d04dc85c12"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsudoku_1_1app_1_1App.html#a1d2e960fae1111ab3bce36d04dc85c12">highlightCells</a> (self)</td></tr>
-<tr class="memdesc:a1d2e960fae1111ab3bce36d04dc85c12"><td class="mdescLeft">&#160;</td><td class="mdescRight">(property) Defines if the ui visualizes the sudoku rules depending on the selected cell.  <a href="classsudoku_1_1app_1_1App.html#a1d2e960fae1111ab3bce36d04dc85c12">More...</a><br /></td></tr>
-<tr class="separator:a1d2e960fae1111ab3bce36d04dc85c12"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae95e4cee945bba6a047b0ac2e0ace57c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsudoku_1_1app_1_1App.html#ae95e4cee945bba6a047b0ac2e0ace57c">highlightRules</a> (self)</td></tr>
+<tr class="memdesc:ae95e4cee945bba6a047b0ac2e0ace57c"><td class="mdescLeft">&#160;</td><td class="mdescRight">(property) Defines if the ui visualizes the sudoku rules depending on the selected cell.  <a href="classsudoku_1_1app_1_1App.html#ae95e4cee945bba6a047b0ac2e0ace57c">More...</a><br /></td></tr>
+<tr class="separator:ae95e4cee945bba6a047b0ac2e0ace57c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae8589e9ebb51b95e01e47559591a6a12"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsudoku_1_1app_1_1App.html#ae8589e9ebb51b95e01e47559591a6a12">highlightDigits</a> (self)</td></tr>
 <tr class="memdesc:ae8589e9ebb51b95e01e47559591a6a12"><td class="mdescLeft">&#160;</td><td class="mdescRight">(property) Defines if the ui is visualizing the digits in the puzzle depending on the selected Digit.  <a href="classsudoku_1_1app_1_1App.html#ae8589e9ebb51b95e01e47559591a6a12">More...</a><br /></td></tr>
 <tr class="separator:ae8589e9ebb51b95e01e47559591a6a12"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1a8412eba83265b536659e06e773e8e5"><td class="memItemLeft" align="right" valign="top">None&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsudoku_1_1app_1_1App.html#a1a8412eba83265b536659e06e773e8e5">toggleEraseMode</a> (self)</td></tr>
-<tr class="memdesc:a1a8412eba83265b536659e06e773e8e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Modes - property functions.  <a href="classsudoku_1_1app_1_1App.html#a1a8412eba83265b536659e06e773e8e5">More...</a><br /></td></tr>
+<tr class="memdesc:a1a8412eba83265b536659e06e773e8e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">toggle property functions  <a href="classsudoku_1_1app_1_1App.html#a1a8412eba83265b536659e06e773e8e5">More...</a><br /></td></tr>
 <tr class="separator:a1a8412eba83265b536659e06e773e8e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0220a262c5522e02110feff8d7039ba4"><td class="memItemLeft" align="right" valign="top">None&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsudoku_1_1app_1_1App.html#a0220a262c5522e02110feff8d7039ba4">toggleNoteMode</a> (self)</td></tr>
 <tr class="memdesc:a0220a262c5522e02110feff8d7039ba4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Toggle property noteMode.  <a href="classsudoku_1_1app_1_1App.html#a0220a262c5522e02110feff8d7039ba4">More...</a><br /></td></tr>
 <tr class="separator:a0220a262c5522e02110feff8d7039ba4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a64554c457f9299ada0915bd5464b953d"><td class="memItemLeft" align="right" valign="top">None&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsudoku_1_1app_1_1App.html#a64554c457f9299ada0915bd5464b953d">toggleDarkMode</a> (self)</td></tr>
-<tr class="memdesc:a64554c457f9299ada0915bd5464b953d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Toggle property darkMode.  <a href="classsudoku_1_1app_1_1App.html#a64554c457f9299ada0915bd5464b953d">More...</a><br /></td></tr>
-<tr class="separator:a64554c457f9299ada0915bd5464b953d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a71e8adf04d8f875c8c3e2662e7b2ba58"><td class="memItemLeft" align="right" valign="top">None&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsudoku_1_1app_1_1App.html#a71e8adf04d8f875c8c3e2662e7b2ba58">toggleHighlightCells</a> (self)</td></tr>
-<tr class="memdesc:a71e8adf04d8f875c8c3e2662e7b2ba58"><td class="mdescLeft">&#160;</td><td class="mdescRight">Toggle property highlightCells.  <a href="classsudoku_1_1app_1_1App.html#a71e8adf04d8f875c8c3e2662e7b2ba58">More...</a><br /></td></tr>
-<tr class="separator:a71e8adf04d8f875c8c3e2662e7b2ba58"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4769dd620889934c034c1952103c37ef"><td class="memItemLeft" align="right" valign="top">None&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsudoku_1_1app_1_1App.html#a4769dd620889934c034c1952103c37ef">toggleHighlightRules</a> (self)</td></tr>
+<tr class="memdesc:a4769dd620889934c034c1952103c37ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Toggle property highlightRules.  <a href="classsudoku_1_1app_1_1App.html#a4769dd620889934c034c1952103c37ef">More...</a><br /></td></tr>
+<tr class="separator:a4769dd620889934c034c1952103c37ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae5e6ca02bd638cd9c7f87b396d489e64"><td class="memItemLeft" align="right" valign="top">None&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsudoku_1_1app_1_1App.html#ae5e6ca02bd638cd9c7f87b396d489e64">toggleHighlightDigits</a> (self)</td></tr>
 <tr class="memdesc:ae5e6ca02bd638cd9c7f87b396d489e64"><td class="mdescLeft">&#160;</td><td class="mdescRight">Toggle property highlighDigits.  <a href="classsudoku_1_1app_1_1App.html#ae5e6ca02bd638cd9c7f87b396d489e64">More...</a><br /></td></tr>
 <tr class="separator:ae5e6ca02bd638cd9c7f87b396d489e64"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a080780c80f6b3bbc3ec49a7c9b19357f"><td class="memItemLeft" align="right" valign="top">None&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsudoku_1_1app_1_1App.html#a080780c80f6b3bbc3ec49a7c9b19357f">autoSwapNextSelectedDigit</a> (self)</td></tr>
-<tr class="memdesc:a080780c80f6b3bbc3ec49a7c9b19357f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Switches to the next available Digit, which does not occur 9 times TODO.  <a href="classsudoku_1_1app_1_1App.html#a080780c80f6b3bbc3ec49a7c9b19357f">More...</a><br /></td></tr>
-<tr class="separator:a080780c80f6b3bbc3ec49a7c9b19357f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af347d79c55f12cbd80d83c1bafa00da6"><td class="memItemLeft" align="right" valign="top">set[tuple[int, int]]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsudoku_1_1app_1_1App.html#af347d79c55f12cbd80d83c1bafa00da6">getErrorCells</a> (self)</td></tr>
+<tr class="memdesc:af347d79c55f12cbd80d83c1bafa00da6"><td class="mdescLeft">&#160;</td><td class="mdescRight">public property functions  <a href="classsudoku_1_1app_1_1App.html#af347d79c55f12cbd80d83c1bafa00da6">More...</a><br /></td></tr>
+<tr class="separator:af347d79c55f12cbd80d83c1bafa00da6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aef796642639880041261ad06fef01e5e"><td class="memItemLeft" align="right" valign="top">None&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsudoku_1_1app_1_1App.html#aef796642639880041261ad06fef01e5e">addErrorCell</a> (self, int row, int col)</td></tr>
+<tr class="memdesc:aef796642639880041261ad06fef01e5e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a cell to errorCells.  <a href="classsudoku_1_1app_1_1App.html#aef796642639880041261ad06fef01e5e">More...</a><br /></td></tr>
+<tr class="separator:aef796642639880041261ad06fef01e5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac409710ea8e8414eaa292964b4d34728"><td class="memItemLeft" align="right" valign="top">None&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsudoku_1_1app_1_1App.html#ac409710ea8e8414eaa292964b4d34728">removeErrorCell</a> (self, int row, int col)</td></tr>
+<tr class="memdesc:ac409710ea8e8414eaa292964b4d34728"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes a Cell from errorCells.  <a href="classsudoku_1_1app_1_1App.html#ac409710ea8e8414eaa292964b4d34728">More...</a><br /></td></tr>
+<tr class="separator:ac409710ea8e8414eaa292964b4d34728"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ff8bf95966a2bf5b452191a8c532fff"><td class="memItemLeft" align="right" valign="top">None&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsudoku_1_1app_1_1App.html#a8ff8bf95966a2bf5b452191a8c532fff">clearErrorCells</a> (self)</td></tr>
+<tr class="memdesc:a8ff8bf95966a2bf5b452191a8c532fff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes all cells from errorCells.  <a href="classsudoku_1_1app_1_1App.html#a8ff8bf95966a2bf5b452191a8c532fff">More...</a><br /></td></tr>
+<tr class="separator:a8ff8bf95966a2bf5b452191a8c532fff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7c1dd6fbef52fc0af794b97f6a9f6128"><td class="memItemLeft" align="right" valign="top">None&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsudoku_1_1app_1_1App.html#a7c1dd6fbef52fc0af794b97f6a9f6128">selectDigit</a> (self, int value)</td></tr>
+<tr class="memdesc:a7c1dd6fbef52fc0af794b97f6a9f6128"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the selectedDigit to the value.  <a href="classsudoku_1_1app_1_1App.html#a7c1dd6fbef52fc0af794b97f6a9f6128">More...</a><br /></td></tr>
+<tr class="separator:a7c1dd6fbef52fc0af794b97f6a9f6128"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afd0b3ce9cc1261723af888c7d3c3f0d8"><td class="memItemLeft" align="right" valign="top">None&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsudoku_1_1app_1_1App.html#afd0b3ce9cc1261723af888c7d3c3f0d8">selectCell</a> (self, int row, int col)</td></tr>
+<tr class="memdesc:afd0b3ce9cc1261723af888c7d3c3f0d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets a cell as selected.  <a href="classsudoku_1_1app_1_1App.html#afd0b3ce9cc1261723af888c7d3c3f0d8">More...</a><br /></td></tr>
+<tr class="separator:afd0b3ce9cc1261723af888c7d3c3f0d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a751fcf370b7dfa624431a62ac37068b8"><td class="memItemLeft" align="right" valign="top">None&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsudoku_1_1app_1_1App.html#a751fcf370b7dfa624431a62ac37068b8">deselectCell</a> (self)</td></tr>
+<tr class="memdesc:a751fcf370b7dfa624431a62ac37068b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deselects the cell.  <a href="classsudoku_1_1app_1_1App.html#a751fcf370b7dfa624431a62ac37068b8">More...</a><br /></td></tr>
+<tr class="separator:a751fcf370b7dfa624431a62ac37068b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a614ad06e0fa799aac20f46ca0337e7db"><td class="memItemLeft" align="right" valign="top">None&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsudoku_1_1app_1_1App.html#a614ad06e0fa799aac20f46ca0337e7db">run</a> (self)</td></tr>
-<tr class="memdesc:a614ad06e0fa799aac20f46ca0337e7db"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classsudoku_1_1app_1_1Game.html" title="A Game creates a sudoku-object, wich will be solved.">Game</a> Functions.  <a href="classsudoku_1_1app_1_1App.html#a614ad06e0fa799aac20f46ca0337e7db">More...</a><br /></td></tr>
+<tr class="memdesc:a614ad06e0fa799aac20f46ca0337e7db"><td class="mdescLeft">&#160;</td><td class="mdescRight">Game Core Functions.  <a href="classsudoku_1_1app_1_1App.html#a614ad06e0fa799aac20f46ca0337e7db">More...</a><br /></td></tr>
 <tr class="separator:a614ad06e0fa799aac20f46ca0337e7db"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae13ada988ef0796f42a478d5f5d9dc37"><td class="memItemLeft" align="right" valign="top">None&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsudoku_1_1app_1_1App.html#ae13ada988ef0796f42a478d5f5d9dc37">startNewGame</a> (self, str difficulty=&quot;Game.DEFAULT_DIFFICULTY&quot;)</td></tr>
-<tr class="memdesc:ae13ada988ef0796f42a478d5f5d9dc37"><td class="mdescLeft">&#160;</td><td class="mdescRight">Starts a new <a class="el" href="classsudoku_1_1app_1_1Game.html" title="A Game creates a sudoku-object, wich will be solved.">Game</a> and creates the ui, if needed.  <a href="classsudoku_1_1app_1_1App.html#ae13ada988ef0796f42a478d5f5d9dc37">More...</a><br /></td></tr>
-<tr class="separator:ae13ada988ef0796f42a478d5f5d9dc37"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3be530487ce86594886b8baf5a1991a2"><td class="memItemLeft" align="right" valign="top">None&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsudoku_1_1app_1_1App.html#a3be530487ce86594886b8baf5a1991a2">handleMove</a> (self, int row, int col)</td></tr>
-<tr class="memdesc:a3be530487ce86594886b8baf5a1991a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lets the game handle a move depending on modes and the selectedDigit.  <a href="classsudoku_1_1app_1_1App.html#a3be530487ce86594886b8baf5a1991a2">More...</a><br /></td></tr>
-<tr class="separator:a3be530487ce86594886b8baf5a1991a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab53da820f8e018fd2ec893acb79dd5a3"><td class="memItemLeft" align="right" valign="top">None&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsudoku_1_1app_1_1App.html#ab53da820f8e018fd2ec893acb79dd5a3">startNewGame</a> (self, str difficulty)</td></tr>
+<tr class="memdesc:ab53da820f8e018fd2ec893acb79dd5a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Starts a new Game and creates the ui, if needed.  <a href="classsudoku_1_1app_1_1App.html#ab53da820f8e018fd2ec893acb79dd5a3">More...</a><br /></td></tr>
+<tr class="separator:ab53da820f8e018fd2ec893acb79dd5a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acdd63aa5bc5f3efbedc5cf3dd25f3345"><td class="memItemLeft" align="right" valign="top">None&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsudoku_1_1app_1_1App.html#acdd63aa5bc5f3efbedc5cf3dd25f3345">restartGame</a> (self)</td></tr>
+<tr class="memdesc:acdd63aa5bc5f3efbedc5cf3dd25f3345"><td class="mdescLeft">&#160;</td><td class="mdescRight">Restarts the current game.  <a href="classsudoku_1_1app_1_1App.html#acdd63aa5bc5f3efbedc5cf3dd25f3345">More...</a><br /></td></tr>
+<tr class="separator:acdd63aa5bc5f3efbedc5cf3dd25f3345"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a74c669b00f5d17d1d9c43712cc454527"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsudoku_1_1app_1_1App.html#a74c669b00f5d17d1d9c43712cc454527">hasGameEnded</a> (self)</td></tr>
+<tr class="memdesc:a74c669b00f5d17d1d9c43712cc454527"><td class="mdescLeft">&#160;</td><td class="mdescRight">If the current game has ended.  <a href="classsudoku_1_1app_1_1App.html#a74c669b00f5d17d1d9c43712cc454527">More...</a><br /></td></tr>
+<tr class="separator:a74c669b00f5d17d1d9c43712cc454527"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a83b19bfe5533be2ed04d9a2f2992bfe1"><td class="memItemLeft" align="right" valign="top">str&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsudoku_1_1app_1_1App.html#a83b19bfe5533be2ed04d9a2f2992bfe1">getPuzzle</a> (self)</td></tr>
-<tr class="memdesc:a83b19bfe5533be2ed04d9a2f2992bfe1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the str-repr of the current puzzle.  <a href="classsudoku_1_1app_1_1App.html#a83b19bfe5533be2ed04d9a2f2992bfe1">More...</a><br /></td></tr>
+<tr class="memdesc:a83b19bfe5533be2ed04d9a2f2992bfe1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Game Core getter Functions.  <a href="classsudoku_1_1app_1_1App.html#a83b19bfe5533be2ed04d9a2f2992bfe1">More...</a><br /></td></tr>
 <tr class="separator:a83b19bfe5533be2ed04d9a2f2992bfe1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afd64be8b17c940845741056b5f4e105e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsudoku_1_1app_1_1App.html#afd64be8b17c940845741056b5f4e105e">getGridSize</a> (cls)</td></tr>
+<tr class="memdesc:afd64be8b17c940845741056b5f4e105e"><td class="mdescLeft">&#160;</td><td class="mdescRight">(classmethod) Returns the size of the grid (Puzzle)  <a href="classsudoku_1_1app_1_1App.html#afd64be8b17c940845741056b5f4e105e">More...</a><br /></td></tr>
+<tr class="separator:afd64be8b17c940845741056b5f4e105e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae7efd6e8d98d273ebc72d21b63e90853"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsudoku_1_1app_1_1App.html#ae7efd6e8d98d273ebc72d21b63e90853">getBlockSize</a> (cls)</td></tr>
+<tr class="memdesc:ae7efd6e8d98d273ebc72d21b63e90853"><td class="mdescLeft">&#160;</td><td class="mdescRight">(classmethod) Returns the size of a Block.  <a href="classsudoku_1_1app_1_1App.html#ae7efd6e8d98d273ebc72d21b63e90853">More...</a><br /></td></tr>
+<tr class="separator:ae7efd6e8d98d273ebc72d21b63e90853"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6a9de30feffb5ccb112269be54fd6dc0"><td class="memItemLeft" align="right" valign="top">str&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsudoku_1_1app_1_1App.html#a6a9de30feffb5ccb112269be54fd6dc0">getCurrentDifficulty</a> (self)</td></tr>
 <tr class="memdesc:a6a9de30feffb5ccb112269be54fd6dc0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the difficulty of the current game.  <a href="classsudoku_1_1app_1_1App.html#a6a9de30feffb5ccb112269be54fd6dc0">More...</a><br /></td></tr>
 <tr class="separator:a6a9de30feffb5ccb112269be54fd6dc0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a159b71ec639a3fe8eb274ee30c7c3c99"><td class="memItemLeft" align="right" valign="top">list[str]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsudoku_1_1app_1_1App.html#a159b71ec639a3fe8eb274ee30c7c3c99">getAllDifficultyNames</a> (self)</td></tr>
-<tr class="memdesc:a159b71ec639a3fe8eb274ee30c7c3c99"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the names of difficulty levels.  <a href="classsudoku_1_1app_1_1App.html#a159b71ec639a3fe8eb274ee30c7c3c99">More...</a><br /></td></tr>
-<tr class="separator:a159b71ec639a3fe8eb274ee30c7c3c99"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:accbbdc0165e689aac55f375367497948"><td class="memItemLeft" align="right" valign="top">list[str]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsudoku_1_1app_1_1App.html#accbbdc0165e689aac55f375367497948">getAllDifficultyNames</a> (cls)</td></tr>
+<tr class="memdesc:accbbdc0165e689aac55f375367497948"><td class="mdescLeft">&#160;</td><td class="mdescRight">(classmethod) Returns the names of difficulty levels.  <a href="classsudoku_1_1app_1_1App.html#accbbdc0165e689aac55f375367497948">More...</a><br /></td></tr>
+<tr class="separator:accbbdc0165e689aac55f375367497948"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f03ca522f9a8f33eba5a86b324a61fe"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsudoku_1_1app_1_1App.html#a0f03ca522f9a8f33eba5a86b324a61fe">getMistakesMade</a> (self)</td></tr>
+<tr class="memdesc:a0f03ca522f9a8f33eba5a86b324a61fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the amount of mistakes made in the current game.  <a href="classsudoku_1_1app_1_1App.html#a0f03ca522f9a8f33eba5a86b324a61fe">More...</a><br /></td></tr>
+<tr class="separator:a0f03ca522f9a8f33eba5a86b324a61fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acf7ca57ee9337785ba9e1f9ecfcf5db2"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsudoku_1_1app_1_1App.html#acf7ca57ee9337785ba9e1f9ecfcf5db2">getMaxMistakes</a> (cls)</td></tr>
+<tr class="memdesc:acf7ca57ee9337785ba9e1f9ecfcf5db2"><td class="mdescLeft">&#160;</td><td class="mdescRight">(classmethod) Returns the maximum amount of mistakes per game.  <a href="classsudoku_1_1app_1_1App.html#acf7ca57ee9337785ba9e1f9ecfcf5db2">More...</a><br /></td></tr>
+<tr class="separator:acf7ca57ee9337785ba9e1f9ecfcf5db2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7b78bc454233659cc8430b8b3c13328c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsudoku_1_1app_1_1App.html#a7b78bc454233659cc8430b8b3c13328c">getElapsedTime</a> (self)</td></tr>
+<tr class="memdesc:a7b78bc454233659cc8430b8b3c13328c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the elapsed time in seconds of the current game.  <a href="classsudoku_1_1app_1_1App.html#a7b78bc454233659cc8430b8b3c13328c">More...</a><br /></td></tr>
+<tr class="separator:a7b78bc454233659cc8430b8b3c13328c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3be530487ce86594886b8baf5a1991a2"><td class="memItemLeft" align="right" valign="top">None&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsudoku_1_1app_1_1App.html#a3be530487ce86594886b8baf5a1991a2">handleMove</a> (self, int row, int col)</td></tr>
+<tr class="memdesc:a3be530487ce86594886b8baf5a1991a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Game Move Functions.  <a href="classsudoku_1_1app_1_1App.html#a3be530487ce86594886b8baf5a1991a2">More...</a><br /></td></tr>
+<tr class="separator:a3be530487ce86594886b8baf5a1991a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a689ee414ce0020a0b1b2c4c7a122e5c6"><td class="memItemLeft" align="right" valign="top">int|None&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsudoku_1_1app_1_1App.html#a689ee414ce0020a0b1b2c4c7a122e5c6">getFieldValue</a> (self, int row, int col)</td></tr>
-<tr class="memdesc:a689ee414ce0020a0b1b2c4c7a122e5c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the value for a Field at (row, col)  <a href="classsudoku_1_1app_1_1App.html#a689ee414ce0020a0b1b2c4c7a122e5c6">More...</a><br /></td></tr>
+<tr class="memdesc:a689ee414ce0020a0b1b2c4c7a122e5c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setter / Getter Functions (Field, Digits)  <a href="classsudoku_1_1app_1_1App.html#a689ee414ce0020a0b1b2c4c7a122e5c6">More...</a><br /></td></tr>
 <tr class="separator:a689ee414ce0020a0b1b2c4c7a122e5c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa9462da154a720cc13fc2ffd1900fd36"><td class="memItemLeft" align="right" valign="top">str&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsudoku_1_1app_1_1App.html#aa9462da154a720cc13fc2ffd1900fd36">getFieldStr</a> (self, int row, int col)</td></tr>
-<tr class="memdesc:aa9462da154a720cc13fc2ffd1900fd36"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the Label for a Field at (row, col)  <a href="classsudoku_1_1app_1_1App.html#aa9462da154a720cc13fc2ffd1900fd36">More...</a><br /></td></tr>
-<tr class="separator:aa9462da154a720cc13fc2ffd1900fd36"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a830fc374ebbec706928daec1b6cef46d"><td class="memItemLeft" align="right" valign="top">str&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsudoku_1_1app_1_1App.html#a830fc374ebbec706928daec1b6cef46d">getFieldLabel</a> (self, int row, int col)</td></tr>
+<tr class="memdesc:a830fc374ebbec706928daec1b6cef46d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the Label for a Field at (row, col)  <a href="classsudoku_1_1app_1_1App.html#a830fc374ebbec706928daec1b6cef46d">More...</a><br /></td></tr>
+<tr class="separator:a830fc374ebbec706928daec1b6cef46d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a04d43da9c0011d2db9d621b611a4fd5c"><td class="memItemLeft" align="right" valign="top">list[int]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsudoku_1_1app_1_1App.html#a04d43da9c0011d2db9d621b611a4fd5c">getFieldNotes</a> (self, int row, int col)</td></tr>
+<tr class="memdesc:a04d43da9c0011d2db9d621b611a4fd5c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a list with all Notes from a Field.  <a href="classsudoku_1_1app_1_1App.html#a04d43da9c0011d2db9d621b611a4fd5c">More...</a><br /></td></tr>
+<tr class="separator:a04d43da9c0011d2db9d621b611a4fd5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0b9c25bf02bad4cb9a7af040d44d9225"><td class="memItemLeft" align="right" valign="top">None&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsudoku_1_1app_1_1App.html#a0b9c25bf02bad4cb9a7af040d44d9225">printField</a> (self, int row, int col)</td></tr>
+<tr class="memdesc:a0b9c25bf02bad4cb9a7af040d44d9225"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints the Field attributes.  <a href="classsudoku_1_1app_1_1App.html#a0b9c25bf02bad4cb9a7af040d44d9225">More...</a><br /></td></tr>
+<tr class="separator:a0b9c25bf02bad4cb9a7af040d44d9225"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4cadfab1ce4a7f0a815c0a5161aac74b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsudoku_1_1app_1_1App.html#a4cadfab1ce4a7f0a815c0a5161aac74b">isFieldFixed</a> (self, int row, int col)</td></tr>
 <tr class="memdesc:a4cadfab1ce4a7f0a815c0a5161aac74b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns if a field is fixed.  <a href="classsudoku_1_1app_1_1App.html#a4cadfab1ce4a7f0a815c0a5161aac74b">More...</a><br /></td></tr>
 <tr class="separator:a4cadfab1ce4a7f0a815c0a5161aac74b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab8e0b2cf88fb6155879ba0db08801a7b"><td class="memItemLeft" align="right" valign="top">list[int]|list&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsudoku_1_1app_1_1App.html#ab8e0b2cf88fb6155879ba0db08801a7b">getSetDigits</a> (self)</td></tr>
 <tr class="memdesc:ab8e0b2cf88fb6155879ba0db08801a7b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns all the Digits, which occur 9 times in the current game.  <a href="classsudoku_1_1app_1_1App.html#ab8e0b2cf88fb6155879ba0db08801a7b">More...</a><br /></td></tr>
 <tr class="separator:ab8e0b2cf88fb6155879ba0db08801a7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0f03ca522f9a8f33eba5a86b324a61fe"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsudoku_1_1app_1_1App.html#a0f03ca522f9a8f33eba5a86b324a61fe">getMistakesMade</a> (self)</td></tr>
-<tr class="memdesc:a0f03ca522f9a8f33eba5a86b324a61fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the amount of mistakes made in the current game.  <a href="classsudoku_1_1app_1_1App.html#a0f03ca522f9a8f33eba5a86b324a61fe">More...</a><br /></td></tr>
-<tr class="separator:a0f03ca522f9a8f33eba5a86b324a61fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3ab1d68bfe4f5bac7d66eec249bd0dbd"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsudoku_1_1app_1_1App.html#a3ab1d68bfe4f5bac7d66eec249bd0dbd">getMaxMistakes</a> (self)</td></tr>
-<tr class="memdesc:a3ab1d68bfe4f5bac7d66eec249bd0dbd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the maximum amount of mistakes per game.  <a href="classsudoku_1_1app_1_1App.html#a3ab1d68bfe4f5bac7d66eec249bd0dbd">More...</a><br /></td></tr>
-<tr class="separator:a3ab1d68bfe4f5bac7d66eec249bd0dbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7b78bc454233659cc8430b8b3c13328c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsudoku_1_1app_1_1App.html#a7b78bc454233659cc8430b8b3c13328c">getElapsedTime</a> (self)</td></tr>
-<tr class="memdesc:a7b78bc454233659cc8430b8b3c13328c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the elapsed time in seconds of the current game.  <a href="classsudoku_1_1app_1_1App.html#a7b78bc454233659cc8430b8b3c13328c">More...</a><br /></td></tr>
-<tr class="separator:a7b78bc454233659cc8430b8b3c13328c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a74c669b00f5d17d1d9c43712cc454527"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsudoku_1_1app_1_1App.html#a74c669b00f5d17d1d9c43712cc454527">hasGameEnded</a> (self)</td></tr>
-<tr class="memdesc:a74c669b00f5d17d1d9c43712cc454527"><td class="mdescLeft">&#160;</td><td class="mdescRight">If the current game has ended.  <a href="classsudoku_1_1app_1_1App.html#a74c669b00f5d17d1d9c43712cc454527">More...</a><br /></td></tr>
-<tr class="separator:a74c669b00f5d17d1d9c43712cc454527"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae56412e07cb7f0798d96e1ea998ee90c"><td class="memItemLeft" align="right" valign="top">None&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsudoku_1_1app_1_1App.html#ae56412e07cb7f0798d96e1ea998ee90c">setAutoNotes</a> (self)</td></tr>
+<tr class="memdesc:ae56412e07cb7f0798d96e1ea998ee90c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set Notes for all Fields automatically.  <a href="classsudoku_1_1app_1_1App.html#ae56412e07cb7f0798d96e1ea998ee90c">More...</a><br /></td></tr>
+<tr class="separator:ae56412e07cb7f0798d96e1ea998ee90c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2625aa214fc19ece1aca896b2689e57b"><td class="memItemLeft" align="right" valign="top">None&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsudoku_1_1app_1_1App.html#a2625aa214fc19ece1aca896b2689e57b">clearAllNotes</a> (self)</td></tr>
+<tr class="memdesc:a2625aa214fc19ece1aca896b2689e57b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear all notes in the puzzle.  <a href="classsudoku_1_1app_1_1App.html#a2625aa214fc19ece1aca896b2689e57b">More...</a><br /></td></tr>
+<tr class="separator:a2625aa214fc19ece1aca896b2689e57b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a1accf2c9a3a13b444adf72567aaa96a5"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsudoku_1_1app_1_1App.html#a1accf2c9a3a13b444adf72567aaa96a5">game</a></td></tr>
-<tr class="separator:a1accf2c9a3a13b444adf72567aaa96a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a90795385f5402060214e64f37f29bf52"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsudoku_1_1app_1_1App.html#a90795385f5402060214e64f37f29bf52">ui</a></td></tr>
-<tr class="separator:a90795385f5402060214e64f37f29bf52"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4394c026b06fc28f4a59ec09dd06b367"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsudoku_1_1app_1_1App.html#a4394c026b06fc28f4a59ec09dd06b367">selectedCell</a></td></tr>
-<tr class="separator:a4394c026b06fc28f4a59ec09dd06b367"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a89f919bf6e8d3ff70f462d1de10a28d7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsudoku_1_1app_1_1App.html#a89f919bf6e8d3ff70f462d1de10a28d7">selectedDigit</a></td></tr>
 <tr class="separator:a89f919bf6e8d3ff70f462d1de10a28d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4394c026b06fc28f4a59ec09dd06b367"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsudoku_1_1app_1_1App.html#a4394c026b06fc28f4a59ec09dd06b367">selectedCell</a></td></tr>
+<tr class="separator:a4394c026b06fc28f4a59ec09dd06b367"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>The <a class="el" href="classsudoku_1_1app_1_1App.html" title="The App is the Controller of this.">App</a> is the Controller of this. </p>
-<p>Has a Game-object (Gamelogic) and if not CLI, an UI-Object (View). Contains all Attributs which are not Logic-related (like Gamemodes). Controls Game-Flow. </p>
+<div class="textblock"><p>The <a class="el" href="classsudoku_1_1app_1_1App.html" title="The App is the Controller and API of this Application:">App</a> is the Controller and API of this Application: </p>
+<ul>
+<li>has a Game-object (Gamelogic and contains Model)</li>
+<li>has an UI-Object (View), if not in CLI</li>
+<li>has a State-Object containing all attributs which are not Logic-related (like Gamemodes).</li>
+</ul>
+<p>NOTE: this results in <a class="el" href="classsudoku_1_1app_1_1App.html" title="The App is the Controller and API of this Application:">App</a> being both State-Manager for UI-States and Controller, and in a big class. But this is a design decision made to achieve MVC-Architecture. <br  />
+ </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a3c1ffaa93ac079ecc88362a573b207a5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3c1ffaa93ac079ecc88362a573b207a5">&#9670;&nbsp;</a></span>__init__()</h2>
@@ -219,35 +254,58 @@ Public Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a080780c80f6b3bbc3ec49a7c9b19357f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a080780c80f6b3bbc3ec49a7c9b19357f">&#9670;&nbsp;</a></span>autoSwapNextSelectedDigit()</h2>
+<a id="aef796642639880041261ad06fef01e5e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aef796642639880041261ad06fef01e5e">&#9670;&nbsp;</a></span>addErrorCell()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"> None sudoku.app.App.autoSwapNextSelectedDigit </td>
+          <td class="memname"> None sudoku.app.App.addErrorCell </td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>self</em></td><td>)</td>
+          <td class="paramname"><em>self</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>row</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>col</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Switches to the next available Digit, which does not occur 9 times TODO. </p>
+<p>Adds a cell to errorCells. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">row</td><td>int </td></tr>
+    <tr><td class="paramname">col</td><td>int </td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section return"><dt>Returns</dt><dd>None </dd></dl>
 
 </div>
 </div>
-<a id="aa4438ce616d9f972a56e75298d4c00c6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa4438ce616d9f972a56e75298d4c00c6">&#9670;&nbsp;</a></span>darkmode()</h2>
+<a id="a2625aa214fc19ece1aca896b2689e57b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2625aa214fc19ece1aca896b2689e57b">&#9670;&nbsp;</a></span>clearAllNotes()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"> bool sudoku.app.App.darkmode </td>
+          <td class="memname"> None sudoku.app.App.clearAllNotes </td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname"><em>self</em></td><td>)</td>
@@ -256,13 +314,62 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>(property) Defines if the ui is using the dark theme. </p>
-<p>This setting does not affect the gameplay itself. To set the darkmode, use self.toggleDarkMode() </p><dl class="section return"><dt>Returns</dt><dd>bool </dd></dl>
+<p>Clear all notes in the puzzle. </p>
+<dl class="section return"><dt>Returns</dt><dd>None </dd></dl>
 
 </div>
 </div>
-<a id="a159b71ec639a3fe8eb274ee30c7c3c99"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a159b71ec639a3fe8eb274ee30c7c3c99">&#9670;&nbsp;</a></span>getAllDifficultyNames()</h2>
+<a id="a8ff8bf95966a2bf5b452191a8c532fff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8ff8bf95966a2bf5b452191a8c532fff">&#9670;&nbsp;</a></span>clearErrorCells()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"> None sudoku.app.App.clearErrorCells </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Removes all cells from errorCells. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">row</td><td>int </td></tr>
+    <tr><td class="paramname">col</td><td>int </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>None </dd></dl>
+
+</div>
+</div>
+<a id="a751fcf370b7dfa624431a62ac37068b8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a751fcf370b7dfa624431a62ac37068b8">&#9670;&nbsp;</a></span>deselectCell()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"> None sudoku.app.App.deselectCell </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Deselects the cell. </p>
+<dl class="section return"><dt>Returns</dt><dd>None </dd></dl>
+
+</div>
+</div>
+<a id="accbbdc0165e689aac55f375367497948"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#accbbdc0165e689aac55f375367497948">&#9670;&nbsp;</a></span>getAllDifficultyNames()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -271,14 +378,35 @@ Public Attributes</h2></td></tr>
           <td class="memname"> list[str] sudoku.app.App.getAllDifficultyNames </td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>self</em></td><td>)</td>
+          <td class="paramname"><em>cls</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Returns the names of difficulty levels. </p>
+<p>(classmethod) Returns the names of difficulty levels. </p>
 <dl class="section return"><dt>Returns</dt><dd>list[str] </dd></dl>
+
+</div>
+</div>
+<a id="ae7efd6e8d98d273ebc72d21b63e90853"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae7efd6e8d98d273ebc72d21b63e90853">&#9670;&nbsp;</a></span>getBlockSize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"> int sudoku.app.App.getBlockSize </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>cls</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>(classmethod) Returns the size of a Block. </p>
+<dl class="section return"><dt>Returns</dt><dd>int </dd></dl>
 
 </div>
 </div>
@@ -324,14 +452,35 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="aa9462da154a720cc13fc2ffd1900fd36"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa9462da154a720cc13fc2ffd1900fd36">&#9670;&nbsp;</a></span>getFieldStr()</h2>
+<a id="af347d79c55f12cbd80d83c1bafa00da6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af347d79c55f12cbd80d83c1bafa00da6">&#9670;&nbsp;</a></span>getErrorCells()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"> str sudoku.app.App.getFieldStr </td>
+          <td class="memname"> set[tuple[int, int]] sudoku.app.App.getErrorCells </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>public property functions </p>
+<p>Returns the current errorcells. </p><dl class="section return"><dt>Returns</dt><dd>set[tuple[int, int]] </dd></dl>
+
+</div>
+</div>
+<a id="a830fc374ebbec706928daec1b6cef46d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a830fc374ebbec706928daec1b6cef46d">&#9670;&nbsp;</a></span>getFieldLabel()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"> str sudoku.app.App.getFieldLabel </td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname"><em>self</em>, </td>
@@ -368,6 +517,50 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="a04d43da9c0011d2db9d621b611a4fd5c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a04d43da9c0011d2db9d621b611a4fd5c">&#9670;&nbsp;</a></span>getFieldNotes()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"> list[int] sudoku.app.App.getFieldNotes </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>self</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>row</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>col</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns a list with all Notes from a Field. </p>
+<p>NOTE: The list can be empty. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">row</td><td>int - the row of the field in question </td></tr>
+    <tr><td class="paramname">col</td><td>int - the column of the field in question </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>list[int] </dd></dl>
+
+</div>
+</div>
 <a id="a689ee414ce0020a0b1b2c4c7a122e5c6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a689ee414ce0020a0b1b2c4c7a122e5c6">&#9670;&nbsp;</a></span>getFieldValue()</h2>
 
@@ -400,8 +593,8 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Returns the value for a Field at (row, col) </p>
-<dl class="params"><dt>Parameters</dt><dd>
+<p>Setter / Getter Functions (Field, Digits) </p>
+<p>Returns the value for a Field at (row, col) </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">row</td><td>int - the row of the field in question </td></tr>
     <tr><td class="paramname">col</td><td>int - the column of the field in question </td></tr>
@@ -412,8 +605,29 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a3ab1d68bfe4f5bac7d66eec249bd0dbd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3ab1d68bfe4f5bac7d66eec249bd0dbd">&#9670;&nbsp;</a></span>getMaxMistakes()</h2>
+<a id="afd64be8b17c940845741056b5f4e105e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afd64be8b17c940845741056b5f4e105e">&#9670;&nbsp;</a></span>getGridSize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"> int sudoku.app.App.getGridSize </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>cls</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>(classmethod) Returns the size of the grid (Puzzle) </p>
+<dl class="section return"><dt>Returns</dt><dd>int </dd></dl>
+
+</div>
+</div>
+<a id="acf7ca57ee9337785ba9e1f9ecfcf5db2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acf7ca57ee9337785ba9e1f9ecfcf5db2">&#9670;&nbsp;</a></span>getMaxMistakes()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -422,13 +636,13 @@ Public Attributes</h2></td></tr>
           <td class="memname"> int sudoku.app.App.getMaxMistakes </td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>self</em></td><td>)</td>
+          <td class="paramname"><em>cls</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Returns the maximum amount of mistakes per game. </p>
+<p>(classmethod) Returns the maximum amount of mistakes per game. </p>
 <dl class="section return"><dt>Returns</dt><dd>int </dd></dl>
 
 </div>
@@ -470,7 +684,8 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Returns the str-repr of the current puzzle. </p>
+<p>Game Core getter Functions. </p>
+<p>Returns the str-repr of the current puzzle. </p><dl class="section return"><dt>Returns</dt><dd>str </dd></dl>
 
 </div>
 </div>
@@ -527,8 +742,8 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Lets the game handle a move depending on modes and the selectedDigit. </p>
-<p>Additionally checks if game over or won. </p><dl class="params"><dt>Parameters</dt><dd>
+<p>Game Move Functions. </p>
+<p>Lets the game handle a move depending on modes and the selectedDigit. Additionally checks if game over or won. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">row</td><td>int </td></tr>
     <tr><td class="paramname">col</td><td>int </td></tr>
@@ -560,27 +775,6 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a1d2e960fae1111ab3bce36d04dc85c12"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1d2e960fae1111ab3bce36d04dc85c12">&#9670;&nbsp;</a></span>highlightCells()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"> bool sudoku.app.App.highlightCells </td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>self</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>(property) Defines if the ui visualizes the sudoku rules depending on the selected cell. </p>
-<p>This setting does not affect the gameplay itself. To set the highlightCells, use self.toggleHighlightCells() </p><dl class="section return"><dt>Returns</dt><dd>bool </dd></dl>
-
-</div>
-</div>
 <a id="ae8589e9ebb51b95e01e47559591a6a12"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae8589e9ebb51b95e01e47559591a6a12">&#9670;&nbsp;</a></span>highlightDigits()</h2>
 
@@ -598,7 +792,30 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>(property) Defines if the ui is visualizing the digits in the puzzle depending on the selected Digit. </p>
-<p>This setting does not affect the gameplay itself. To set the highlightDigits, use self.toggleHighlightCells() </p><dl class="section return"><dt>Returns</dt><dd>bool </dd></dl>
+<p>NOTE: This setting does not affect the gameplay itself. </p><dl class="section see"><dt>See also</dt><dd>self.toggleHighlightDigits(), to set the <a class="el" href="classsudoku_1_1app_1_1App.html#ae8589e9ebb51b95e01e47559591a6a12" title="(property) Defines if the ui is visualizing the digits in the puzzle depending on the selected Digit.">highlightDigits</a> </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>bool </dd></dl>
+
+</div>
+</div>
+<a id="ae95e4cee945bba6a047b0ac2e0ace57c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae95e4cee945bba6a047b0ac2e0ace57c">&#9670;&nbsp;</a></span>highlightRules()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"> bool sudoku.app.App.highlightRules </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>(property) Defines if the ui visualizes the sudoku rules depending on the selected cell. </p>
+<p>NOTE: This setting does not affect the gameplay itself. </p><dl class="section see"><dt>See also</dt><dd>self.toggleHighlightRules(), to set the <a class="el" href="classsudoku_1_1app_1_1App.html#ae8589e9ebb51b95e01e47559591a6a12" title="(property) Defines if the ui is visualizing the digits in the puzzle depending on the selected Digit.">highlightDigits</a> </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>bool </dd></dl>
 
 </div>
 </div>
@@ -619,7 +836,7 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>(property) Defines if app is in eraseMode or not. </p>
-<p>In eraseMode, the selectedCell will be set to no value. To set the darkmode, use self.toggleEraseMode() </p><dl class="section return"><dt>Returns</dt><dd>bool </dd></dl>
+<p>In eraseMode, the selectedCell will be set to no value. To set the eraseMode, use self.toggleEraseMode() </p><dl class="section return"><dt>Returns</dt><dd>bool </dd></dl>
 
 </div>
 </div>
@@ -640,7 +857,7 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>(property) Defines if app is in noteMode or not. </p>
-<p>In noteMode, the selectedDigit can be assigned as a note to the selectedCell To set the darkmode, use self.toggleNoteMode() </p><dl class="section return"><dt>Returns</dt><dd>bool </dd></dl>
+<p>In noteMode, the selectedDigit can be assigned as a note to the selectedCell To set the NoteMode, use self.toggleNoteMode() </p><dl class="section return"><dt>Returns</dt><dd>bool </dd></dl>
 
 </div>
 </div>
@@ -681,6 +898,115 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="a0b9c25bf02bad4cb9a7af040d44d9225"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0b9c25bf02bad4cb9a7af040d44d9225">&#9670;&nbsp;</a></span>printField()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"> None sudoku.app.App.printField </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>self</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>row</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>col</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Prints the Field attributes. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">row</td><td>int - the row of the field in question </td></tr>
+    <tr><td class="paramname">col</td><td>int - the column of the field in question </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>str </dd></dl>
+
+</div>
+</div>
+<a id="ac409710ea8e8414eaa292964b4d34728"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac409710ea8e8414eaa292964b4d34728">&#9670;&nbsp;</a></span>removeErrorCell()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"> None sudoku.app.App.removeErrorCell </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>self</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>row</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>col</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Removes a Cell from errorCells. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">row</td><td>int </td></tr>
+    <tr><td class="paramname">col</td><td>int </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>None </dd></dl>
+
+</div>
+</div>
+<a id="acdd63aa5bc5f3efbedc5cf3dd25f3345"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acdd63aa5bc5f3efbedc5cf3dd25f3345">&#9670;&nbsp;</a></span>restartGame()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"> None sudoku.app.App.restartGame </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Restarts the current game. </p>
+<p>Usually called from Client. </p><dl class="section return"><dt>Returns</dt><dd>None </dd></dl>
+
+</div>
+</div>
 <a id="a614ad06e0fa799aac20f46ca0337e7db"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a614ad06e0fa799aac20f46ca0337e7db">&#9670;&nbsp;</a></span>run()</h2>
 
@@ -697,8 +1023,89 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p><a class="el" href="classsudoku_1_1app_1_1Game.html" title="A Game creates a sudoku-object, wich will be solved.">Game</a> Functions. </p>
-<p>Starts to run the application and creates a new game with default difficulty </p><dl class="section return"><dt>Returns</dt><dd>None </dd></dl>
+<p>Game Core Functions. </p>
+<p>Starts to run the application. and creates a new game with default difficulty </p><dl class="section return"><dt>Returns</dt><dd>None </dd></dl>
+
+</div>
+</div>
+<a id="afd0b3ce9cc1261723af888c7d3c3f0d8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afd0b3ce9cc1261723af888c7d3c3f0d8">&#9670;&nbsp;</a></span>selectCell()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"> None sudoku.app.App.selectCell </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>self</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>row</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>col</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sets a cell as selected. </p>
+<p>Requirement to show rules. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">row</td><td>int - the row of selected cell </td></tr>
+    <tr><td class="paramname">col</td><td>int - the column of selected cell </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>None </dd></dl>
+
+</div>
+</div>
+<a id="a7c1dd6fbef52fc0af794b97f6a9f6128"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7c1dd6fbef52fc0af794b97f6a9f6128">&#9670;&nbsp;</a></span>selectDigit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"> None sudoku.app.App.selectDigit </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>self</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sets the selectedDigit to the value. </p>
+<p>NOTE: if digit is already selected, it will be deselected. (like toggling) </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">value</td><td>int - the newly selected digit </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>None </dd></dl>
 
 </div>
 </div>
@@ -723,8 +1130,8 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a5c4cead6cb94a691c62c4db5e6c9d4d7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5c4cead6cb94a691c62c4db5e6c9d4d7">&#9670;&nbsp;</a></span>selectedCell() <span class="overload">[2/2]</span></h2>
+<a id="afe01aaa84e7572455c88b3d944ed0f0c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afe01aaa84e7572455c88b3d944ed0f0c">&#9670;&nbsp;</a></span>selectedCell() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -738,7 +1145,7 @@ Public Attributes</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">tuple | None&#160;</td>
+          <td class="paramtype">tuple[int, int] | None&#160;</td>
           <td class="paramname"><em>pos</em>&#160;</td>
         </tr>
         <tr>
@@ -776,7 +1183,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Properties. </p>
+<p>Properties - State Management. </p>
 <p>(property) The selected digit defines the value assigned to field/cell in the puzzle. Returns a digit [1 .. 9] if selected. To set the selectedDigit, use self.selectedDigit = value </p><dl class="section return"><dt>Returns</dt><dd>int | None </dd></dl>
 
 </div>
@@ -818,8 +1225,29 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="ae13ada988ef0796f42a478d5f5d9dc37"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae13ada988ef0796f42a478d5f5d9dc37">&#9670;&nbsp;</a></span>startNewGame()</h2>
+<a id="ae56412e07cb7f0798d96e1ea998ee90c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae56412e07cb7f0798d96e1ea998ee90c">&#9670;&nbsp;</a></span>setAutoNotes()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"> None sudoku.app.App.setAutoNotes </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set Notes for all Fields automatically. </p>
+<dl class="section return"><dt>Returns</dt><dd>None </dd></dl>
+
+</div>
+</div>
+<a id="ab53da820f8e018fd2ec893acb79dd5a3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab53da820f8e018fd2ec893acb79dd5a3">&#9670;&nbsp;</a></span>startNewGame()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -833,8 +1261,8 @@ Public Attributes</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">str &#160;</td>
-          <td class="paramname"><em>difficulty</em> = <code>&quot;Game.DEFAULT_DIFFICULTY&quot;</code>&#160;</td>
+          <td class="paramtype">str&#160;</td>
+          <td class="paramname"><em>difficulty</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -844,35 +1272,13 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Starts a new <a class="el" href="classsudoku_1_1app_1_1Game.html" title="A Game creates a sudoku-object, wich will be solved.">Game</a> and creates the ui, if needed. </p>
-<p>All game-related settings will be reset.</p>
-<dl class="params"><dt>Parameters</dt><dd>
+<p>Starts a new Game and creates the ui, if needed. </p>
+<p>All game-related settings will be reset. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">difficulty</td><td>str </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>None </dd></dl>
-
-</div>
-</div>
-<a id="a64554c457f9299ada0915bd5464b953d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a64554c457f9299ada0915bd5464b953d">&#9670;&nbsp;</a></span>toggleDarkMode()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"> None sudoku.app.App.toggleDarkMode </td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>self</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Toggle property darkMode. </p>
 <dl class="section return"><dt>Returns</dt><dd>None </dd></dl>
 
 </div>
@@ -893,29 +1299,8 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Modes - property functions. </p>
-<p>Toggle property eraseMode </p><dl class="section return"><dt>Returns</dt><dd>None </dd></dl>
-
-</div>
-</div>
-<a id="a71e8adf04d8f875c8c3e2662e7b2ba58"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a71e8adf04d8f875c8c3e2662e7b2ba58">&#9670;&nbsp;</a></span>toggleHighlightCells()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"> None sudoku.app.App.toggleHighlightCells </td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>self</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Toggle property highlightCells. </p>
-<dl class="section return"><dt>Returns</dt><dd>None </dd></dl>
+<p>toggle property functions </p>
+<p>Toggle property eraseMode. </p><dl class="section return"><dt>Returns</dt><dd>None </dd></dl>
 
 </div>
 </div>
@@ -936,6 +1321,27 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Toggle property highlighDigits. </p>
+<dl class="section return"><dt>Returns</dt><dd>None </dd></dl>
+
+</div>
+</div>
+<a id="a4769dd620889934c034c1952103c37ef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4769dd620889934c034c1952103c37ef">&#9670;&nbsp;</a></span>toggleHighlightRules()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"> None sudoku.app.App.toggleHighlightRules </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Toggle property highlightRules. </p>
 <dl class="section return"><dt>Returns</dt><dd>None </dd></dl>
 
 </div>
@@ -962,20 +1368,6 @@ Public Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="a1accf2c9a3a13b444adf72567aaa96a5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1accf2c9a3a13b444adf72567aaa96a5">&#9670;&nbsp;</a></span>game</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">sudoku.app.App.game</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a id="a4394c026b06fc28f4a59ec09dd06b367"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4394c026b06fc28f4a59ec09dd06b367">&#9670;&nbsp;</a></span>selectedCell</h2>
 
@@ -998,20 +1390,6 @@ Public Attributes</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">sudoku.app.App.selectedDigit</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a90795385f5402060214e64f37f29bf52"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a90795385f5402060214e64f37f29bf52">&#9670;&nbsp;</a></span>ui</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">sudoku.app.App.ui</td>
         </tr>
       </table>
 </div><div class="memdoc">

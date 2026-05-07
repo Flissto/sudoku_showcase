@@ -174,8 +174,6 @@ class App:
 
 	def clearErrorCells(self) -> None:
 		""" Removes all cells from errorCells.
-		@param row: int
-		@param col: int
 		@return None """
 		self._state.errorCells.clear()
 

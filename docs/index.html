@@ -67,6 +67,7 @@ $(function() {
 <div class="contents">
 <div class="textblock"><p><a class="anchor" id="md_README"></a> A clean and modular <b>Sudoku application built in Python</b>, designed to demonstrate software architecture, object-oriented design, and UI implementation skills.</p>
 <hr  />
+<p><img src="/assets/sudoku.gif" alt="Sudoku Game" class="inline"/></p>
 <h1><a class="anchor" id="autotoc_md2"></a>
 Overview</h1>
 <p>This project provides:</p>
@@ -169,8 +170,21 @@ Architecture Overview</h1>
 <li>Gamification Features, such as mistakes</li>
 </ul>
 <p>This separation ensures <b>maintainability and extensibility</b>. See the full <a href="https://flissto.github.io/sudoku_showcase/">API Documentation</a> on Github Pages.</p>
+<h1><a class="anchor" id="autotoc_md19"></a>
+Dynamic Tests</h1>
+<h2><a class="anchor" id="autotoc_md20"></a>
+pytest</h2>
+<p>There are tests implemented using pytest in the tests-directory. </p><div class="fragment"><div class="line">pytest tests/</div>
+</div><!-- fragment --><p> As the project is still in development, only tests for the following modules have been implemented yet:</p><ul>
+<li><a class="el" href="field_8py.html">field.py</a></li>
+<li><a class="el" href="puzzle_8py.html">puzzle.py</a></li>
+<li><a class="el" href="solver_8py.html">solver.py</a> There are more unit- and integration tests planned. For further details see the <a class="el" href="Roadmap_8md.html">Roadmap</a>.</li>
+</ul>
 <hr  />
-<h1><a class="anchor" id="autotoc_md20"></a>
+<h1><a class="anchor" id="autotoc_md22"></a>
+AI Assistance</h1>
+<p>AI tools, such as ChatGPT and GitHub Copilot, were used as a supporting tool during development (e.g. for feedback and debugging). All implementation decisions, architecture, and final code were written and verified by the author.</p>
+<h1><a class="anchor" id="autotoc_md23"></a>
 License</h1>
 <p>This project is licensed under the MIT License. See the <a href="/LICENSE">LICENSE</a> file for details </p>
 </div></div><!-- PageDoc -->

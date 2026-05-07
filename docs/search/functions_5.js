@@ -1,26 +1,4 @@
 var searchData=
 [
-  ['generatesolution_177',['generateSolution',['../classsudoku_1_1models_1_1Puzzle.html#ab515e3c13629587be3b46ac508ef6cc9',1,'sudoku::models::Puzzle']]],
-  ['getalldifficultynames_178',['getAllDifficultyNames',['../classsudoku_1_1app_1_1App.html#a159b71ec639a3fe8eb274ee30c7c3c99',1,'sudoku::app::App']]],
-  ['getblock_179',['getBlock',['../classsudoku_1_1models_1_1Puzzle.html#a3cf81285c2622fc4b83f69bf79639963',1,'sudoku.models.Puzzle.getBlock()'],['../classsudoku_1_1ui_1_1UI.html#af8472229adff6c12f73f283ba460fc47',1,'sudoku.ui.UI.getBlock()']]],
-  ['getcolumn_180',['getColumn',['../classsudoku_1_1models_1_1Puzzle.html#a0537f1b5ed0972d3f8944971959497bb',1,'sudoku::models::Puzzle']]],
-  ['getcurrentdifficulty_181',['getCurrentDifficulty',['../classsudoku_1_1app_1_1App.html#a6a9de30feffb5ccb112269be54fd6dc0',1,'sudoku::app::App']]],
-  ['getelapsedtime_182',['getElapsedTime',['../classsudoku_1_1app_1_1App.html#a7b78bc454233659cc8430b8b3c13328c',1,'sudoku.app.App.getElapsedTime()'],['../classsudoku_1_1app_1_1Game.html#acae514840bd8d3b5b78cb2f2f8c1ad2a',1,'sudoku.app.Game.getElapsedTime()']]],
-  ['getemptyfields_183',['getEmptyFields',['../classsudoku_1_1models_1_1Puzzle.html#a4e92b84a885206a6d4ee62085ac05dfa',1,'sudoku::models::Puzzle']]],
-  ['getfield_184',['getField',['../classsudoku_1_1app_1_1Game.html#a4e2867bdbc8ab8dfb0d950656fdefbfe',1,'sudoku.app.Game.getField()'],['../classsudoku_1_1models_1_1Puzzle.html#aff4c43b3d594570d991726e5a802f352',1,'sudoku.models.Puzzle.getField()']]],
-  ['getfields_185',['getFields',['../classsudoku_1_1app_1_1Game.html#a8048e8ee3dac24f68f623e64d4dfb900',1,'sudoku::app::Game']]],
-  ['getfieldscausingmistake_186',['getFieldsCausingMistake',['../classsudoku_1_1app_1_1Game.html#a3ca49f48a6d3a08d5b4ddaf9566b0858',1,'sudoku::app::Game']]],
-  ['getfieldstr_187',['getFieldStr',['../classsudoku_1_1app_1_1App.html#aa9462da154a720cc13fc2ffd1900fd36',1,'sudoku::app::App']]],
-  ['getfieldvalue_188',['getFieldValue',['../classsudoku_1_1app_1_1App.html#a689ee414ce0020a0b1b2c4c7a122e5c6',1,'sudoku::app::App']]],
-  ['getfixedfields_189',['getFixedFields',['../classsudoku_1_1models_1_1Puzzle.html#ac29298bdbc126c25e4cbb121d2a6db35',1,'sudoku::models::Puzzle']]],
-  ['getflatgrid_190',['getFlatGrid',['../classsudoku_1_1models_1_1Puzzle.html#a1bab0f0eae52b694736d971bbec55bf2',1,'sudoku::models::Puzzle']]],
-  ['getmaxmistakes_191',['getMaxMistakes',['../classsudoku_1_1app_1_1App.html#a3ab1d68bfe4f5bac7d66eec249bd0dbd',1,'sudoku::app::App']]],
-  ['getmistakesmade_192',['getMistakesMade',['../classsudoku_1_1app_1_1App.html#a0f03ca522f9a8f33eba5a86b324a61fe',1,'sudoku::app::App']]],
-  ['getnonemptyfields_193',['getNonEmptyFields',['../classsudoku_1_1models_1_1Puzzle.html#aeb359f3bd556812429ba8458e10bf2d4',1,'sudoku::models::Puzzle']]],
-  ['getnonfixedfields_194',['getNonFixedFields',['../classsudoku_1_1models_1_1Puzzle.html#a2c491d350f5557a5006ef4141b317994',1,'sudoku::models::Puzzle']]],
-  ['getpuzzle_195',['getPuzzle',['../classsudoku_1_1app_1_1App.html#a83b19bfe5533be2ed04d9a2f2992bfe1',1,'sudoku.app.App.getPuzzle()'],['../classsudoku_1_1app_1_1Game.html#a9442d943cc5088814f8aea70e3e06b22',1,'sudoku.app.Game.getPuzzle()']]],
-  ['getrandomvalue_196',['getRandomValue',['../classsudoku_1_1models_1_1Field.html#a9f93c7a69de76e4c99485bc7acb25981',1,'sudoku::models::Field']]],
-  ['getrow_197',['getRow',['../classsudoku_1_1models_1_1Puzzle.html#a8d1d2503e8533d3f42fe3654d3ba2981',1,'sudoku::models::Puzzle']]],
-  ['getsetdigits_198',['getSetDigits',['../classsudoku_1_1app_1_1App.html#ab8e0b2cf88fb6155879ba0db08801a7b',1,'sudoku.app.App.getSetDigits()'],['../classsudoku_1_1app_1_1Game.html#a559c7e44e17c41df722a92df85957673',1,'sudoku.app.Game.getSetDigits()']]],
-  ['getvalue_199',['getValue',['../classsudoku_1_1models_1_1Puzzle.html#a3bd419433d8afe33aa0f272be7799114',1,'sudoku::models::Puzzle']]]
+  ['fixed_234',['fixed',['../classfield_1_1Field.html#a5d6a8c30a81943eca1623b81036cd031',1,'field.Field.fixed(self)'],['../classfield_1_1Field.html#a10ba1a90ddf9b3b932632164c86dbe6a',1,'field.Field.fixed(self, bool value)']]]
 ];

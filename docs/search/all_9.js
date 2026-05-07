@@ -1,6 +1,7 @@
 var searchData=
 [
-  ['license_85',['LICENSE',['../LICENSE.html',1,'']]],
-  ['loadfromlist_86',['loadFromList',['../classsudoku_1_1models_1_1Puzzle.html#a6eb2587f1cc007bcac60d5452dddd2b8',1,'sudoku::models::Puzzle']]],
-  ['loadfromserialized_87',['loadFromSerialized',['../classsudoku_1_1models_1_1Puzzle.html#aa8b0be3052eb2fc33e08f16b13826fc0',1,'sudoku::models::Puzzle']]]
+  ['license_95',['LICENSE',['../LICENSE.html',1,'']]],
+  ['loadfromlist_96',['loadFromList',['../classpuzzle_1_1Puzzle.html#a196b24b97a76214e96bed16db39004bd',1,'puzzle::Puzzle']]],
+  ['loadfromserialized_97',['loadFromSerialized',['../classpuzzle_1_1Puzzle.html#a2cb1d4f853ad2f12aa6ea7d4fa38c9c6',1,'puzzle::Puzzle']]],
+  ['lockvalues_98',['lockValues',['../classpuzzle_1_1Puzzle.html#a6e09c339536c9fe391cfbc7fc9410116',1,'puzzle::Puzzle']]]
 ];

@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['onkeyboardinput_230',['onKeyboardInput',['../classsudoku_1_1ui_1_1UI.html#acb9f64eaddec8c327befcf4313d152cd',1,'sudoku::ui::UI']]],
-  ['onnewgame_231',['onNewGame',['../classsudoku_1_1ui_1_1UI.html#a0fff2262241115d75d2200a5f04cc093',1,'sudoku::ui::UI']]]
+  ['notes_289',['notes',['../classfield_1_1Field.html#a840b3db72a1bcac66625ec5fc9c1e308',1,'field::Field']]]
 ];

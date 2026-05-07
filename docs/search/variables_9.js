@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['topframe_282',['topFrame',['../classsudoku_1_1ui_1_1UI.html#a4bbdf4dc15963cfc5d1dae2e96d2ee2c',1,'sudoku::ui::UI']]]
+  ['selectedcell_354',['selectedCell',['../classsudoku_1_1app_1_1App.html#a4394c026b06fc28f4a59ec09dd06b367',1,'sudoku::app::App']]],
+  ['selecteddigit_355',['selectedDigit',['../classsudoku_1_1app_1_1App.html#a89f919bf6e8d3ff70f462d1de10a28d7',1,'sudoku::app::App']]]
 ];

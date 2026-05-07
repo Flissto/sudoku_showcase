@@ -1,5 +1,7 @@
 var searchData=
 [
-  ['field_32',['Field',['../classsudoku_1_1models_1_1Field.html',1,'sudoku::models']]],
-  ['fixed_33',['fixed',['../classsudoku_1_1models_1_1Field.html#aa2c520c53fb1f032f43243b0e0637419',1,'sudoku.models.Field.fixed(self)'],['../classsudoku_1_1models_1_1Field.html#a14501a4bb6ec668427aeace2efd32c58',1,'sudoku.models.Field.fixed(self, bool value)']]]
+  ['field_36',['field',['../namespacefield.html',1,'']]],
+  ['field_37',['Field',['../classfield_1_1Field.html',1,'field']]],
+  ['field_2epy_38',['field.py',['../field_8py.html',1,'']]],
+  ['fixed_39',['fixed',['../classfield_1_1Field.html#a5d6a8c30a81943eca1623b81036cd031',1,'field.Field.fixed(self)'],['../classfield_1_1Field.html#a10ba1a90ddf9b3b932632164c86dbe6a',1,'field.Field.fixed(self, bool value)']]]
 ];

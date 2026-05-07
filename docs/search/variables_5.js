@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['max_5fmistakes_275',['MAX_MISTAKES',['../classsudoku_1_1app_1_1Game.html#a4042e678260575816a2e36f4c0604d73',1,'sudoku::app::Game']]],
-  ['menubar_276',['menubar',['../classsudoku_1_1ui_1_1UI.html#ae7937d94270912e3eb4d7c96ff3e6757',1,'sudoku::ui::UI']]]
+  ['highlightdigitsvar_344',['highlightDigitsVar',['../classsudoku_1_1ui_1_1UI.html#ad2ef30dbb2d3428b43f727e10a76d816',1,'sudoku::ui::UI']]],
+  ['highlightrulesvar_345',['highlightRulesVar',['../classsudoku_1_1ui_1_1UI.html#a2f6e4e9b2c295bdeb279848cf017e163',1,'sudoku::ui::UI']]]
 ];

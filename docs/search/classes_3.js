@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['puzzle_145',['Puzzle',['../classsudoku_1_1models_1_1Puzzle.html',1,'sudoku::models']]]
+  ['hex_183',['HEX',['../classthemes_1_1HEX.html',1,'themes']]]
 ];

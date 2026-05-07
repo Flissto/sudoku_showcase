@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['pos_232',['pos',['../classsudoku_1_1models_1_1Field.html#ad58d4f5098f3c9d510ae66a6ff884ab0',1,'sudoku::models::Field']]],
-  ['position_233',['position',['../classsudoku_1_1models_1_1Field.html#ab15c6a69a340d12aa5e8602b81abd35e',1,'sudoku::models::Field']]],
-  ['printdict_234',['printDict',['../classsudoku_1_1models_1_1Field.html#a7b9fd973b95febebbbaca9bdbdeb0f74',1,'sudoku::models::Field']]]
+  ['onkeyboardinput_290',['onKeyboardInput',['../classsudoku_1_1ui_1_1UI.html#acb9f64eaddec8c327befcf4313d152cd',1,'sudoku::ui::UI']]],
+  ['onmistake_291',['onMistake',['../classsudoku_1_1ui_1_1UI.html#af75b3280e47788de55c48f68e1c380c9',1,'sudoku::ui::UI']]],
+  ['onnewgame_292',['onNewGame',['../classsudoku_1_1ui_1_1UI.html#a0fff2262241115d75d2200a5f04cc093',1,'sudoku::ui::UI']]]
 ];

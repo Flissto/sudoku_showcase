@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['fixed_176',['fixed',['../classsudoku_1_1models_1_1Field.html#aa2c520c53fb1f032f43243b0e0637419',1,'sudoku.models.Field.fixed(self)'],['../classsudoku_1_1models_1_1Field.html#a14501a4bb6ec668427aeace2efd32c58',1,'sudoku.models.Field.fixed(self, bool value)']]]
+  ['deselectcell_232',['deselectCell',['../classsudoku_1_1app_1_1App.html#a751fcf370b7dfa624431a62ac37068b8',1,'sudoku::app::App']]],
+  ['difficulty_233',['difficulty',['../classsudoku_1_1game_1_1Game.html#af3b7bd5c53afdfb358f43c69a8b3f81f',1,'sudoku::game::Game']]]
 ];

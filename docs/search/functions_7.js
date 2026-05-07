@@ -1,14 +1,11 @@
 var searchData=
 [
-  ['inerasemode_213',['inEraseMode',['../classsudoku_1_1app_1_1App.html#a9577c94d1104ca2f855a8fd7d15c4224',1,'sudoku::app::App']]],
-  ['innotemode_214',['inNoteMode',['../classsudoku_1_1app_1_1App.html#a6c8c26e022d032f44bee896ab8009d46',1,'sudoku::app::App']]],
-  ['inspect_215',['inspect',['../classsudoku_1_1models_1_1Field.html#a5eb6035d8967f2881d2f3bec2d5d7643',1,'sudoku::models::Field']]],
-  ['isempty_216',['isEmpty',['../classsudoku_1_1models_1_1Field.html#a204d2956c822908b7eeb4506a7036dba',1,'sudoku::models::Field']]],
-  ['isfieldfixed_217',['isFieldFixed',['../classsudoku_1_1app_1_1App.html#a4cadfab1ce4a7f0a815c0a5161aac74b',1,'sudoku::app::App']]],
-  ['isfinished_218',['isFinished',['../classsudoku_1_1models_1_1Puzzle.html#a57486db29369443f3791aa4e4dd2232f',1,'sudoku::models::Puzzle']]],
-  ['isgameover_219',['isGameOver',['../classsudoku_1_1app_1_1Game.html#a7c6b4c475ca15c065c759a36753bcd82',1,'sudoku::app::Game']]],
-  ['isvalid_220',['isValid',['../classsudoku_1_1models_1_1Puzzle.html#a4898077a0afc37c1c56c19c1c54a4d78',1,'sudoku::models::Puzzle']]],
-  ['isvalidcell_221',['isValidCell',['../classsudoku_1_1models_1_1Puzzle.html#a75be45badb1e1a4faa9cfb3be0bb2376',1,'sudoku::models::Puzzle']]],
-  ['iswon_222',['isWon',['../classsudoku_1_1app_1_1Game.html#acba2142bc204cf10001da8fffd0c5651',1,'sudoku::app::Game']]],
-  ['itergrid_223',['iterGrid',['../classsudoku_1_1models_1_1Puzzle.html#a95330c229b097c1ba2ec45dd59f10690',1,'sudoku::models::Puzzle']]]
+  ['handlemove_264',['handleMove',['../classsudoku_1_1app_1_1App.html#a3be530487ce86594886b8baf5a1991a2',1,'sudoku::app::App']]],
+  ['handleprint_265',['handlePrint',['../namespacesudoku_1_1cli.html#a8299a541cfb9812ebd69e14ab5546774',1,'sudoku::cli']]],
+  ['hasended_266',['hasEnded',['../classsudoku_1_1game_1_1Game.html#a879a3eb203af4475877fc4e57706e285',1,'sudoku::game::Game']]],
+  ['hasgameended_267',['hasGameEnded',['../classsudoku_1_1app_1_1App.html#a74c669b00f5d17d1d9c43712cc454527',1,'sudoku::app::App']]],
+  ['hasnoduplicatevalues_268',['hasNoDuplicateValues',['../classpuzzle_1_1Puzzle.html#a1c685a7787249527c597d6cc0b166fa7',1,'puzzle::Puzzle']]],
+  ['hasvalidcandidates_269',['hasValidCandidates',['../classpuzzle_1_1Puzzle.html#ac2fd5d5848e48e9a516cc5bddbeda992',1,'puzzle::Puzzle']]],
+  ['highlightdigits_270',['highlightDigits',['../classsudoku_1_1app_1_1App.html#ae8589e9ebb51b95e01e47559591a6a12',1,'sudoku::app::App']]],
+  ['highlightrules_271',['highlightRules',['../classsudoku_1_1app_1_1App.html#ae95e4cee945bba6a047b0ac2e0ace57c',1,'sudoku::app::App']]]
 ];

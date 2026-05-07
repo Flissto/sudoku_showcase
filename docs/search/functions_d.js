@@ -1,6 +1,8 @@
 var searchData=
 [
-  ['removenote_235',['removeNote',['../classsudoku_1_1models_1_1Field.html#a95a79987bbf34521a131cdfa8e5d97e1',1,'sudoku.models.Field.removeNote()'],['../classsudoku_1_1models_1_1Puzzle.html#acbb892d39043f00b5e0b849687da114f',1,'sudoku.models.Puzzle.removeNote()']]],
-  ['row_236',['row',['../classsudoku_1_1models_1_1Field.html#a40697e0478516921a9fce2c8528d8a2a',1,'sudoku::models::Field']]],
-  ['run_237',['run',['../classsudoku_1_1app_1_1App.html#a614ad06e0fa799aac20f46ca0337e7db',1,'sudoku.app.App.run()'],['../classsudoku_1_1ui_1_1UI.html#a50fee0482893c8e2d81835a5eecfc940',1,'sudoku.ui.UI.run()']]]
+  ['pos_293',['pos',['../classfield_1_1Field.html#a3184e652ae5fbe58a00bc5dfebf70f78',1,'field::Field']]],
+  ['position_294',['position',['../classfield_1_1Field.html#ac21e69c22350aa4ab86e079eda7c748e',1,'field::Field']]],
+  ['printdict_295',['printDict',['../classfield_1_1Field.html#ade7f83f8a2cf7226854aa3b2f8d8542d',1,'field::Field']]],
+  ['printfield_296',['printField',['../classsudoku_1_1app_1_1App.html#a0b9c25bf02bad4cb9a7af040d44d9225',1,'sudoku::app::App']]],
+  ['printsolutions_297',['printSolutions',['../classsudoku_1_1solver_1_1Solver.html#a6a3ca17b069173c3a6775f296c15eecc',1,'sudoku::solver::Solver']]]
 ];
