@@ -69,7 +69,7 @@ def createParser() -> argparse.ArgumentParser:
 	note = subparsers.add_parser(
 		"note",
 		usage="note <command> [args]",
-		help="Handle Notes in puzzle",
+		help="Handle Notes in puzzle. See 'note -h'",
 		description="Manage Notes (add/remove/etc.)"
 	)
 
@@ -88,6 +88,20 @@ def createParser() -> argparse.ArgumentParser:
 	noteAdd.add_argument("row", type=int, help="Row index (1 - 9)")
 	noteAdd.add_argument("col", type=int, help="Column index (1 - 9)")
 	
+	noteAuto = noteSubparsers.add_parser(
+		"auto",
+		usage="note auto",
+		help="Automatically adds notes",
+		description="Adds all notes to the puzzle automatically."
+	)
+
+	noteClear = noteSubparsers.add_parser(
+		"clear",
+		usage="note clear",
+		help="Remove all notes",
+		description="Removes all notes from the puzzle."
+	)
+
 	noteRemove = noteSubparsers.add_parser(
 		"remove",
 		usage="note remove <ROW> <COL>",
@@ -115,23 +129,23 @@ def createParser() -> argparse.ArgumentParser:
 	)
 
 	# select
-	p_select = subparsers.add_parser(
+	select = subparsers.add_parser(
 		"select",
 		usage="select <digit>",
 		help="Selects a digit",
 		description="Selects a digit for placement"
 	)
-	p_select.add_argument("digit", type=int, help="value (1 - 9)")
+	select.add_argument("digit", type=int, help="value (1 - 9)")
 
 	# set
-	p_set = subparsers.add_parser(
+	pSet = subparsers.add_parser(
 		"set",
 		usage="set <ROW> <COL>",
 		help="Set a value at position",
 		description="Set the currently selected digit at ROW COL"
 	)
-	p_set.add_argument("row", type=int, help="Row index (1 - 9)")
-	p_set.add_argument("col", type=int, help="Column index (1 - 9)")
+	pSet.add_argument("row", type=int, help="Row index (1 - 9)")
+	pSet.add_argument("col", type=int, help="Column index (1 - 9)")
 
 	return parser
 
@@ -166,12 +180,11 @@ def main(useUI: bool = False) -> None:
 	while True:
 		try:
 			raw = input(">> ")
-			parts = raw.strip().split()
-			parts[0] = parts[0].lower()
-
 			if not raw.strip():
 				continue
 
+			parts = raw.strip().split()
+			parts[0] = parts[0].lower()
 			args = parser.parse_args(parts)
 
 			match args.command:
@@ -227,6 +240,14 @@ def main(useUI: bool = False) -> None:
 							col = args.col - 1
 							app.handleMove(row, col)
 							app.toggleNoteMode()
+
+						case "auto":
+							app.setAutoNotes()
+							print("Notes automatically added.")
+						
+						case "clear":
+							app.clearAllNotes()
+							print("All notes removed from puzzle.")
 
 						case None:
 							parser.parse_args(["note","-h"])
